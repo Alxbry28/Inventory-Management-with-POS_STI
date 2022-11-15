@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.example.inventorymanagementsystem.database.RealtimeFirebaseDB;
 import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
 import com.example.inventorymanagementsystem.interfaces.TransactionStatusListener;
+import com.example.inventorymanagementsystem.interfaces.UserModelListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +41,23 @@ public class Product {
     public void Delete(final TransactionStatusListener transactionStatus){
         dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
+        });
+    }
+
+    public void GetById(final ProductModelListener productModelListener){
+        Query query = dbRef.child(this.getId());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    Product productExist = snapshot.getValue(Product.class);
+                    productModelListener.retrieveProduct(productExist);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
     }
 

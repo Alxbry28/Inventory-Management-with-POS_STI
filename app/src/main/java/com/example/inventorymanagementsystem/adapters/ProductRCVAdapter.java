@@ -2,6 +2,7 @@ package com.example.inventorymanagementsystem.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.inventorymanagementsystem.AddItemForm;
 import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.models.Product;
 
@@ -27,7 +29,7 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
     public class ProductsViewHolder extends RecyclerView.ViewHolder{
 
         TextView tvProductName, tvCategory, tvPrice, tvQuantity;
-        ImageButton btnEdit, btnDeleteProduct;
+        ImageButton btnEditProduct, btnDeleteProduct;
         View view;
 
         public ProductsViewHolder(@NonNull View itemView) {
@@ -38,6 +40,7 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvQuantity = itemView.findViewById(R.id.tvQuantity);
             btnDeleteProduct = itemView.findViewById(R.id.btnDeleteProduct);
+            btnEditProduct = itemView.findViewById(R.id.btnEditProduct);
         }
 
     }
@@ -52,12 +55,19 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
 
     @Override
     public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position) {
-
         Product product = productList.get(position);
         holder.tvProductName.setText(product.getName());
         holder.tvCategory.setText("Category: " + product.getCategory());
         holder.tvQuantity.setText("Qty: " + String.valueOf(product.getQuantity()));
         holder.tvPrice.setText("P" + String.valueOf(product.getPrice()));
+        holder.btnEditProduct.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AddItemForm.class);
+            intent.putExtra("isEditProduct", true);
+            intent.putExtra("productId", product.getId());
+            context.startActivity(intent);
+
+            Toast.makeText(context, "Test Edit Button " + product.getName() , Toast.LENGTH_SHORT).show();
+        });
         holder.btnDeleteProduct.setOnClickListener(v -> {
             if(product != null){
                 product.Delete(status -> {
