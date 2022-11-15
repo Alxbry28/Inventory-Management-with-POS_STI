@@ -32,6 +32,7 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
             android:padding="8dp"
             android:id="@+id/rcProducts"
             android:layout_width="match_parent"
@@ -63,10 +64,9 @@
     </LinearLayout>
 
     <TextView android:id="@+id/tvEmptyProductMsg"
-        android:visibility="invisible"
         android:layout_centerInParent="true"
         android:textAlignment="center"
-        android:text="Empty Products\n\n Click Add Product"
+        android:text="Products is Empty\n\n Click + Add Product"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

@@ -36,49 +36,67 @@
             android:layout_centerHorizontal="true"/>
 
         <TextView
-            android:id="@+id/tvname"
+            android:id="@+id/tvProductName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Item"
+            android:text="Product Name: "
             android:textSize="15sp"
             android:layout_below="@id/tv1"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"/>
 
         <EditText
-            android:id="@+id/itemname"
+            android:id="@+id/etProductName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvname"
+            android:hint="Enter Product Name"
             android:background="@drawable/form_background"
             android:layout_marginTop="5dp"
             android:padding="5dp"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/tvquantity"
+            android:id="@+id/tvProductCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quantity"
+            android:text="Category: "
+            android:textSize="15sp"
+            android:layout_below="@id/tv1"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
+
+        <EditText
+            android:id="@+id/etProductCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvname"
+            android:hint="Enter Product Category"
+            android:background="@drawable/form_background"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvStocks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stocks"
             android:textSize="15sp"
             android:layout_below="@id/itemname"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"/>
 
-
         <EditText
-            android:id="@+id/quantity"
+            android:id="@+id/etStocks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvquantity"
+            android:hint="Enter Quantity"
             android:background="@drawable/form_background"
             android:layout_marginTop="5dp"
             android:inputType="number"
             android:padding="5dp"
-            android:textSize="20sp"
-            />
-
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tvprice"
@@ -91,41 +109,20 @@
             android:layout_centerHorizontal="true"/>
 
         <EditText
-            android:id="@+id/price"
+            android:id="@+id/etPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvprice"
+            android:hint="Enter Product Price"
             android:background="@drawable/form_background"
             android:layout_marginTop="5dp"
             android:padding="5dp"
             android:inputType="number"
             android:textSize="20sp"/>
 
-        <TextView
-            android:id="@+id/tvMeasurement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Measurement"
-            android:textSize="15sp"
-            android:layout_below="@id/price"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"/>
-
-        <Spinner
-            android:background="@drawable/form_background"
-            android:layout_marginTop="15dp"
-            android:padding="10dp"
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/array_name"
-            android:layout_below="@id/tvMeasurement"/>
-
         <Button
-            android:id="@+id/btnAdd"
+            android:id="@+id/btnAddItemProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/spinner"
             android:layout_marginTop="10sp"
             android:backgroundTint="@color/bg_blue500"
             android:text="Add" />
@@ -135,7 +132,15 @@
             android:id="@+id/btnViewInventory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:text="View Inventory" />
+
+        <Button
+            android:backgroundTint="@color/bg_blue700"
+            android:id="@+id/btnBackToProducts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back" />
 
     </LinearLayout>
 </LinearLayout>

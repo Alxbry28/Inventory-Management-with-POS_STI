@@ -12,96 +12,70 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.inventorymanagementsystem.models.Product;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
 public class AddItemForm extends AppCompatActivity  {
 
     private SharedPreferences sharedPreferences;
-    private String businessName;
+    private String businessName, storeId, userId;
     private TextView tvBusinessName;
+    private EditText etItem, etProductName, etProductCategory, etPrice, etStocks;
+    private Button btnAdd, btnBack;
+    private Product product;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item_form);
+        product = new Product();
         sharedPreferences = getSharedPreferences(MainActivity.TAG,MODE_PRIVATE);
         businessName = sharedPreferences.getString("businessName",null);
+        storeId = sharedPreferences.getString("storeId",null);
+        userId = sharedPreferences.getString("userId",null);
+
+        initComponents();
+        initEventButtons();
+
+        tvBusinessName.setText(businessName);
+    }
+
+    private void initComponents(){
+        btnBack = findViewById(R.id.btnBackToProducts);
+        btnAdd = findViewById(R.id.btnAddItemProduct);
 
         tvBusinessName = findViewById(R.id.tv1);
-        tvBusinessName.setText(businessName);
+        etProductName = findViewById(R.id.etProductName);
+        etProductCategory = findViewById(R.id.etProductCategory);
+        etStocks = findViewById(R.id.etStocks);
+        etPrice = findViewById(R.id.etPrice);
+    }
 
-        final EditText item = findViewById(R.id.itemname);
-        final EditText quantity = findViewById(R.id.quantity);
-        final EditText price = findViewById(R.id.price);
-        final Spinner measurement = findViewById(R.id.spinner);
-        Button add = findViewById(R.id.btnAdd);
-        Button view = findViewById(R.id.btnViewInventory);
-        Button viewinventory = findViewById(R.id.btnViewInventory);
-        DBItemList DB = new DBItemList();
-        ItemList il_edit = (ItemList)getIntent().getSerializableExtra("Edit");
-        if (il_edit != null)
-        {
-            add.setText("Update");
-            item.setText(il_edit.getItemname());
-            quantity.setText(il_edit.getQuantity());
-            price.setText(il_edit.getPrice());
-            view.setVisibility(View.GONE);
-        }
-        else
-        {
-            add.setText("Add");
-            view.setVisibility(View.VISIBLE);
+    private void initEventButtons(){
+        btnAdd.setOnClickListener(v ->{
 
-        }
-
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (item.getText().toString().isEmpty() || quantity.getText().toString().isEmpty() || price.getText().toString().isEmpty() ) {
-                    Toast.makeText(AddItemForm.this, "Fill out all the fields.", Toast.LENGTH_SHORT).show();
-                } else {
-                    ItemList il = new ItemList(item.getText().toString(), quantity.getText().toString(), price.getText().toString(), measurement.getSelectedItem().toString());
-                    if (il_edit == null) {
-                        DB.add(il).addOnSuccessListener(suc ->
-                        {
-                            Toast.makeText(AddItemForm.this, "Item Successfully Added", Toast.LENGTH_SHORT).show();
-                            item.setText("");
-                            quantity.setText("");
-                            price.setText("");
-                        }).addOnFailureListener(er ->
-                        {
-                            Toast.makeText(AddItemForm.this, "" + er.getMessage(), Toast.LENGTH_SHORT).show();
-                        });
-                    }
-                    else
-                        {
-                            HashMap<String,Object> hashMap = new HashMap<>();
-                            hashMap.put("itemname",item.getText().toString());
-                            hashMap.put("quantity",quantity.getText().toString());
-                            hashMap.put("price",price.getText().toString());
-                            hashMap.put("measurement",measurement.getSelectedItem().toString());
-                            DB.update(il_edit.getKey(), hashMap).addOnSuccessListener(suc->
-                            {
-                                Toast.makeText(AddItemForm.this,"Item Successfully Updated",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(AddItemForm.this, InventoryForm.class);
-                                startActivity(intent);
-
-                            }).addOnFailureListener(er->
-                            {
-                                Toast.makeText(AddItemForm.this,""+er.getMessage(),Toast.LENGTH_SHORT).show();
-                            });
-
-                    }
+            product.setStoreId(storeId);
+            product.setUserId(userId);
+            product.setQuantity(Integer.parseInt(etStocks.getText().toString()));
+            product.setPrice(Double.parseDouble(etPrice.getText().toString()));
+            product.setName(etProductName.getText().toString());
+            product.setCategory(etProductCategory.getText().toString());
+            product.Create(status -> {
+                if(status){
+                    Toast.makeText(AddItemForm.this, "Successfully add product", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
-            }
+            });
+
         });
-        viewinventory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AddItemForm.this,InventoryForm.class));
-            }
+
+        btnBack.setOnClickListener(v ->{
+            finish();
         });
     }
+
+
 
 }

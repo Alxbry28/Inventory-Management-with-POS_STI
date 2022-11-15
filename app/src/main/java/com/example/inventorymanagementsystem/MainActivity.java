@@ -63,13 +63,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(isSignIn){
             int userType = sharedPreferences.getInt("userType", 0);
             redirectUser(userType);
-//            Toast.makeText(this, "userId: " + userId, Toast.LENGTH_SHORT).show();
         }
 
         sessionService = new SessionService();
         sessionService.setMySharedPref(sharedPreferences);
-
-
 
         authService = new AuthService();
         mAuth = authService.getFirebaseAuth();

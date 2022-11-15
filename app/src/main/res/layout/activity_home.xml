@@ -11,9 +11,16 @@
         android:background="@color/bg_blue700"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="30dp"
-        android:paddingBottom="30dp">
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
 
+        <TextView
+            android:textColor="@color/white"
+            android:textAllCaps="true"
+            android:text="Business Name: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <TextView
             android:textColor="@color/white"
             android:textAllCaps="true"
@@ -24,7 +31,6 @@
             android:layout_height="wrap_content"
             android:text="Business Name" />
 
-
     </LinearLayout>
 
 <LinearLayout
@@ -33,17 +39,14 @@
     android:orientation="vertical"
     android:gravity="center_vertical|center_horizontal">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        >
+        android:layout_marginRight="10dp">
 
         <Button
             android:id="@+id/btnPOS"
-            android:layout_below="@id/tvbusName"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="5dp"
@@ -55,7 +58,6 @@
             android:id="@+id/btnSales"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_below="@id/btnItems"
             android:backgroundTint="@color/bg_blue350"
             android:layout_weight="1"
             android:layout_margin="5dp"
@@ -67,26 +69,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        >
+        android:layout_marginRight="10dp">
 
         <Button
             android:id="@+id/btnItems"
-            android:layout_below="@id/tvbusName"
             android:layout_width="100dp"
             android:layout_weight="1"
             android:backgroundTint="@color/bg_blue300"
             android:layout_height="100dp"
             android:layout_margin="5dp"
-            android:text="Products" />
-
+            android:text="Products"/>
 
         <Button
             android:id="@+id/btnTransactions"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:layout_below="@id/btnSales"
             android:backgroundTint="@color/bg_blue250"
             android:layout_margin="5dp"
             android:text="Transactions" />
