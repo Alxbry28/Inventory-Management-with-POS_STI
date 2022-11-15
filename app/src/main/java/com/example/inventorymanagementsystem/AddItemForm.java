@@ -12,24 +12,29 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
 import com.example.inventorymanagementsystem.models.Product;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AddItemForm extends AppCompatActivity  {
 
     private SharedPreferences sharedPreferences;
-    private String businessName, storeId, userId;
-    private TextView tvBusinessName;
+    private String businessName, storeId, userId, productId;
+    private TextView tvBusinessName,tvProductTransactionType;
     private EditText etItem, etProductName, etProductCategory, etPrice, etStocks;
     private Button btnAdd, btnBack;
     private Product product;
+    private boolean isEditProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item_form);
+
+
         product = new Product();
         sharedPreferences = getSharedPreferences(MainActivity.TAG,MODE_PRIVATE);
         businessName = sharedPreferences.getString("businessName",null);
@@ -37,12 +42,37 @@ public class AddItemForm extends AppCompatActivity  {
         userId = sharedPreferences.getString("userId",null);
 
         initComponents();
+        isEditProduct = getIntent().hasExtra("isEditProduct");
+        if(isEditProduct){
+            product.setId(getIntent().getStringExtra("productId"));
+            product.GetById(new ProductModelListener() {
+                @Override
+                public void retrieveProduct(Product product) {
+                    etProductName.setText(product.getName());
+                    etProductCategory.setText(product.getCategory());
+                    etPrice.setText(String.valueOf(product.getPrice()));
+                    etStocks.setText(String.valueOf(product.getQuantity()));
+                    etStocks.setEnabled(false);
+                }
+
+                @Override
+                public void getProductList(ArrayList<Product> productArrayList) {
+
+                }
+            });
+            String transType = "Edit Product";
+            Toast.makeText(this, transType, Toast.LENGTH_SHORT).show();
+            tvProductTransactionType.setText(transType);
+            btnAdd.setText("Save");
+        }
         initEventButtons();
+
 
         tvBusinessName.setText(businessName);
     }
 
     private void initComponents(){
+        tvProductTransactionType = findViewById(R.id.tvProductTransactionType);
         btnBack = findViewById(R.id.btnBackToProducts);
         btnAdd = findViewById(R.id.btnAddItemProduct);
 
@@ -62,12 +92,19 @@ public class AddItemForm extends AppCompatActivity  {
             product.setPrice(Double.parseDouble(etPrice.getText().toString()));
             product.setName(etProductName.getText().toString());
             product.setCategory(etProductCategory.getText().toString());
-            product.Create(status -> {
-                if(status){
-                    Toast.makeText(AddItemForm.this, "Successfully add product", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            });
+            
+            if(isEditProduct){
+                Toast.makeText(AddItemForm.this, "Saved Button Clicked", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                product.Create(status -> {
+                    if(status){
+                        Toast.makeText(AddItemForm.this, "Successfully add product", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+            }
+
 
         });
 

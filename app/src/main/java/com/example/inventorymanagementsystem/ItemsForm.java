@@ -60,6 +60,7 @@ public class ItemsForm extends AppCompatActivity {
                         rcProducts.setVisibility(View.VISIBLE);
 
                         ProductRCVAdapter productRCVAdapter = new ProductRCVAdapter();
+                        productRCVAdapter.setContext(ItemsForm.this);
                         productRCVAdapter.setProductList(productList);
 
                         rcProducts.setAdapter(productRCVAdapter);

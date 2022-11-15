@@ -35,7 +35,11 @@ public class User {
                 transactionStatus.checkStatus(task.isSuccessful());
         });
     }
-
+    public void Delete(final TransactionStatusListener transactionStatus){
+        dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
+            transactionStatus.checkStatus(task.isSuccessful());
+        });
+    }
     public void GetById(final UserModelListener userModelListener){
         Query query = dbRef.child(this.getId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -43,10 +47,6 @@ public class User {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     User userExist = snapshot.getValue(User.class);
-//                    User userExist = null;
-//                    for (DataSnapshot userSnapshot : snapshot.getChildren()){
-//                        userExist = userSnapshot.getValue(User.class);
-//                    }
                     userModelListener.retrieveUser(userExist);
                 }
 
