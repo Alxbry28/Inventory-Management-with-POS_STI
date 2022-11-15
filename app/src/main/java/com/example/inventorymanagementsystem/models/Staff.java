@@ -31,6 +31,12 @@ public class Staff {
         });
     }
 
+    public void Delete(final TransactionStatusListener transactionStatus){
+        dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
+            transactionStatus.checkStatus(task.isSuccessful());
+        });
+    }
+
     public void GetByUserId(final StaffModelListener staffModelListener){
         Query query = dbRef.orderByChild("userId").equalTo(this.getUserId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {

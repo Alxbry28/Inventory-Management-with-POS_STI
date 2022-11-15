@@ -35,9 +35,14 @@ public class User {
                 transactionStatus.checkStatus(task.isSuccessful());
         });
     }
-
+    public void Delete(final TransactionStatusListener transactionStatus){
+        dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
+            transactionStatus.checkStatus(task.isSuccessful());
+        });
+    }
     public void GetById(final UserModelListener userModelListener){
         Query query = dbRef.child(this.getId());
+
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

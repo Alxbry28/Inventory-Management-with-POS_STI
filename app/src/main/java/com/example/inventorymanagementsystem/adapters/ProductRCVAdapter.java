@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +27,7 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
     public class ProductsViewHolder extends RecyclerView.ViewHolder{
 
         TextView tvProductName, tvCategory, tvPrice, tvQuantity;
-        Button btnEdit, btnDelete;
+        ImageButton btnEdit, btnDeleteProduct;
         View view;
 
         public ProductsViewHolder(@NonNull View itemView) {
@@ -35,6 +37,7 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
             tvCategory = itemView.findViewById(R.id.tvCategory);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvQuantity = itemView.findViewById(R.id.tvQuantity);
+            btnDeleteProduct = itemView.findViewById(R.id.btnDeleteProduct);
         }
 
     }
@@ -49,11 +52,22 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
 
     @Override
     public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position) {
+
         Product product = productList.get(position);
         holder.tvProductName.setText(product.getName());
         holder.tvCategory.setText("Category: " + product.getCategory());
         holder.tvQuantity.setText("Qty: " + String.valueOf(product.getQuantity()));
         holder.tvPrice.setText("P" + String.valueOf(product.getPrice()));
+        holder.btnDeleteProduct.setOnClickListener(v -> {
+            if(product != null){
+                product.Delete(status -> {
+                    if(status){
+                        notifyDataSetChanged();
+                        Toast.makeText(context, "Deleted Product " + product.getName() , Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
 

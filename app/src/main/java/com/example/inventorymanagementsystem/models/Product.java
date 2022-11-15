@@ -37,6 +37,12 @@ public class Product {
         });
     }
 
+    public void Delete(final TransactionStatusListener transactionStatus){
+        dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
+            transactionStatus.checkStatus(task.isSuccessful());
+        });
+    }
+
     public void GetAll(final ProductModelListener productModelListener){
         Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId());
         query.addValueEventListener(new ValueEventListener() {
