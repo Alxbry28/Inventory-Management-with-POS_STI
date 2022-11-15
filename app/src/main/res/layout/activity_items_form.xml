@@ -4,41 +4,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ItemsForm">
-    <TextView
 
-        android:textSize="30sp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/purple_200"
-        android:textStyle="italic"
-        android:text="All Items" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="85dp"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="500dp" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:layout_centerHorizontal="true"
-        android:id="@+id/btnback"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:layout_marginBottom="30dp"
-        android:layout_alignParentBottom="true"/>
+        <LinearLayout android:id="@+id/lnrHeaderProduct"
+            android:gravity="center"
+            android:background="@color/bg_blue700"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp">
 
-    <TextView
-        android:id="@+id/Date"
+            <TextView
+                android:textColor="@color/white"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Products" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:padding="8dp"
+            android:id="@+id/rcProducts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnAddProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Product" />
+
+        <Button
+            android:id="@+id/btnback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+
+    </LinearLayout>
+
+    <TextView android:id="@+id/tvEmptyProductMsg"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"
+        android:textAlignment="center"
+        android:text="Empty Products\n\n Click Add Product"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_centerHorizontal="true"
-        android:text="Forgot Password"
-        android:textSize="20dp"
-        android:layout_alignParentBottom="true"/>
+        android:layout_height="wrap_content"/>
+
 
 </RelativeLayout>

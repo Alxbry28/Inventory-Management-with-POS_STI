@@ -3,11 +3,13 @@ package com.example.inventorymanagementsystem;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -15,10 +17,20 @@ import java.util.HashMap;
 
 public class AddItemForm extends AppCompatActivity  {
 
+    private SharedPreferences sharedPreferences;
+    private String businessName;
+    private TextView tvBusinessName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item_form);
+        sharedPreferences = getSharedPreferences(MainActivity.TAG,MODE_PRIVATE);
+        businessName = sharedPreferences.getString("businessName",null);
+
+        tvBusinessName = findViewById(R.id.tv1);
+        tvBusinessName.setText(businessName);
+
         final EditText item = findViewById(R.id.itemname);
         final EditText quantity = findViewById(R.id.quantity);
         final EditText price = findViewById(R.id.price);

@@ -30,6 +30,7 @@ public class Store {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
+
     public void GetByUserId(final StoreModelListener storeModelListener){
         Query query = dbRef.orderByChild("userId").equalTo(this.getUserId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -61,9 +62,7 @@ public class Store {
                     Store storeExist = snapshot.getValue(Store.class);
                     storeModelListener.retrieveStore(storeExist);
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

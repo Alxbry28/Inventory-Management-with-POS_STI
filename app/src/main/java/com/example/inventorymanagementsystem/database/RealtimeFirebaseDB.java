@@ -1,4 +1,5 @@
 package com.example.inventorymanagementsystem.database;
+import com.example.inventorymanagementsystem.models.InventoryItem;
 import com.example.inventorymanagementsystem.models.Product;
 import com.example.inventorymanagementsystem.models.Staff;
 import com.example.inventorymanagementsystem.models.Store;
@@ -34,6 +35,10 @@ public class RealtimeFirebaseDB {
 
     public DatabaseReference ProductsTable(){
         return firebaseDatabase.getInstance().getReference(Product.TABLE);
+    }
+
+    public DatabaseReference InventoryTable(){
+        return firebaseDatabase.getInstance().getReference(InventoryItem.TABLE);
     }
 
 
