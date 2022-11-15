@@ -1,15 +1,25 @@
 package com.example.inventorymanagementsystem.models;
 
+import androidx.annotation.NonNull;
+
 import com.example.inventorymanagementsystem.database.RealtimeFirebaseDB;
+import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
 import com.example.inventorymanagementsystem.interfaces.TransactionStatusListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class Product {
 
     private int quantity;
     private String id, userId, storeId;
-    private double price, cost;
     private String name, category;
+    private double price, cost;
+    private boolean isDeleted;
 
     public static final String TABLE = "tblProducts";
     private RealtimeFirebaseDB realtimeFirebaseDB;
@@ -26,6 +36,28 @@ public class Product {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
+
+    public void GetAll(final ProductModelListener productModelListener){
+        Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId());
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Product> productArrayList = new ArrayList<>();
+                for (DataSnapshot productSnapShot : snapshot.getChildren()) {
+                    Product product = productSnapShot.getValue(Product.class);
+                    productArrayList.add(product);
+                }
+                productModelListener.getProductList(productArrayList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
 
     public double getCost() {
         return cost;
