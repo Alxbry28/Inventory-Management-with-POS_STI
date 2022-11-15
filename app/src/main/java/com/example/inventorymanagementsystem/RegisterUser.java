@@ -147,7 +147,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                         mAuth.getCurrentUser().sendEmailVerification();
                         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         userRegister.setId(userId);
-                        userRegister.setUserType(0);
+                        userRegister.setUserType(2);
                         staff.setUserId(userId);
                         store.setUserId(userId);
                         store.setOwner(staff.getFullname());

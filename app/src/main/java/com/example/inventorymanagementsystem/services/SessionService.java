@@ -9,41 +9,24 @@ public class SessionService {
 
     private SharedPreferences mySharedPref;
     private Editor mySharedPrefEditor;
-    private Staff staff;
-    private String businessName;
+    private String userId;
+    private User user;
 
-    public boolean sessionStaff(){
+
+    public boolean BeginStaff(){
         mySharedPrefEditor = mySharedPref.edit();
         mySharedPrefEditor.putBoolean("isSignIn", true);
-        mySharedPrefEditor.putString("userId", staff.getUserId());
-        mySharedPrefEditor.putString("storeId", staff.getStoreId());
-        mySharedPrefEditor.putString("staffId", staff.getId());
-        mySharedPrefEditor.putString("businessName", businessName);
+        mySharedPrefEditor.putString("userId", user.getId());
+        mySharedPrefEditor.putString("storeId", user.getStoreId());
         mySharedPrefEditor.apply();
         return mySharedPrefEditor.commit();
     }
 
-    public boolean sessionUser(){
-        mySharedPrefEditor = mySharedPref.edit();
-        mySharedPrefEditor.putBoolean("isSignIn", true);
-        mySharedPrefEditor.putString("userId", staff.getId());
-        mySharedPrefEditor.apply();
-        return mySharedPrefEditor.commit();
-    }
-
-    public boolean Destroy(){
+    public boolean End(){
         mySharedPrefEditor = mySharedPref.edit();
         mySharedPrefEditor.clear();
         mySharedPrefEditor.apply();
         return mySharedPrefEditor.commit();
-    }
-
-    public String getBusinessName() {
-        return businessName;
-    }
-
-    public void setBusinessName(String businessName) {
-        this.businessName = businessName;
     }
 
     public SharedPreferences getMySharedPref() {
@@ -54,11 +37,11 @@ public class SessionService {
         this.mySharedPref = mySharedPref;
     }
 
-    public Staff getStaff() {
-        return staff;
+    public User getUser() {
+        return user;
     }
 
-    public void setStaff(Staff staff) {
-        this.staff = staff;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

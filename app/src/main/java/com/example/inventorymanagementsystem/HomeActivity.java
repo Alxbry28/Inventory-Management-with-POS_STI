@@ -36,80 +36,87 @@ public class HomeActivity extends AppCompatActivity {
     private Boolean isSignIn;
     private TextView tvBusinessName;
     private SharedPreferences sharedPreferences;
+    private FirebaseUser firebaseUser;
     private Button Logout, Items,Sales,Transactions,Inventory, btnPOS;
+    private Button btnTest;
+    private View.OnClickListener menuButtonClickListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-//        businessName = getIntent().getStringExtra("businessName");
         tvBusinessName = findViewById(R.id.tvbusName);
 //        tvBusinessName.setText(businessName);
 
         sharedPreferences = getSharedPreferences(MainActivity.TAG, MODE_PRIVATE);
         userId = sharedPreferences.getString("userId","");
+        storeId = sharedPreferences.getString("storeId","");
         isSignIn = sharedPreferences.getBoolean("isSignIn",false);
 
-        Toast.makeText(this, "userId: " + userId, Toast.LENGTH_SHORT).show();
+
 
         TextView date = findViewById(R.id.Date);
         date.setText(time() + "   "+ date());
 
         btnPOS = findViewById(R.id.btnPOS);
-        btnPOS.setOnClickListener(view -> {
-            startActivity(new Intent(HomeActivity.this,POSActivity.class))    ;
-//            Toast.makeText(this, "Test POS Button", Toast.LENGTH_SHORT).show();
-//
-//            posProductSelectionDialog.
-
-        });
+        btnPOS.setOnClickListener(getMenuButtonClickListener());
 
         Inventory = (Button)findViewById(R.id.btnInventory);
-        Inventory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this,InventoryForm.class))    ;
-            }
-        });
+        Inventory.setOnClickListener(getMenuButtonClickListener());
 
         Logout = (Button)findViewById(R.id.btnlogout);
-        Logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(HomeActivity.this, MainActivity.class));
-            }
-        });
+        Logout.setOnClickListener(getMenuButtonClickListener());
 
         Sales = (Button)findViewById(R.id.btnSales);
-        Sales.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this,SalesForm.class));
-            }
-        });
+        Sales.setOnClickListener(getMenuButtonClickListener());
 
         Transactions = (Button)findViewById(R.id.btnTransactions);
-        Transactions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, TransactionsForm.class));
-            }
-        });
+        Transactions.setOnClickListener(getMenuButtonClickListener());
+
         Items = (Button)findViewById(R.id.btnItems);
-        Items.setOnClickListener(new View.OnClickListener() {
+        Items.setOnClickListener(getMenuButtonClickListener());
+
+        btnTest = findViewById(R.id.btnTest);
+        btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, ItemsForm.class));
+                Toast.makeText(HomeActivity.this, "storeId_session: " + storeId + " userId_session: " + userId , Toast.LENGTH_SHORT).show();
             }
         });
 
+    }
 
+    public View.OnClickListener getMenuButtonClickListener() {
+        return v -> {
+                switch (v.getId()){
+                    case R.id.btnItems:
+                        startActivity(new Intent(HomeActivity.this, ItemsForm.class));
+                        break;
 
+                    case R.id.btnTransactions:
+                        startActivity(new Intent(HomeActivity.this, TransactionsForm.class));
+                        break;
 
+                    case R.id.btnSales:
+                        startActivity(new Intent(HomeActivity.this,SalesForm.class));
+                        break;
 
+                    case R.id.btnInventory:
+                        startActivity(new Intent(HomeActivity.this,SalesForm.class));
+                        break;
 
+                    case R.id.btnPOS:
+                        startActivity(new Intent(HomeActivity.this,POSActivity.class));
+                        break;
+
+                    default:
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                }
+        };
     }
 
     private String time ()

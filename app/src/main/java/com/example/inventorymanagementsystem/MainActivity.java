@@ -44,24 +44,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AuthService authService;
     private ProgressBar progressBar;
     private User logUser;
-    private Staff logStaff;
-    private Store logStore;
 
     private FirebaseUser firebaseUser;
     private FirebaseAuth mAuth;
-    private DatabaseReference reference;
 
     private SessionService sessionService;
 
-    public static final String TAG = " com.example.inventorymanagementsystem.mainactivity";
+    public static final String TAG = "com.example.inventorymanagementsystem.mainactivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         logUser = new User();
-        logStore = new Store();
-        logStaff = new Staff();
+
         sessionService = new SessionService();
         sessionService.setMySharedPref(getSharedPreferences(TAG, MODE_PRIVATE));
 
@@ -153,52 +149,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //Redirect to activity after successful login
                     FirebaseUser user =  FirebaseAuth.getInstance().getCurrentUser();
                     if (user.isEmailVerified()) {
-
                         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
                         String userID = firebaseUser.getUid();
                         logUser.setId(userID);
+                        logUser.GetById(userExist -> {
+                                if(userExist != null){
+                                    sessionService.setUser(userExist);
+                                    if(sessionService.BeginStaff()){
+                                        Toast.makeText(MainActivity.this,"Successfully Login",Toast.LENGTH_LONG).show();
+                                        switch (userExist.getUserType()){
+                                            case 1:
+                                                Toast.makeText(MainActivity.this, "Super Admin", Toast.LENGTH_SHORT).show();
+                                                break;
+                                            case 2:
+                                                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                                                progressBar.setVisibility(View.GONE);
+                                                break;
+                                            case 3:
+                                                Toast.makeText(MainActivity.this, "Employee", Toast.LENGTH_SHORT).show();
+                                                break;
+                                        }
 
-                        logUser.GetById(new UserModelListener() {
-                            @Override
-                            public void retrieveUser(User user) {
-                                if(user != null){
-                                    logUser = user;
-                                    Toast.makeText(MainActivity.this, "user: " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                                    logStaff.setUserId(logUser.getId());
-
-                                    logStaff.GetByUserId(new StaffModelListener() {
-            @Override
-            public void retrieveStaff(Staff staff) {
-                logStaff = staff;
-
-                Store store = new Store();
-                store.setId(staff.getStoreId());
-                store.GetById(new StoreModelListener() {
-                    @Override
-                    public void retrieveStore(Store store) {
-                        logStore = store;
-                    }
-                });
-            }
-        });
+                                    }
                                 }
                             }
-                        });
-                        Staff staff = new Staff();
-                        staff.setUserId(logUser.getId());
-                        sessionService.setStaff(staff);
-
-                        if(sessionService.sessionUser()){
-                            Toast.makeText(MainActivity.this,"Successfully Login",Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-
-                            intent.putExtra("userId", logUser.getId());
-                            intent.putExtra("businessName", logStore.getName());
-
-                            startActivity(intent);
-                            progressBar.setVisibility(View.GONE);
-                        }
+                    );
 
                     } else {
                         user.sendEmailVerification();
