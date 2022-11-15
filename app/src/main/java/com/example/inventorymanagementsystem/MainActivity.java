@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseUser firebaseUser;
     private FirebaseAuth mAuth;
 
+    private SharedPreferences sharedPreferences;
     private SessionService sessionService;
 
     public static final String TAG = "com.example.inventorymanagementsystem.mainactivity";
@@ -57,9 +58,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         logUser = new User();
+        sharedPreferences = getSharedPreferences(TAG, MODE_PRIVATE);
+        String userId = sharedPreferences.getString("userId", null);
+        if(userId != null){
+
+            int userType = sharedPreferences.getInt("userType", 0);
+            redirectUser(userType);
+//            Toast.makeText(this, "userId: " + userId, Toast.LENGTH_SHORT).show();
+        }
 
         sessionService = new SessionService();
-        sessionService.setMySharedPref(getSharedPreferences(TAG, MODE_PRIVATE));
+        sessionService.setMySharedPref(sharedPreferences);
+
+
 
         authService = new AuthService();
         mAuth = authService.getFirebaseAuth();
@@ -157,18 +168,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     sessionService.setUser(userExist);
                                     if(sessionService.BeginStaff()){
                                         Toast.makeText(MainActivity.this,"Successfully Login",Toast.LENGTH_LONG).show();
-                                        switch (userExist.getUserType()){
-                                            case 1:
-                                                Toast.makeText(MainActivity.this, "Super Admin", Toast.LENGTH_SHORT).show();
-                                                break;
-                                            case 2:
-                                                startActivity(new Intent(MainActivity.this, HomeActivity.class));
-                                                progressBar.setVisibility(View.GONE);
-                                                break;
-                                            case 3:
-                                                Toast.makeText(MainActivity.this, "Employee", Toast.LENGTH_SHORT).show();
-                                                break;
-                                        }
+                                        redirectUser(userExist.getUserType());
+                                        progressBar.setVisibility(View.GONE);
 
                                     }
                                 }
@@ -189,6 +190,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
     }
+
+    private void redirectUser(int userType){
+        switch (userType){
+            case 1:
+                Toast.makeText(MainActivity.this, "Super Admin", Toast.LENGTH_SHORT).show();
+                break;
+            case 2:
+                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+
+                break;
+            case 3:
+                Toast.makeText(MainActivity.this, "Employee", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
     private String time ()
     {
         return new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());

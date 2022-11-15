@@ -3,7 +3,6 @@ package com.example.inventorymanagementsystem.models;
 import androidx.annotation.NonNull;
 
 import com.example.inventorymanagementsystem.database.RealtimeFirebaseDB;
-import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
 import com.example.inventorymanagementsystem.interfaces.StoreModelListener;
 import com.example.inventorymanagementsystem.interfaces.TransactionStatusListener;
 import com.google.firebase.database.DataSnapshot;

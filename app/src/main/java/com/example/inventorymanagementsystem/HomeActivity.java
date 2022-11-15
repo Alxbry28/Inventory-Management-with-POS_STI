@@ -40,23 +40,37 @@ public class HomeActivity extends AppCompatActivity {
     private Button Logout, Items,Sales,Transactions,Inventory, btnPOS;
     private Button btnTest;
     private View.OnClickListener menuButtonClickListener;
-
+    private SessionService sessionService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        tvBusinessName = findViewById(R.id.tvbusName);
-//        tvBusinessName.setText(businessName);
-
+        sessionService = new SessionService();
         sharedPreferences = getSharedPreferences(MainActivity.TAG, MODE_PRIVATE);
+
         userId = sharedPreferences.getString("userId","");
         storeId = sharedPreferences.getString("storeId","");
         isSignIn = sharedPreferences.getBoolean("isSignIn",false);
+        sessionService.setMySharedPref(sharedPreferences);
 
+        tvBusinessName = findViewById(R.id.tvbusName);
+        if(businessName == null){
+            Store store = new Store();
+            store.setId(storeId);
+            store.GetById(storeExist ->{
+                SharedPreferences.Editor sharedEditor = sharedPreferences.edit();
+                sharedEditor.putString("businessName", storeExist.getName());
+                sharedEditor.apply();
+                sharedEditor.commit();
+                businessName = storeExist.getName();
+                tvBusinessName.setText(businessName);
+            });
+        }
 
+        businessName = sharedPreferences.getString("businessName",null);
+        tvBusinessName.setText(businessName);
 
         TextView date = findViewById(R.id.Date);
         date.setText(time() + "   "+ date());
@@ -105,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
 
                     case R.id.btnInventory:
-                        startActivity(new Intent(HomeActivity.this,SalesForm.class));
+                        startActivity(new Intent(HomeActivity.this, InventoryForm.class));
                         break;
 
                     case R.id.btnPOS:
@@ -113,8 +127,10 @@ public class HomeActivity extends AppCompatActivity {
                         break;
 
                     default:
-                        FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                        if(sessionService.End()){
+                            FirebaseAuth.getInstance().signOut();
+                            startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                        }
                 }
         };
     }

@@ -12,12 +12,12 @@ public class SessionService {
     private String userId;
     private User user;
 
-
     public boolean BeginStaff(){
         mySharedPrefEditor = mySharedPref.edit();
         mySharedPrefEditor.putBoolean("isSignIn", true);
         mySharedPrefEditor.putString("userId", user.getId());
         mySharedPrefEditor.putString("storeId", user.getStoreId());
+        mySharedPrefEditor.putInt("userType", user.getUserType());
         mySharedPrefEditor.apply();
         return mySharedPrefEditor.commit();
     }
