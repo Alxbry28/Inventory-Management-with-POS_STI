@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    android:layout_margin="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView android:id="@+id/tvSalesName"
+                android:text="SalesName"
+                android:textSize="22dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:id="@+id/tvSalesPrice"
+                android:text="SalesPrice"
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:id="@+id/tvSalesQuantity"
+                android:text="SalesQuantity"
+                android:textSize="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

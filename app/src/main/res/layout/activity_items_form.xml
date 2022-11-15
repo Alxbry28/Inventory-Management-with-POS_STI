@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ItemsForm">
+    <TextView
+
+        android:textSize="30sp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/purple_200"
+        android:textStyle="italic"
+        android:text="All Items" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="85dp"
+        android:layout_width="match_parent"
+        android:layout_height="500dp" />
+
+    <Button
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btnback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"/>
+
+    <TextView
+        android:id="@+id/Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_centerHorizontal="true"
+        android:text="Forgot Password"
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white_700"
+    tools:context=".AddItemForm">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Business Name"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
+
+
+        <TextView
+            android:id="@+id/tvname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item"
+            android:textSize="15sp"
+            android:layout_below="@id/tv1"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
+
+        <EditText
+            android:id="@+id/itemname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvname"
+            android:background="@drawable/form_background"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/tvquantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quantity"
+            android:textSize="15sp"
+            android:layout_below="@id/itemname"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
+
+
+        <EditText
+            android:id="@+id/quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvquantity"
+            android:background="@drawable/form_background"
+            android:layout_marginTop="5dp"
+            android:inputType="number"
+            android:padding="5dp"
+            android:textSize="20sp"
+            />
+
+
+        <TextView
+            android:id="@+id/tvprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:textSize="15sp"
+            android:layout_below="@id/quantity"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
+
+        <EditText
+            android:id="@+id/price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvprice"
+            android:background="@drawable/form_background"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:inputType="number"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/tvMeasurement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Measurement"
+            android:textSize="15sp"
+            android:layout_below="@id/price"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
+
+        <Spinner
+            android:background="@drawable/form_background"
+            android:layout_marginTop="15dp"
+            android:padding="10dp"
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/array_name"
+            android:layout_below="@id/tvMeasurement"/>
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinner"
+            android:layout_marginTop="10sp"
+            android:backgroundTint="@color/bg_blue500"
+            android:text="Add" />
+
+        <Button
+            android:backgroundTint="@color/bg_blue700"
+            android:id="@+id/btnViewInventory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Inventory" />
+
+    </LinearLayout>
+</LinearLayout>

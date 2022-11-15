@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SalesForm">
+
+    <TextView
+        android:layout_gravity="center"
+        android:textSize="30sp"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/purple_200"
+        android:textStyle="bold"
+        android:text="Sales Form" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_centerInParent="true"
+        android:padding="5dp"
+        android:id="@+id/rcSales"
+        android:layout_width="match_parent"
+        android:layout_height="500dp" />
+
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/btnback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_alignParentBottom="true"/>
+
+    <TextView
+        android:layout_gravity="center"
+        android:id="@+id/Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_centerHorizontal="true"
+        android:text="Date"
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"/>
+
+</LinearLayout>
