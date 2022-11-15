@@ -8,8 +8,8 @@ public class Product {
 
     private int quantity;
     private String id, userId, storeId;
-    private double price;
-    private String name;
+    private double price, cost;
+    private String name, category;
 
     public static final String TABLE = "tblProducts";
     private RealtimeFirebaseDB realtimeFirebaseDB;
@@ -25,6 +25,22 @@ public class Product {
         dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getId() {

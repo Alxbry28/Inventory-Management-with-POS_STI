@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv1"
@@ -21,10 +20,20 @@
             android:layout_height="wrap_content"
             android:text="Business Name"
             android:textSize="25sp"
+            android:textAllCaps="true"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Product"
+            android:textSize="18sp"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:id="@+id/tvname"

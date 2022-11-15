@@ -59,9 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         logUser = new User();
         sharedPreferences = getSharedPreferences(TAG, MODE_PRIVATE);
-        String userId = sharedPreferences.getString("userId", null);
-        if(userId != null){
-
+        boolean isSignIn = sharedPreferences.getBoolean("isSignIn", false);
+        if(isSignIn){
             int userType = sharedPreferences.getInt("userType", 0);
             redirectUser(userType);
 //            Toast.makeText(this, "userId: " + userId, Toast.LENGTH_SHORT).show();

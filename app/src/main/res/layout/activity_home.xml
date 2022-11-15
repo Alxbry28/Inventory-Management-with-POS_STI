@@ -52,15 +52,14 @@
             android:text="Point Of Sale" />
 
         <Button
-            android:id="@+id/btnItems"
-            android:layout_below="@id/tvbusName"
+            android:id="@+id/btnSales"
             android:layout_width="100dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/bg_blue300"
             android:layout_height="100dp"
+            android:layout_below="@id/btnItems"
+            android:backgroundTint="@color/bg_blue350"
+            android:layout_weight="1"
             android:layout_margin="5dp"
-            android:text="Items" />
-
+            android:text="Sales" />
 
     </LinearLayout>
 
@@ -71,16 +70,16 @@
         android:layout_marginRight="10dp"
         >
 
-
         <Button
-            android:id="@+id/btnSales"
+            android:id="@+id/btnItems"
+            android:layout_below="@id/tvbusName"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@id/btnItems"
-            android:backgroundTint="@color/bg_blue350"
             android:layout_weight="1"
+            android:backgroundTint="@color/bg_blue300"
+            android:layout_height="100dp"
             android:layout_margin="5dp"
-            android:text="Sales" />
+            android:text="Products" />
+
 
         <Button
             android:id="@+id/btnTransactions"
