@@ -15,5 +15,7 @@
     <color name="bg_blue300">#1e3799</color>
     <color name="bg_blue350">#4a69bd</color>
     <color name="bg_blue400">#6a89cc</color>
+    <color name="bg_orange">#E47703</color>
+    <color name="bg_yellow">#EAAB0C</color>
     <color name="bg_red">#e74c3c</color>
 </resources>

@@ -30,7 +30,7 @@ public class User {
     }
 
     public void Create(final TransactionStatusListener transactionStatus){
-        this.setPassword(null);
+//        this.setPassword(null);
         dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
                 transactionStatus.checkStatus(task.isSuccessful());
         });
