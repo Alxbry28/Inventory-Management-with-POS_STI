@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
-    android:id="@+id/cvProductItem"
     android:layout_margin="5dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,29 +26,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <TextView android:id="@+id/tvCategory"
-                android:text="ProductCategory"
-                android:textSize="17dp"
+            <TextView android:id="@+id/tvProductPrice"
+                android:text="ProductPrice"
+                android:textSize="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <TextView android:id="@+id/tvQuantity"
+            <TextView android:id="@+id/tvProductQuantity"
                 android:text="Quantity"
-                android:textSize="15dp"
+                android:textSize="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/btnAddProduct"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="15dp"
-            android:text="ProductPrice"
-            android:textSize="18dp" />
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_baseline_add_box_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </RelativeLayout>
 

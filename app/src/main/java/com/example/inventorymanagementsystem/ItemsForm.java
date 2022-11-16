@@ -32,6 +32,7 @@ public class ItemsForm extends AppCompatActivity {
     private RecyclerView rcProducts;
     private ArrayList<Product> productList;
     private Product product;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

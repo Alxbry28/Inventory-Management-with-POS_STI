@@ -123,7 +123,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
 
                     case R.id.btnPOS:
-                        startActivity(new Intent(HomeActivity.this,POSActivity.class));
+                        startActivity(new Intent(HomeActivity.this,POSItemActivity.class));
                         break;
 
                     default:
