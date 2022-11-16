@@ -2,10 +2,8 @@ package com.example.inventorymanagementsystem.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.widget.TextView;
 import android.widget.ImageButton;
-import android.widget.Toast;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
@@ -26,7 +24,7 @@ public class POSItemsDialogRCVAdapter extends RecyclerView.Adapter<POSItemsDialo
     @Override
     public POSItemsDialogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.recyclerview_pos_product_item, parent, false);
+        View view = layoutInflater.inflate(R.layout.recyclerview_pos_product_item_dialog, parent, false);
 
         return new POSItemsDialogViewHolder(view);
     }

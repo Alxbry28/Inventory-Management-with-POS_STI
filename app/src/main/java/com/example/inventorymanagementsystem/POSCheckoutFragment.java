@@ -1,17 +1,27 @@
 package com.example.inventorymanagementsystem;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.inventorymanagementsystem.adapters.POSRCVAdapter;
 import com.example.inventorymanagementsystem.databinding.FragmentSecondBinding;
+import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
+import com.example.inventorymanagementsystem.models.Product;
 
-public class SecondFragment extends Fragment {
+import java.util.ArrayList;
+
+public class POSCheckoutFragment extends Fragment {
 
     private FragmentSecondBinding binding;
 
@@ -20,8 +30,9 @@ public class SecondFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
         binding = FragmentSecondBinding.inflate(inflater, container, false);
+
+
         return binding.getRoot();
 
     }
@@ -29,10 +40,12 @@ public class SecondFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+
 //        binding.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                NavHostFragment.findNavController(SecondFragment.this)
+//                NavHostFragment.findNavController(POSCheckoutFragment.this)
 //                        .navigate(R.id.action_SecondFragment_to_FirstFragment);
 //            }
 //        });

@@ -41,6 +41,8 @@ public class POSActivity extends AppCompatActivity {
                 posProductSelectionDialog.show(getSupportFragmentManager(),"dialog_choose_product");
             }
         });
+
+
     }
 
     @Override
