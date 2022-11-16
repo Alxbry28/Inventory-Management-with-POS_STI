@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView tvBusinessName;
     private SharedPreferences sharedPreferences;
     private FirebaseUser firebaseUser;
-    private Button Logout, Items,Sales,Transactions,Inventory, btnPOS;
+    private Button Logout, Items,Sales,Transactions,Inventory, btnPOS, btnStaff;
     private Button btnTest;
     private View.OnClickListener menuButtonClickListener;
     private SessionService sessionService;
@@ -93,13 +93,8 @@ public class HomeActivity extends AppCompatActivity {
         Items = (Button)findViewById(R.id.btnItems);
         Items.setOnClickListener(getMenuButtonClickListener());
 
-        btnTest = findViewById(R.id.btnTest);
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "storeId_session: " + storeId + " userId_session: " + userId , Toast.LENGTH_SHORT).show();
-            }
-        });
+        btnStaff = findViewById(R.id.btnStaff);
+        btnStaff.setOnClickListener(getMenuButtonClickListener());
 
     }
 
@@ -124,6 +119,10 @@ public class HomeActivity extends AppCompatActivity {
 
                     case R.id.btnPOS:
                         startActivity(new Intent(HomeActivity.this,POSItemActivity.class));
+                        break;
+
+                    case R.id.btnStaff:
+                        startActivity(new Intent(HomeActivity.this,StaffListActivity.class));
                         break;
 
                     default:

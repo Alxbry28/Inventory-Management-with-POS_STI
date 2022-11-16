@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ItemsForm">
+    tools:context=".StaffListActivity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -27,34 +26,35 @@
                 android:textSize="24sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Products" />
+                android:text="Staff" />
 
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:visibility="invisible"
             android:padding="8dp"
-            android:id="@+id/rcProducts"
+            android:id="@+id/rcStaffList"
             android:layout_marginBottom="70dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
 
 
-
-    <LinearLayout android:layout_alignParentBottom="true"
+    <LinearLayout
+        android:id="@+id/lnrFooterButtons"
+        android:layout_alignParentBottom="true"
         android:padding="10dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/btnAddProduct"
+            android:id="@+id/btnAddStaff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add Product" />
+            android:text="Add Staff" />
 
         <Button
             android:id="@+id/btnback"
@@ -64,12 +64,12 @@
 
     </LinearLayout>
 
-    <TextView android:id="@+id/tvEmptyProductMsg"
-        android:layout_centerInParent="true"
-        android:textAlignment="center"
-        android:text="Products is Empty\n\n Click + Add Product"
+    <TextView
+        android:id="@+id/tvEmptyStaffMsg"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Staff is Empty\n\n Click + Add Staff"
+        android:textAlignment="center" />
 
 </RelativeLayout>
