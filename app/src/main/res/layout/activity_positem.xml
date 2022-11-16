@@ -31,7 +31,6 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-
         android:id="@+id/rcPOSProductItem"
         android:padding="10dp"
         android:layout_marginBottom="50dp"

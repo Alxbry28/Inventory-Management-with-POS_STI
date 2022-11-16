@@ -1,7 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tvFirstname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Firstname: "
+            android:textSize="15sp"
+            android:layout_below="@id/tv1"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
+
+        <EditText
+            android:id="@+id/etFirstname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvname"
+            android:hint="Enter First Name"
+            android:background="@drawable/form_background"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvProductCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lastname: "
+            android:textSize="15sp"
+            android:layout_below="@id/tv1"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
+
+        <EditText
+            android:id="@+id/etProductCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvname"
+            android:hint="Enter Product Category"
+            android:background="@drawable/form_background"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvStocks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stocks"
+            android:textSize="15sp"
+            android:layout_below="@id/itemname"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
+
+        <EditText
+            android:id="@+id/etStocks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Quantity"
+            android:background="@drawable/form_background"
+            android:layout_marginTop="5dp"
+            android:inputType="number"
+            android:padding="5dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:textSize="15sp"
+            android:layout_below="@id/quantity"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
+
+        <EditText
+            android:id="@+id/etPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Product Price"
+            android:background="@drawable/form_background"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:inputType="number"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
 </LinearLayout>

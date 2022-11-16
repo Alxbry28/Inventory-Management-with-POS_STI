@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -41,8 +42,9 @@ public class StaffListActivity extends AppCompatActivity {
 
         rcStaffList = findViewById(R.id.rcStaffList);
         tvEmptyStaffMsg = findViewById(R.id.tvEmptyStaffMsg);
+
         btnAddStaff = findViewById(R.id.btnAddStaff);
-        btnBack = findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBackToHome_staff);
 
         staff.setStoreId(storeId);
         staff.GetAll(new StaffModelListener() {
@@ -60,6 +62,8 @@ public class StaffListActivity extends AppCompatActivity {
                     StaffRCVAdapter staffRCVAdapter = new StaffRCVAdapter();
                     staffRCVAdapter.setContext(StaffListActivity.this);
                     staffRCVAdapter.setStaffArrayList(staffList);
+                    staffRCVAdapter.setCurrentUserId(userId);
+
                     rcStaffList.setAdapter(staffRCVAdapter);
                     RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(StaffListActivity.this);
                     rcStaffList.setLayoutManager(rcvLayoutManager);
@@ -70,7 +74,17 @@ public class StaffListActivity extends AppCompatActivity {
         });
 
 
-
-
+        btnAddStaff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(StaffListActivity.this, AddEditStaffActivity.class));
+            }
+        });
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }

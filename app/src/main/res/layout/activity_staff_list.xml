@@ -57,7 +57,7 @@
             android:text="Add Staff" />
 
         <Button
-            android:id="@+id/btnback"
+            android:id="@+id/btnBackToHome_staff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Back" />
