@@ -34,7 +34,9 @@ public class AddItemForm extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item_form);
 
-
+		// edit product
+		boolean isEditProduct = false;
+		
         product = new Product();
         sharedPreferences = getSharedPreferences(MainActivity.TAG,MODE_PRIVATE);
         businessName = sharedPreferences.getString("businessName",null);
