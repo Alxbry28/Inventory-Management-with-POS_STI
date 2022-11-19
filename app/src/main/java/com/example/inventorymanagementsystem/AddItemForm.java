@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
+import com.example.inventorymanagementsystem.libraries.Validation;
 import com.example.inventorymanagementsystem.models.Product;
 
 import java.io.Serializable;
@@ -88,10 +89,16 @@ public class AddItemForm extends AppCompatActivity  {
     private void initEventButtons(){
         btnAdd.setOnClickListener(v ->{
 
+            if(!Validation.isValueDouble(etPrice.getText().toString())){
+                Toast.makeText(AddItemForm.this, "Price is not valid", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             isEditProduct = getIntent().hasExtra("isEditProduct");
 
             product.setStoreId(storeId);
             product.setUserId(userId);
+
             product.setQuantity(Integer.parseInt(etStocks.getText().toString()));
             product.setPrice(Double.parseDouble(etPrice.getText().toString()));
             product.setName(etProductName.getText().toString());
