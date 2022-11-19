@@ -113,10 +113,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Product Price"
+            android:digits="@string/valid_double"
             android:background="@drawable/form_background"
             android:layout_marginTop="5dp"
             android:padding="5dp"
-            android:inputType="number"
             android:textSize="20sp"/>
 
         <Button
