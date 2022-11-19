@@ -20,6 +20,7 @@ public class Product {
     private String id, userId, storeId;
     private String name, category;
     private double price, cost;
+    private String created_at, updated_at;
     private boolean isDeleted;
 
     public static final String TABLE = "tblProducts";
@@ -33,6 +34,12 @@ public class Product {
 
     public void Create(final TransactionStatusListener transactionStatus){
         this.setId(dbRef.push().getKey());
+        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+            transactionStatus.checkStatus(task.isSuccessful());
+        });
+    }
+
+    public void Update(final TransactionStatusListener transactionStatus){
         dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
@@ -82,7 +89,7 @@ public class Product {
     }
 
 
-
+    //Getters and Settes
     public double getCost() {
         return cost;
     }
@@ -145,5 +152,29 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

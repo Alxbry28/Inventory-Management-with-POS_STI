@@ -34,7 +34,9 @@ public class AddItemForm extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item_form);
 
-
+		// edit product
+		boolean isEditProduct = getIntent().getBooleanExtra("isEditProduct", false);
+		
         product = new Product();
         sharedPreferences = getSharedPreferences(MainActivity.TAG,MODE_PRIVATE);
         businessName = sharedPreferences.getString("businessName",null);
@@ -43,6 +45,7 @@ public class AddItemForm extends AppCompatActivity  {
 
         initComponents();
         isEditProduct = getIntent().hasExtra("isEditProduct");
+        Toast.makeText(AddItemForm.this, "isEditProduct " + isEditProduct, Toast.LENGTH_SHORT).show();
         if(isEditProduct){
             product.setId(getIntent().getStringExtra("productId"));
             product.GetById(new ProductModelListener() {
@@ -67,7 +70,6 @@ public class AddItemForm extends AppCompatActivity  {
         }
         initEventButtons();
 
-
         tvBusinessName.setText(businessName);
     }
 
@@ -86,15 +88,22 @@ public class AddItemForm extends AppCompatActivity  {
     private void initEventButtons(){
         btnAdd.setOnClickListener(v ->{
 
+            isEditProduct = getIntent().hasExtra("isEditProduct");
+
             product.setStoreId(storeId);
             product.setUserId(userId);
             product.setQuantity(Integer.parseInt(etStocks.getText().toString()));
             product.setPrice(Double.parseDouble(etPrice.getText().toString()));
             product.setName(etProductName.getText().toString());
             product.setCategory(etProductCategory.getText().toString());
-            
+
             if(isEditProduct){
-                Toast.makeText(AddItemForm.this, "Saved Button Clicked", Toast.LENGTH_SHORT).show();
+                product.Update(status -> {
+                    if (status){
+                        Toast.makeText(AddItemForm.this, "Saved Product successfully", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
             }
             else{
                 product.Create(status -> {
