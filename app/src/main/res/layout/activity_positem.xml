@@ -33,17 +33,29 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcPOSProductItem"
         android:padding="10dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="88dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     </LinearLayout>
 
-    <Button android:layout_alignParentBottom="true"
-        android:id="@+id/btnCheckout"
+    <LinearLayout android:layout_alignParentBottom="true"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="0 Items" />
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnCheckout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0 Items" />
+
+        <Button
+            android:id="@+id/btnCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Cart" />
+
+    </LinearLayout>
 
 </RelativeLayout>
