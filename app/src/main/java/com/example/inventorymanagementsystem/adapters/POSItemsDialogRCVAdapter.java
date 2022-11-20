@@ -25,7 +25,6 @@ public class POSItemsDialogRCVAdapter extends RecyclerView.Adapter<POSItemsDialo
     public POSItemsDialogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.recyclerview_pos_product_item_dialog, parent, false);
-
         return new POSItemsDialogViewHolder(view);
     }
 
@@ -54,7 +53,6 @@ public class POSItemsDialogRCVAdapter extends RecyclerView.Adapter<POSItemsDialo
             tvProductPrice= itemView.findViewById(R.id.tvProductPrice);
             tvProductQuantity = itemView.findViewById(R.id.tvProductQuantity);
             btnAddProduct = itemView.findViewById(R.id.btnAddProduct);
-
         }
     }
 

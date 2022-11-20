@@ -13,6 +13,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Product {
 
@@ -88,6 +89,14 @@ public class Product {
         });
     }
 
+    public static int findIndexById(ArrayList<Product> productList, String productId){
+        for(int i = 0; i < productList.size(); i++) {
+            if (productList.get(i).getId() == productId) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     //Getters and Settes
     public double getCost() {
