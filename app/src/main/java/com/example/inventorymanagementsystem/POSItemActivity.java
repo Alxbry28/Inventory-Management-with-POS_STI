@@ -12,14 +12,15 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.inventorymanagementsystem.adapters.POSRCVAdapter;
-import com.example.inventorymanagementsystem.databinding.FragmentSecondBinding;
 import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
 import com.example.inventorymanagementsystem.libraries.CartLibrary;
 import com.example.inventorymanagementsystem.models.Product;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class POSItemActivity extends AppCompatActivity {
 
@@ -30,9 +31,9 @@ public class POSItemActivity extends AppCompatActivity {
     private Product product;
     private ArrayList<Product> productList;
     private ArrayList<Product> productSelectedList;
-
     private Button btnCheckout,btnCart;
     private CartLibrary cartLibrary;
+    private double totalPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,6 @@ public class POSItemActivity extends AppCompatActivity {
                         RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(POSItemActivity.this);
                         rcPOSProductItem.setLayoutManager(rcvLayoutManager);
                         rcPOSProductItem.setItemAnimator(new DefaultItemAnimator());
-
                     }
                 }
             }
@@ -84,9 +84,20 @@ public class POSItemActivity extends AppCompatActivity {
             @Override
             public void getSelectedItem(Product product) {
                 productSelectedList.add(product);
-                cartLibrary.setProductArrayList(productSelectedList);
+                totalPrice = productSelectedList.stream().filter(product1 -> product1.getPrice() > 0).mapToDouble(Product::getPrice).sum();
 
-                btnCheckout.setText(productSelectedList.size() + " Items");
+//                ArrayList<Product> cartProducts = cartLibrary.getProductArrayList();
+                Map<String, List<Product>> groupProductByID = productSelectedList.stream().collect(Collectors.groupingBy(Product::getId));
+
+                groupProductByID.forEach((id, products) ->{
+//                 int index = Product.findIndexById(cartProducts, id);
+//                    products.forEach(product1 -> {
+////                        Toast.makeText(POSItemActivity.this, id + " " + product1.getName(), Toast.LENGTH_SHORT).show();
+//                    });
+                });
+
+//                cartLibrary.setProductArrayList(cartProducts);
+                btnCheckout.setText(productSelectedList.size() + " Items = P" + totalPrice);
             }
         });
 

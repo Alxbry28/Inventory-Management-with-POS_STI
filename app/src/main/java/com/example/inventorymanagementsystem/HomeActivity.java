@@ -33,6 +33,7 @@ import java.util.Locale;
 public class HomeActivity extends AppCompatActivity {
 
     private String userId, storeId, staffId, businessName;
+    private int userType;
     private Boolean isSignIn;
     private TextView tvBusinessName;
     private SharedPreferences sharedPreferences;
@@ -52,6 +53,7 @@ public class HomeActivity extends AppCompatActivity {
 
         userId = sharedPreferences.getString("userId","");
         storeId = sharedPreferences.getString("storeId","");
+        userType = sharedPreferences.getInt("userType",-1);
         isSignIn = sharedPreferences.getBoolean("isSignIn",false);
         sessionService.setMySharedPref(sharedPreferences);
 

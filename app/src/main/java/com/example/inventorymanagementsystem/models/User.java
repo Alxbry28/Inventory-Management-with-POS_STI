@@ -14,7 +14,6 @@ import com.google.firebase.database.ValueEventListener;
 public class User {
 
     public static final String TABLE = "tblUsers";
-
     private String id;
     private String key;
     private String storeId;
@@ -30,16 +29,23 @@ public class User {
     }
 
     public void Create(final TransactionStatusListener transactionStatus){
-//        this.setPassword(null);
         dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
                 transactionStatus.checkStatus(task.isSuccessful());
         });
     }
+
+    public void Update(final TransactionStatusListener transactionStatus){
+        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+            transactionStatus.checkStatus(task.isSuccessful());
+        });
+    }
+
     public void Delete(final TransactionStatusListener transactionStatus){
         dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
+
     public void GetById(final UserModelListener userModelListener){
         Query query = dbRef.child(this.getId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {

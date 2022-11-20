@@ -22,6 +22,21 @@ public class Staff {
     private RealtimeFirebaseDB realtimeFirebaseDB;
     private DatabaseReference dbRef;
 
+    public enum StaffPosition{
+        EMPLOYEE(2,"Employee"),
+        BUSINESSOWNER(2,"Business Owner"),
+        ADMIN(1, "Administrator"),
+        SUPERADMIN(4,"Super Administrator");
+
+        int userType;
+        String position;
+        StaffPosition(int UserType, String Position){
+            userType = UserType;
+            position = Position;
+        }
+
+    }
+
     public Staff(){
         realtimeFirebaseDB = new RealtimeFirebaseDB();
         dbRef = realtimeFirebaseDB.StaffTable();
@@ -52,7 +67,6 @@ public class Staff {
                     }
                     staffModelListener.retrieveStaff(staffExist);
                 }
-
             }
 
             @Override
