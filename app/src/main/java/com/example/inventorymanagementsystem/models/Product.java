@@ -21,6 +21,7 @@ public class Product {
     private String id, userId, storeId;
     private String name, category;
     private double price, cost;
+//    private double totalPrice;
     private String created_at, updated_at;
     private boolean isDeleted;
 
@@ -50,6 +51,10 @@ public class Product {
         dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
+    }
+
+    public double GetComputedTotalPrice(){
+        return quantity * price;
     }
 
     public void GetById(final ProductModelListener productModelListener){

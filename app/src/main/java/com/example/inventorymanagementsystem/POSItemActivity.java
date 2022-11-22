@@ -34,7 +34,7 @@ public class POSItemActivity extends AppCompatActivity {
     private Button btnCheckout,btnCart;
     private CartLibrary cartLibrary;
     private double totalPrice;
-
+    private ArrayList<Product> cartProducts ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +42,7 @@ public class POSItemActivity extends AppCompatActivity {
         productSelectedList = new ArrayList<>();
         product = new Product();
         cartLibrary = new CartLibrary();
-
+        cartProducts = new ArrayList<>();
         sharedPreferences = getSharedPreferences(MainActivity.TAG, Context.MODE_PRIVATE);
 
         businessName = sharedPreferences.getString("businessName",null);
@@ -84,19 +84,75 @@ public class POSItemActivity extends AppCompatActivity {
             @Override
             public void getSelectedItem(Product product) {
                 productSelectedList.add(product);
-                totalPrice = productSelectedList.stream().filter(product1 -> product1.getPrice() > 0).mapToDouble(Product::getPrice).sum();
+                int tempQty = product.getQuantity();
+//                Toast.makeText(POSItemActivity.this, "tempQty " + tempQty , Toast.LENGTH_SHORT).show();
+                totalPrice = cartProducts.stream().filter(product1 -> product1.getPrice() > 0).mapToDouble(Product::getPrice).sum();
 
-//                ArrayList<Product> cartProducts = cartLibrary.getProductArrayList();
+                if(cartProducts.size() == 0){
+                    Product productToCart = new Product();
+                    productToCart.setId(product.getId());
+                    productToCart.setStoreId(product.getStoreId());
+                    productToCart.setPrice(product.getPrice());
+                    productToCart.setCategory(product.getCategory());
+                    productToCart.setName(product.getName());
+                    productToCart.setQuantity(1);
+                    cartProducts.add(productToCart);
+                }
+                else{
+                    int index = Product.findIndexById(cartProducts, product.getId());
+                    if(index < 0){
+                        Product productToCart = new Product();
+                        productToCart.setId(product.getId());
+                        productToCart.setStoreId(product.getStoreId());
+                        productToCart.setPrice(product.getPrice());
+                        productToCart.setCategory(product.getCategory());
+                        productToCart.setName(product.getName());
+                        productToCart.setQuantity(1);
+                        cartProducts.add(productToCart);
+                    }
+                    else{
+                        Product editProduct =  cartProducts.get(index);
+                        if(tempQty == editProduct.getQuantity()){
+                            Toast.makeText(POSItemActivity.this, "The quantity of this is equal to inventory quantity", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            editProduct.setQuantity(editProduct.getQuantity() + 1);
+                            cartProducts.set(index,editProduct);
+                        }
+                    }
+
+//                    //check qty products
+//                    for (int i = 0; i < cartProducts.size(); i++) {
+//                        Product productInCart = cartProducts.get(i);
+//                        Toast.makeText(POSItemActivity.this, productInCart.getName() + "; qty: " + productInCart.getQuantity() + " ; total_price " + productInCart.GetComputedTotalPrice(), Toast.LENGTH_LONG).show();
+//                    }
+
+//                    Toast.makeText(POSItemActivity.this, "cartProducts.size(): " + cartProducts.size(), Toast.LENGTH_SHORT).show();
+                }
+
+                
+
+//               if(cartLibrary.getProductArrayList() == null || cartLibrary.getProductArrayList().isEmpty()){
+//                    cartLibrary.setProductArrayList(productSelectedList);
+//               }
+//               else{
+//                   cartProducts = cartLibrary.getProductArrayList();
+////                   cartProducts.add()
+//               }
+//                cartLibrary.setProductArrayList(cartProducts);
+
+
                 Map<String, List<Product>> groupProductByID = productSelectedList.stream().collect(Collectors.groupingBy(Product::getId));
 
-                groupProductByID.forEach((id, products) ->{
-//                 int index = Product.findIndexById(cartProducts, id);
+//                groupProductByID.forEach((id, products) ->{
 //                    products.forEach(product1 -> {
-////                        Toast.makeText(POSItemActivity.this, id + " " + product1.getName(), Toast.LENGTH_SHORT).show();
+//
+//
+//                        Toast.makeText(POSItemActivity.this, id + " " + product1.getName(), Toast.LENGTH_SHORT).show();
 //                    });
-                });
+//
+//                });
 
-//                cartLibrary.setProductArrayList(cartProducts);
                 btnCheckout.setText(productSelectedList.size() + " Items = P" + totalPrice);
             }
         });
