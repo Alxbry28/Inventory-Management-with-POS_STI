@@ -7,7 +7,6 @@ import com.example.inventorymanagementsystem.models.Product;
 import java.util.ArrayList;
 
 public class CartLibrary {
-
     private SQLiteDB sqLiteDB;
     private ArrayList<Product> productArrayList;
     private ArrayList<CartItem> cartItemArrayList;
@@ -19,6 +18,8 @@ public class CartLibrary {
             Product product = productArrayList.get(i);
             CartItem cartItem = new CartItem();
             cartItem.setProductId(product.getId());
+            cartItem.setName(product.getName());
+            cartItem.setCategory(product.getCategory());
             cartItem.setQuantity(product.getQuantity());
             cartItem.setPrice(product.getPrice());
             cartItem.setTotalPrice(product.GetComputedTotalPrice());
@@ -37,15 +38,29 @@ public class CartLibrary {
         return (createdCount > 0) ? true : false;
     }
 
+    public boolean clear(){
+        CartItem cartItem = new CartItem();
+        cartItem.setSqLiteDB(sqLiteDB);
+        return cartItem.ClearAll();
+    }
+
+    public ArrayList<CartItem> retrieveCartItems(){
+        CartItem cartItem = new CartItem();
+        cartItem.setSqLiteDB(sqLiteDB);
+        return cartItem.GetAll();
+    }
+
     public ArrayList<Product> getConvertedProductItemArray(){
         ArrayList<Product> productArrayList = new ArrayList<>();
         for (int i = 0; i < cartItemArrayList.size(); i++) {
             CartItem cartItem = cartItemArrayList.get(i);
             Product product = new Product();
             product.setStoreId(storeId);
-            product.setId(product.getId());
-            product.setQuantity(product.getQuantity());
-            product.setPrice(product.getPrice());
+            product.setId(cartItem.getProductId());
+            product.setName(cartItem.getName());
+            product.setCategory(cartItem.getCategory());
+            product.setQuantity(cartItem.getQuantity());
+            product.setPrice(cartItem.getPrice());
             productArrayList.add(product);
         }
         return productArrayList;

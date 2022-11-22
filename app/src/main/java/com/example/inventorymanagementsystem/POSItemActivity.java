@@ -37,7 +37,8 @@ public class POSItemActivity extends AppCompatActivity {
     private CartLibrary cartLibrary;
     private double totalPrice = 0;
     private int totalQty = 0;
-    private ArrayList<Product> cartProducts ;
+    private ArrayList<Product> cartProducts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +88,6 @@ public class POSItemActivity extends AppCompatActivity {
         posRCVAdapter.setPosSelectedItemListener(new POSRCVAdapter.POSSelectedItemListener() {
             @Override
             public void getSelectedItem(Product product) {
-//                productSelectedList.add(product);
                 int tempQty = product.getQuantity();
 
                 if(cartProducts.size() < 0){
@@ -145,15 +145,20 @@ public class POSItemActivity extends AppCompatActivity {
         });
 
         btnCheckout.setOnClickListener( v->{
+            cartLibrary.clear();
             cartLibrary.setProductArrayList(cartProducts);
             ArrayList<CartItem> cartItems = cartLibrary.getConvertedCartItemArray();
             cartLibrary.setCartItemArrayList(cartItems);
-//            cartLibrary.saveCartItems();
-            Toast.makeText(POSItemActivity.this, "cartLibrary.saveCartItems()" + cartLibrary.saveCartItems(), Toast.LENGTH_SHORT).show();
-
+            cartLibrary.saveCartItems();
         });
 
         btnCart.setOnClickListener(v->{
+            cartLibrary.clear();
+            cartLibrary.setProductArrayList(cartProducts);
+            ArrayList<CartItem> cartItems = cartLibrary.getConvertedCartItemArray();
+            cartLibrary.setCartItemArrayList(cartItems);
+            cartLibrary.saveCartItems();
+
             startActivity(new Intent(POSItemActivity.this, CartActivity.class));
 //            finish();
         });

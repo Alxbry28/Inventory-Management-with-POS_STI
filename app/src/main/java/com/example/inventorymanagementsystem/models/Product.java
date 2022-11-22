@@ -153,6 +153,8 @@ public class Product {
     }
 
     public double getPrice() {
+
+        double roundOffPrice = (double) Math.round(price * 100) / 100;
         return price;
     }
 
