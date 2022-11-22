@@ -10,6 +10,11 @@
         <item>piece</item>
         <item>grams</item>
     </string-array>
+
+    <string-array name="array_position_admin">
+        <item>Administrator</item>
+        <item>Staff</item>
+    </string-array>
     <string name="title_activity_pos">POS</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">Point Of Sale</string>

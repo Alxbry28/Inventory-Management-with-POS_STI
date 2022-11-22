@@ -23,7 +23,7 @@ public class Staff {
     private DatabaseReference dbRef;
 
     public enum StaffPosition{
-        EMPLOYEE(2,"Employee"),
+        EMPLOYEE(3,"Employee"),
         BUSINESSOWNER(2,"Business Owner"),
         ADMIN(1, "Administrator"),
         SUPERADMIN(4,"Super Administrator");
@@ -77,7 +77,7 @@ public class Staff {
     }
 
     public void GetById(final StaffModelListener staffModelListener){
-        Query query = dbRef.child(this.getUserId());
+        Query query = dbRef.child(this.getId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -93,7 +93,11 @@ public class Staff {
             }
         });
     }
-
+    public void Update(final TransactionStatusListener transactionStatus){
+        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+            transactionStatus.checkStatus(task.isSuccessful());
+        });
+    }
     public void GetAll(final StaffModelListener staffModelListener){
         Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId());
         query.addValueEventListener(new ValueEventListener() {
