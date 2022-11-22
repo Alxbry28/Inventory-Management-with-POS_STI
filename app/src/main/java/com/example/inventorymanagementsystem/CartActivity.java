@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.inventorymanagementsystem.adapters.CartItemRCVAdapter;
@@ -15,17 +16,25 @@ import com.example.inventorymanagementsystem.models.CartItem;
 import com.example.inventorymanagementsystem.models.Product;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CartActivity extends AppCompatActivity {
 
+    private Button btnCheckout;
     private ArrayList<CartItem> cartItemsArrayList;
     private CartLibrary cartLibrary;
     private RecyclerView rcCartItems;
+    private double totalPrice = 0;
+    private int totalQty = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        btnCheckout = findViewById(R.id.btnCheckout);
 
         rcCartItems = findViewById(R.id.rcCartItems);
 
@@ -43,6 +52,12 @@ public class CartActivity extends AppCompatActivity {
         rcCartItems.setLayoutManager(rcvLayoutManager);
         rcCartItems.setItemAnimator(new DefaultItemAnimator());
 
-        Toast.makeText(this, "cartItemsArrayList " + cartItemsArrayList.size(), Toast.LENGTH_SHORT).show();
+        totalPrice = cartItemsArrayList.stream().filter(product1 -> product1.GetComputedTotalPrice() > 0).mapToDouble(CartItem::GetComputedTotalPrice).sum();
+
+        totalQty = cartItemsArrayList.stream().filter(product1 -> product1.getQuantity() > 0).mapToInt(CartItem::getQuantity).sum();
+
+        double roundOffPrice = (double) Math.round(totalPrice * 100) / 100;
+
+        btnCheckout.setText(totalQty+ " Items = P"+roundOffPrice+";  Payment");
     }
 }
