@@ -3,6 +3,8 @@ package com.example.inventorymanagementsystem.models;
 public class Transaction {
 
     private int id, product_id, quantity;
+    private String customerName;
+    private String typeOfPayment;
     private double total_price;
     private String status, createdAt;
 

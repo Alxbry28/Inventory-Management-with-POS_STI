@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
-import com.example.inventorymanagementsystem.models.Cart;
+import com.example.inventorymanagementsystem.models.CartItem;
 
 public class SQLiteDB extends SQLiteOpenHelper {
 
@@ -21,12 +21,12 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(Cart.initTable());
+        db.execSQL(CartItem.initTable());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(Cart.dropTable());
+        db.execSQL(CartItem.dropTable());
         onCreate(db);
     }
 

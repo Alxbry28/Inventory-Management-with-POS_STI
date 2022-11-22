@@ -13,8 +13,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.inventorymanagementsystem.adapters.POSRCVAdapter;
+import com.example.inventorymanagementsystem.database.SQLiteDB;
 import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
 import com.example.inventorymanagementsystem.libraries.CartLibrary;
+import com.example.inventorymanagementsystem.models.CartItem;
 import com.example.inventorymanagementsystem.models.Product;
 
 import java.util.ArrayList;
@@ -33,16 +35,19 @@ public class POSItemActivity extends AppCompatActivity {
     private ArrayList<Product> productSelectedList;
     private Button btnCheckout,btnCart;
     private CartLibrary cartLibrary;
-    private double totalPrice;
+    private double totalPrice = 0;
+    private int totalQty = 0;
+    private ArrayList<Product> cartProducts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_positem);
-        productSelectedList = new ArrayList<>();
+
         product = new Product();
         cartLibrary = new CartLibrary();
-
+        cartLibrary.setSqLiteDB(new SQLiteDB(POSItemActivity.this));
+        cartProducts = new ArrayList<>();
         sharedPreferences = getSharedPreferences(MainActivity.TAG, Context.MODE_PRIVATE);
 
         businessName = sharedPreferences.getString("businessName",null);
@@ -83,25 +88,77 @@ public class POSItemActivity extends AppCompatActivity {
         posRCVAdapter.setPosSelectedItemListener(new POSRCVAdapter.POSSelectedItemListener() {
             @Override
             public void getSelectedItem(Product product) {
-                productSelectedList.add(product);
-                totalPrice = productSelectedList.stream().filter(product1 -> product1.getPrice() > 0).mapToDouble(Product::getPrice).sum();
+                int tempQty = product.getQuantity();
 
-//                ArrayList<Product> cartProducts = cartLibrary.getProductArrayList();
-                Map<String, List<Product>> groupProductByID = productSelectedList.stream().collect(Collectors.groupingBy(Product::getId));
+                if(cartProducts.size() < 0){
+                    Product productToCart = new Product();
+                    productToCart.setId(product.getId());
+                    productToCart.setStoreId(product.getStoreId());
+                    productToCart.setPrice(product.getPrice());
+                    productToCart.setCategory(product.getCategory());
+                    productToCart.setName(product.getName());
+                    productToCart.setQuantity(1);
+                    cartProducts.add(productToCart);
 
-                groupProductByID.forEach((id, products) ->{
-//                 int index = Product.findIndexById(cartProducts, id);
-//                    products.forEach(product1 -> {
-////                        Toast.makeText(POSItemActivity.this, id + " " + product1.getName(), Toast.LENGTH_SHORT).show();
-//                    });
-                });
+                    totalPrice = cartProducts.stream().filter(product1 -> product1.GetComputedTotalPrice() > 0).mapToDouble(Product::GetComputedTotalPrice).sum();
 
-//                cartLibrary.setProductArrayList(cartProducts);
-                btnCheckout.setText(productSelectedList.size() + " Items = P" + totalPrice);
+                    double roundOffPrice = (double) Math.round(totalPrice * 100) / 100;
+
+                    totalQty = cartProducts.stream().filter(product1 -> product1.getQuantity() > 0).mapToInt(Product::getQuantity).sum();
+
+                    btnCheckout.setText(totalQty + " Items = P" + roundOffPrice);
+                }
+                else{
+                    int index = Product.findIndexById(cartProducts, product.getId());
+                    if(index < 0){
+                        Product productToCart = new Product();
+                        productToCart.setId(product.getId());
+                        productToCart.setStoreId(product.getStoreId());
+                        productToCart.setPrice(product.getPrice());
+                        productToCart.setCategory(product.getCategory());
+                        productToCart.setName(product.getName());
+                        productToCart.setQuantity(1);
+                        cartProducts.add(productToCart);
+                    }
+                    else{
+                        Product editProduct =  cartProducts.get(index);
+                        if(tempQty == editProduct.getQuantity()){
+                            Toast.makeText(POSItemActivity.this, "The quantity of this is equal to inventory quantity", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else{
+                            editProduct.setQuantity(editProduct.getQuantity() + 1);
+                            cartProducts.set(index,editProduct);
+                        }
+                    }
+
+                    totalPrice = cartProducts.stream().filter(product1 -> product1.GetComputedTotalPrice() > 0).mapToDouble(Product::GetComputedTotalPrice).sum();
+
+                    double roundOffPrice = (double) Math.round(totalPrice * 100) / 100;
+
+                    totalQty = cartProducts.stream().filter(product1 -> product1.getQuantity() > 0).mapToInt(Product::getQuantity).sum();
+
+                    btnCheckout.setText(totalQty + " Items = P" + roundOffPrice);
+                }
+
             }
         });
 
+        btnCheckout.setOnClickListener( v->{
+            cartLibrary.clear();
+            cartLibrary.setProductArrayList(cartProducts);
+            ArrayList<CartItem> cartItems = cartLibrary.getConvertedCartItemArray();
+            cartLibrary.setCartItemArrayList(cartItems);
+            cartLibrary.saveCartItems();
+        });
+
         btnCart.setOnClickListener(v->{
+            cartLibrary.clear();
+            cartLibrary.setProductArrayList(cartProducts);
+            ArrayList<CartItem> cartItems = cartLibrary.getConvertedCartItemArray();
+            cartLibrary.setCartItemArrayList(cartItems);
+            cartLibrary.saveCartItems();
+
             startActivity(new Intent(POSItemActivity.this, CartActivity.class));
 //            finish();
         });
