@@ -85,6 +85,8 @@
             android:layout_centerHorizontal="true"/>
 
         <EditText
+            android:editable="false"
+            android:drawableEnd="@drawable/ic_baseline_arrow_drop_down_24"
             android:id="@+id/etRole"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,12 +97,6 @@
             android:padding="5dp"
             android:textSize="20sp" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        </LinearLayout>
         <TextView
             android:id="@+id/tvEmail"
             android:layout_width="wrap_content"
@@ -121,6 +117,12 @@
             android:padding="5dp"
             android:inputType="textEmailAddress"
             android:textSize="20sp"/>
+
+        <LinearLayout
+            android:id="@+id/lnrPasswords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvPassword"
@@ -164,7 +166,7 @@
             android:padding="5dp"
             android:inputType="textPassword"
             android:textSize="20sp"/>
-
+        </LinearLayout>
         <Button
             android:id="@+id/btnAddEditStaff"
             android:layout_width="match_parent"
