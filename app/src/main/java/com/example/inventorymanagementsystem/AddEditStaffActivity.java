@@ -147,7 +147,6 @@ public class AddEditStaffActivity extends AppCompatActivity {
                 staff.setFirstname(etFirstname.getText().toString());
                 staff.setLastname(etLastname.getText().toString());
                 staff.setPosition(etRole.getText().toString());
-
                 user.setEmail(etEmail.getText().toString());
                 user.setPassword(etPassword.getText().toString());
                 isEdit = getIntent().getBooleanExtra("isEditStaff", false);
