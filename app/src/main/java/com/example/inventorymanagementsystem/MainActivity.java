@@ -194,10 +194,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 2:
                 startActivity(new Intent(MainActivity.this, HomeActivity.class));
-
                 break;
             case 3:
                 Toast.makeText(MainActivity.this, "Employee", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, HomeActivity.class));
                 break;
         }
     }

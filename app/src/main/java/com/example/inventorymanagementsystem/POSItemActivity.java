@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.inventorymanagementsystem.adapters.POSRCVAdapter;
 import com.example.inventorymanagementsystem.database.SQLiteDB;
+import com.example.inventorymanagementsystem.interfaces.POSSelectedItemListener;
 import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
 import com.example.inventorymanagementsystem.libraries.CartLibrary;
 import com.example.inventorymanagementsystem.models.CartItem;
@@ -47,7 +48,12 @@ public class POSItemActivity extends AppCompatActivity {
         product = new Product();
         cartLibrary = new CartLibrary();
         cartLibrary.setSqLiteDB(new SQLiteDB(POSItemActivity.this));
+        ArrayList<CartItem> cartItemsArrayList = cartLibrary.retrieveCartItems();
+        cartLibrary.setCartItemArrayList(cartItemsArrayList);
         cartProducts = new ArrayList<>();
+
+
+
         sharedPreferences = getSharedPreferences(MainActivity.TAG, Context.MODE_PRIVATE);
 
         businessName = sharedPreferences.getString("businessName",null);
@@ -85,7 +91,12 @@ public class POSItemActivity extends AppCompatActivity {
             }
         });
 
-        posRCVAdapter.setPosSelectedItemListener(new POSRCVAdapter.POSSelectedItemListener() {
+        if(cartItemsArrayList.size() > 0){
+            cartProducts = cartLibrary.getConvertedProductItemArray();
+            showTotal();
+        }
+
+        posRCVAdapter.setPosSelectedItemListener(new POSSelectedItemListener() {
             @Override
             public void getSelectedItem(Product product) {
                 int tempQty = product.getQuantity();
@@ -132,27 +143,14 @@ public class POSItemActivity extends AppCompatActivity {
                         }
                     }
 
-                    totalPrice = cartProducts.stream().filter(product1 -> product1.GetComputedTotalPrice() > 0).mapToDouble(Product::GetComputedTotalPrice).sum();
-
-                    double roundOffPrice = (double) Math.round(totalPrice * 100) / 100;
-
-                    totalQty = cartProducts.stream().filter(product1 -> product1.getQuantity() > 0).mapToInt(Product::getQuantity).sum();
-
-                    btnCheckout.setText(totalQty + " Items = P" + roundOffPrice);
+                    showTotal();
                 }
 
             }
         });
 
-        btnCheckout.setOnClickListener( v->{
-            cartLibrary.clear();
-            cartLibrary.setProductArrayList(cartProducts);
-            ArrayList<CartItem> cartItems = cartLibrary.getConvertedCartItemArray();
-            cartLibrary.setCartItemArrayList(cartItems);
-            cartLibrary.saveCartItems();
-        });
 
-        btnCart.setOnClickListener(v->{
+        btnCheckout.setOnClickListener( v->{
             cartLibrary.clear();
             cartLibrary.setProductArrayList(cartProducts);
             ArrayList<CartItem> cartItems = cartLibrary.getConvertedCartItemArray();
@@ -163,5 +161,23 @@ public class POSItemActivity extends AppCompatActivity {
 //            finish();
         });
 
+        btnCart.setOnClickListener(v->{
+            cartLibrary.clear();
+            cartProducts.clear();
+            showTotal();
+            Toast.makeText(this, "Cart clear", Toast.LENGTH_SHORT).show();
+        });
+
     }
+
+    private void showTotal(){
+        totalPrice = cartProducts.stream().filter(product1 -> product1.GetComputedTotalPrice() > 0).mapToDouble(Product::GetComputedTotalPrice).sum();
+
+        double roundOffPrice = (double) Math.round(totalPrice * 100) / 100;
+
+        totalQty = cartProducts.stream().filter(product1 -> product1.getQuantity() > 0).mapToInt(Product::getQuantity).sum();
+
+        btnCheckout.setText(totalQty + " Items = P" + roundOffPrice);
+    }
+
 }

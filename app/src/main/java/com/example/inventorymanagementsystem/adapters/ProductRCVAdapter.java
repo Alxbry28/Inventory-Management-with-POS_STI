@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.inventorymanagementsystem.AddItemForm;
 import com.example.inventorymanagementsystem.R;
+import com.example.inventorymanagementsystem.libraries.MoneyLibrary;
 import com.example.inventorymanagementsystem.models.Product;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
         holder.tvProductName.setText(product.getName());
         holder.tvCategory.setText("Category: " + product.getCategory());
         holder.tvQuantity.setText("Qty: " + String.valueOf(product.getQuantity()));
-        holder.tvPrice.setText("P" + String.valueOf(product.getPrice()));
+        holder.tvPrice.setText("P" + MoneyLibrary.toTwoDecimalPlaces(product.getPrice()));
         holder.btnEditProduct.setOnClickListener(v -> {
             Intent intent = new Intent(context, AddItemForm.class);
             intent.putExtra("isEditProduct", true);

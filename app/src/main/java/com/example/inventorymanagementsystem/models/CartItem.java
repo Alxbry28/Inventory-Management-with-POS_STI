@@ -42,17 +42,28 @@ public class CartItem {
             while(c.moveToNext()){
                 CartItem cartItem = new CartItem();
                 cartItem.setId(c.getInt(c.getColumnIndex("id")));
+                cartItem.setProductId(c.getString(c.getColumnIndex("productId")));
+                cartItem.setName(c.getString(c.getColumnIndex("name")));
                 cartItem.setPrice(c.getDouble(c.getColumnIndex("price")));
-                cartItem.setTotalPrice(c.getDouble(c.getColumnIndex("totalPrice")));
                 cartItem.setQuantity(c.getInt(c.getColumnIndex("quantity")));
                 cartItem.setCategory(c.getString(c.getColumnIndex("category")));
-                cartItem.setName(c.getString(c.getColumnIndex("name")));
+                cartItem.setTotalPrice(c.getDouble(c.getColumnIndex("totalPrice")));
                 cartItem.setCreated_at(c.getString(c.getColumnIndex("created_at")));
                 cartItem.setUpdated_at(c.getString(c.getColumnIndex("updated_at")));
                 cartItemList.add(cartItem);
             }
             return cartItemList;
         }
+    }
+
+    //Ex: Delete By Id
+    public boolean DeleteById(){
+        SQLiteDatabase db = sqLiteDB.getWritableDatabase();
+        String sql = "DELETE FROM "+TABLE_NAME+" WHERE id=?";
+        SQLiteStatement statement = db.compileStatement(sql);
+        statement.clearBindings();
+        statement.bindLong(1,id);
+        return statement.executeUpdateDelete() > 0;
     }
 
     public boolean ClearAll(){

@@ -49,13 +49,15 @@
             android:id="@+id/btnCheckout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0 Items" />
+            android:text="No Items"
+            android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24_white"
+            />
 
         <Button
             android:id="@+id/btnCart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="View Cart" />
+            android:text="Clear Cart Items" />
 
     </LinearLayout>
 
