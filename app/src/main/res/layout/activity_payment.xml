@@ -83,7 +83,6 @@
                 android:layout_height="wrap_content"
                 android:hint="P0.00"
                 android:digits="@string/valid_double"
-
                 android:textAlignment="center"
                 android:background="@drawable/form_background"
                 android:layout_marginTop="5dp"
