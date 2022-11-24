@@ -71,12 +71,20 @@ public class HomeActivity extends AppCompatActivity {
             });
         }
 
+        initButtons();
+        if (userType == 3){
+            Sales.setVisibility(View.GONE);
+            btnStaff.setVisibility(View.GONE);
+        }
+
         businessName = sharedPreferences.getString("businessName",null);
         tvBusinessName.setText(businessName);
 
         TextView date = findViewById(R.id.Date);
         date.setText(time() + "   "+ date());
+    }
 
+    private void initButtons(){
         btnPOS = findViewById(R.id.btnPOS);
         btnPOS.setOnClickListener(getMenuButtonClickListener());
 
@@ -97,7 +105,6 @@ public class HomeActivity extends AppCompatActivity {
 
         btnStaff = findViewById(R.id.btnStaff);
         btnStaff.setOnClickListener(getMenuButtonClickListener());
-
     }
 
     public View.OnClickListener getMenuButtonClickListener() {

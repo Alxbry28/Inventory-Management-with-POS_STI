@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white_700"
+    tools:context=".PaymentActivity">
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout android:id="@+id/lnrHeaderCart"
+            android:gravity="center"
+            android:background="@color/bg_blue700"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp">
+
+            <TextView
+                android:textColor="@color/white"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Payment" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="20dp"
+                android:text="Amount Payable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_marginTop="4dp"
+                android:layout_gravity="center"
+                android:textSize="55dp"
+                android:text="P119.00"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Amount Received: "
+                android:textSize="15sp"
+                android:layout_below="@id/tv1"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"/>
+
+            <EditText
+                android:id="@+id/etFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="P0.00"
+                android:digits="@string/valid_double"
+
+                android:textAlignment="center"
+                android:background="@drawable/form_background"
+                android:layout_marginTop="5dp"
+                android:padding="5dp"
+                android:textSize="25sp" />
+
+            <Button android:id="@+id/btnExactAmount"
+                android:text="Exact Amount"
+                android:layout_marginTop="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <GridLayout
+            android:layout_gravity="center"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:columnCount="4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button android:id="@+id/btn5Amount"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
+                android:text="5"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <Button android:id="@+id/btn10Amount"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
+                android:text="10"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <Button android:id="@+id/btn20Amount"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
+                android:text="20"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+             <Button android:id="@+id/btn50Amount"
+                 android:layout_marginRight="4dp"
+                 android:layout_marginLeft="4dp"
+                android:text="50"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <Button android:id="@+id/btn100Amount"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
+                android:text="100"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <Button android:id="@+id/btn200Amount"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
+                android:text="200"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <Button android:id="@+id/btn500Amount"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
+                android:text="500"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <Button android:id="@+id/btn1000Amount"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
+                android:text="1000"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+        </GridLayout>
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvTotalChange"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textSize="22dp"
+            android:text="Change: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnCheckout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Proceed" />
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+</LinearLayout>
