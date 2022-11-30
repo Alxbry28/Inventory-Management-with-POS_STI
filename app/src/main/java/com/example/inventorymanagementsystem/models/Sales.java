@@ -12,7 +12,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class Sales implements IModelRepository<Sales> {
 
@@ -30,6 +33,7 @@ public class Sales implements IModelRepository<Sales> {
     public static final String TABLE = "tblSales";
     private RealtimeFirebaseDB realtimeFirebaseDB;
     private DatabaseReference dbRef;
+    private String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault()).format(new Date());
 
     public Sales(){
         this.realtimeFirebaseDB = new RealtimeFirebaseDB();
@@ -39,6 +43,8 @@ public class Sales implements IModelRepository<Sales> {
     @Override
     public void Create(TransactionStatusListener transactionStatus) {
         this.setId(dbRef.push().getKey());
+        this.setCreated_at(dateTime);
+        this.setUpdated_at(dateTime);
         dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
@@ -46,6 +52,7 @@ public class Sales implements IModelRepository<Sales> {
 
     @Override
     public void Update(TransactionStatusListener transactionStatus) {
+        this.setUpdated_at(new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault()).format(new Date()));
         dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
@@ -77,6 +84,24 @@ public class Sales implements IModelRepository<Sales> {
         });
     }
 
+    public String GeneratedInvoiceNumber(){
+        Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId()).limitToLast(1);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    Sales salesExist = snapshot.getValue(Sales.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return "";
+    }
+
     @Override
     public void GetAll(IEntityModelListener<Sales> entityModelListener) {
         Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId());
@@ -90,7 +115,6 @@ public class Sales implements IModelRepository<Sales> {
                 }
                 entityModelListener.getList(soldItemsList);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

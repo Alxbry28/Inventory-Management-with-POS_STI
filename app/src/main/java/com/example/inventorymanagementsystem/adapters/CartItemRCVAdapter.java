@@ -37,7 +37,7 @@ public class CartItemRCVAdapter extends RecyclerView.Adapter<CartItemRCVAdapter.
         ImageButton iBtnDeleteItem;
         Button btnMinusQty, btnPlusQty;
         EditText etQuantity;
-        TextView tvProductName, tvCategory, tvPrice;
+        TextView tvProductName, tvCategory, tvPrice, tvProductPrice;
         View view;
 
         public CartItemViewHolder(@NonNull View itemView) {
@@ -50,6 +50,7 @@ public class CartItemRCVAdapter extends RecyclerView.Adapter<CartItemRCVAdapter.
             tvProductName = itemView.findViewById(R.id.tvProductName);
             tvCategory = itemView.findViewById(R.id.tvCategory);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvProductPrice = itemView.findViewById(R.id.tvProductPrice);
             view = itemView;
         }
     }
@@ -69,6 +70,7 @@ public class CartItemRCVAdapter extends RecyclerView.Adapter<CartItemRCVAdapter.
         holder.tvProductName.setText(cartItem.getName());
         holder.tvCategory.setText(cartItem.getCategory());
         holder.tvPrice.setText("P" + MoneyLibrary.toTwoDecimalPlaces(cartItem.GetComputedTotalPrice()));
+        holder.tvProductPrice.setText("P" + MoneyLibrary.toTwoDecimalPlaces(cartItem.getPrice()));
         holder.etQuantity.setText(String.valueOf(cartItem.getQuantity()));
         holder.etQuantity.setFocusable(false);
 

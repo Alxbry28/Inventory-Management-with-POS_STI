@@ -2,6 +2,7 @@ package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -18,8 +19,6 @@ import com.example.inventorymanagementsystem.interfaces.TransactionStatusListene
 import com.example.inventorymanagementsystem.libraries.CartLibrary;
 import com.example.inventorymanagementsystem.libraries.MoneyLibrary;
 import com.example.inventorymanagementsystem.models.CartItem;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -42,8 +41,6 @@ public class PaymentActivity extends AppCompatActivity {
     private Button btnExactAmount, btn5Amount, btn10Amount,btn20Amount,
             btn50Amount,btn100Amount,btn200Amount, btn500Amount, btn1000Amount;
     private Button btnPayment, btnBack;
-    private String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-    private String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     private Sales sales;
 
     @Override
@@ -97,7 +94,6 @@ public class PaymentActivity extends AppCompatActivity {
         btn1000Amount  = findViewById(R.id.btn1000Amount);
         btnPayment  = findViewById(R.id.btnPayment);
         btnBack  = findViewById(R.id.btnBack);
-
     }
 
     private void initEvents(){
@@ -156,11 +152,16 @@ public class PaymentActivity extends AppCompatActivity {
         });
 
         btnPayment.setOnClickListener(v->{
+
+            if(totalChange < 0){
+                Toast.makeText(this, "Unable to proceed to payment", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             sales.setAmountPayable(totalPrice);
             sales.setAmountReceived(totalAmount);
             sales.setAmountChange(totalChange);
-            sales.setCreated_at(date + " " +time);
-            sales.setUpdated_at(date + " " +time);
+
             sales.Create(new TransactionStatusListener() {
                 @Override
                 public void checkStatus(boolean status) {
@@ -200,7 +201,11 @@ public class PaymentActivity extends AppCompatActivity {
                 }
             });
 
-            cartLibrary.clear();
+           if(cartLibrary.clear()){
+                startActivity(new Intent(PaymentActivity.this, POSItemActivity.class));
+                finish();
+           }
+
         });
 
         btnBack.setOnClickListener(v->{

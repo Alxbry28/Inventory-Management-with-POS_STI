@@ -8,7 +8,6 @@
     android:background="@color/white_700"
     tools:context=".views.staff.PaymentActivity">
 
-
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -36,7 +35,6 @@
                 android:text="Payment" />
 
         </LinearLayout>
-
 
         <LinearLayout
             android:orientation="vertical"

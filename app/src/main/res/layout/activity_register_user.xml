@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/bg_blue700"
-    tools:context=".views.staff.RegisterUser"
+    tools:context=".RegisterUser"
     android:padding="20dp">
 
     <TextView
