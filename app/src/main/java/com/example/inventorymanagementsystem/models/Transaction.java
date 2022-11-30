@@ -1,6 +1,10 @@
 package com.example.inventorymanagementsystem.models;
 
-public class Transaction {
+import com.example.inventorymanagementsystem.interfaces.IEntityModelListener;
+import com.example.inventorymanagementsystem.interfaces.IModelRepository;
+import com.example.inventorymanagementsystem.interfaces.TransactionStatusListener;
+
+public class Transaction implements IModelRepository<Transaction> {
 
     private int id, product_id, quantity;
     private String customerName;
@@ -55,4 +59,30 @@ public class Transaction {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public void Create(TransactionStatusListener transactionStatus) {
+
+    }
+
+    @Override
+    public void Update(TransactionStatusListener transactionStatus) {
+
+    }
+
+    @Override
+    public void Delete(TransactionStatusListener transactionStatus) {
+
+    }
+
+    @Override
+    public void GetById(IEntityModelListener<Transaction> entityModelListener) {
+
+    }
+
+    @Override
+    public void GetAll(IEntityModelListener<Transaction> entityModelListener) {
+
+    }
+
 }

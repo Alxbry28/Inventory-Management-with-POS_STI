@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white_700"
-    tools:context=".AddEditStaffActivity">
+    tools:context=".views.staff.AddEditStaffActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

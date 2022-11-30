@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.inventorymanagementsystem.database.SQLiteDB;
 import com.example.inventorymanagementsystem.views.*;
 import com.example.inventorymanagementsystem.dialogs.POSProductSelectionDialog;
 import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
@@ -141,6 +142,9 @@ public class HomeActivity extends AppCompatActivity {
 
                     default:
                         if(sessionService.End()){
+                            cartLibrary = new CartLibrary();
+                            cartLibrary.setSqLiteDB(new SQLiteDB(HomeActivity.this));
+                            cartLibrary.clear();
                             FirebaseAuth.getInstance().signOut();
                             startActivity(new Intent(HomeActivity.this, MainActivity.class));
                         }
