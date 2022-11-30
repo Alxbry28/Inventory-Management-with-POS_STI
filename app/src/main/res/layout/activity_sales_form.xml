@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SalesForm">
+    tools:context=".views.staff.SalesForm">
 
     <TextView
         android:layout_gravity="center"

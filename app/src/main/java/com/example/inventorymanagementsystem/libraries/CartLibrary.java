@@ -3,14 +3,18 @@ package com.example.inventorymanagementsystem.libraries;
 import com.example.inventorymanagementsystem.database.SQLiteDB;
 import com.example.inventorymanagementsystem.models.CartItem;
 import com.example.inventorymanagementsystem.models.Product;
+import com.example.inventorymanagementsystem.models.SoldItem;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CartLibrary {
     private SQLiteDB sqLiteDB;
     private ArrayList<Product> productArrayList;
     private ArrayList<CartItem> cartItemArrayList;
-    private String storeId;
+    private String storeId,userId;
 
     public ArrayList<CartItem> getConvertedCartItemArray(){
         ArrayList<CartItem> cartItemArrayList = new ArrayList<>();
@@ -44,6 +48,16 @@ public class CartLibrary {
         return cartItem.ClearAll();
     }
 
+    public int totalCartItems(){
+       return cartItemArrayList.stream().filter(product1 -> product1.getQuantity() > 0).mapToInt(CartItem::getQuantity).sum();
+    }
+
+    public double totalCartPrice(){
+        double totalPrice = cartItemArrayList.stream().filter(product1 -> product1.GetComputedTotalPrice() > 0).mapToDouble(CartItem::GetComputedTotalPrice).sum();
+        double roundOffPrice = (double) Math.round(totalPrice * 100) / 100;
+        return roundOffPrice;
+    }
+
     public ArrayList<CartItem> retrieveCartItems(){
         CartItem cartItem = new CartItem();
         cartItem.setSqLiteDB(sqLiteDB);
@@ -64,6 +78,24 @@ public class CartLibrary {
             productArrayList.add(product);
         }
         return productArrayList;
+    }
+
+    public ArrayList<SoldItem> getConvertedSoldItemArray(){
+        ArrayList<SoldItem> soldItemArrayList = new ArrayList<>();
+        for (int i = 0; i < cartItemArrayList.size(); i++) {
+            CartItem cartItem = cartItemArrayList.get(i);
+            SoldItem soldItem = new SoldItem();
+            soldItem.setStoreId(storeId);
+            soldItem.setUserId(userId);
+            soldItem.setProductId(cartItem.getProductId());
+            soldItem.setName(cartItem.getName());
+            soldItem.setCategory(cartItem.getCategory());
+            soldItem.setQuantity(cartItem.getQuantity());
+            soldItem.setProductPrice(cartItem.getPrice());
+            soldItem.setTotalPrice(cartItem.getTotalPrice());
+            soldItemArrayList.add(soldItem);
+        }
+        return soldItemArrayList;
     }
 
     public SQLiteDB getSqLiteDB() {
@@ -88,6 +120,14 @@ public class CartLibrary {
 
     public void setCartItemArrayList(ArrayList<CartItem> cartItemArrayList) {
         this.cartItemArrayList = cartItemArrayList;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getStoreId() {

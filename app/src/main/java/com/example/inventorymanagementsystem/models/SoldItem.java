@@ -14,26 +14,22 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Sales implements IModelRepository<Sales> {
+public class SoldItem implements IModelRepository<SoldItem> {
 
-    private String id, product_id, storeId, userId;
     private int quantity;
-    private double total_price;
-    private String status, createdAt;
-    private String receiptNo;
-    private String customerName;
-    private double price, cost;
-    private double amountPayable, amountReceived, amountChange;
+    private String id, userId,  productId, salesId, storeId;
+    private String name, category;
+    private double productPrice, totalPrice;
     private String created_at, updated_at;
     private boolean isDeleted;
 
-    public static final String TABLE = "tblSales";
+    public static final String TABLE = "tblSoldItems";
     private RealtimeFirebaseDB realtimeFirebaseDB;
     private DatabaseReference dbRef;
 
-    public Sales(){
+    public SoldItem(){
         this.realtimeFirebaseDB = new RealtimeFirebaseDB();
-        this.dbRef = realtimeFirebaseDB.SalesTable();
+        this.dbRef = realtimeFirebaseDB.SoldItemTable();
     }
 
     @Override
@@ -59,14 +55,14 @@ public class Sales implements IModelRepository<Sales> {
     }
 
     @Override
-    public void GetById(IEntityModelListener<Sales> entityModelListener) {
+    public void GetById(IEntityModelListener<SoldItem> entityModelListener) {
         Query query = dbRef.child(this.getId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    Sales salesExist = snapshot.getValue(Sales.class);
-                    entityModelListener.retrieve(salesExist);
+                    SoldItem soldItemExist = snapshot.getValue(SoldItem.class);
+                    entityModelListener.retrieve(soldItemExist);
                 }
             }
 
@@ -78,14 +74,14 @@ public class Sales implements IModelRepository<Sales> {
     }
 
     @Override
-    public void GetAll(IEntityModelListener<Sales> entityModelListener) {
+    public void GetAll(IEntityModelListener<SoldItem> entityModelListener) {
         Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId());
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<Sales> soldItemsList = new ArrayList<>();
+                ArrayList<SoldItem> soldItemsList = new ArrayList<>();
                 for (DataSnapshot soldItemSnapshot : snapshot.getChildren()) {
-                    Sales soldItemExist = soldItemSnapshot.getValue(Sales.class);
+                    SoldItem soldItemExist = soldItemSnapshot.getValue(SoldItem.class);
                     soldItemsList.add(soldItemExist);
                 }
                 entityModelListener.getList(soldItemsList);
@@ -98,20 +94,12 @@ public class Sales implements IModelRepository<Sales> {
         });
     }
 
-    public String getId() {
-        return id;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getProduct_id() {
-        return product_id;
-    }
-
-    public void setProduct_id(String product_id) {
-        this.product_id = product_id;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public int getQuantity() {
@@ -122,84 +110,68 @@ public class Sales implements IModelRepository<Sales> {
         this.quantity = quantity;
     }
 
-    public double getTotal_price() {
-        return total_price;
+    public String getId() {
+        return id;
     }
 
-    public void setTotal_price(double total_price) {
-        this.total_price = total_price;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getStatus() {
-        return status;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getSalesId() {
+        return salesId;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setSalesId(String salesId) {
+        this.salesId = salesId;
     }
 
-    public String getReceiptNo() {
-        return receiptNo;
+    public String getStoreId() {
+        return storeId;
     }
 
-    public void setReceiptNo(String receiptNo) {
-        this.receiptNo = receiptNo;
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getName() {
+        return name;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public double getPrice() {
-        return price;
+    public String getCategory() {
+        return category;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public double getCost() {
-        return cost;
+    public double getProductPrice() {
+        return productPrice;
     }
 
-    public void setCost(double cost) {
-        this.cost = cost;
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
     }
 
-    public double getAmountPayable() {
-        return amountPayable;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setAmountPayable(double amountPayable) {
-        this.amountPayable = amountPayable;
-    }
-
-    public double getAmountReceived() {
-        return amountReceived;
-    }
-
-    public void setAmountReceived(double amountReceived) {
-        this.amountReceived = amountReceived;
-    }
-
-    public double getAmountChange() {
-        return amountChange;
-    }
-
-    public void setAmountChange(double amountChange) {
-        this.amountChange = amountChange;
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public String getCreated_at() {
@@ -224,21 +196,5 @@ public class Sales implements IModelRepository<Sales> {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
-    }
-
-    public String getStoreId() {
-        return storeId;
-    }
-
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 }

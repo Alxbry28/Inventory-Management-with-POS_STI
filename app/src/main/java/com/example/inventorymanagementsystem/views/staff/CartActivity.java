@@ -59,6 +59,7 @@ public class CartActivity extends AppCompatActivity {
         rcCartItems.setLayoutManager(rcvLayoutManager);
         rcCartItems.setItemAnimator(new DefaultItemAnimator());
 
+        cartLibrary.setCartItemArrayList(cartItemsArrayList);
         cartItemRCVAdapter.setOnQuantityChange(cartItemsList-> {
             cartItemsArrayList = cartItemsList;
             showTotalPrice();
@@ -76,11 +77,8 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void showTotalPrice(){
-        totalPrice = cartItemsArrayList.stream().filter(product1 -> product1.GetComputedTotalPrice() > 0).mapToDouble(CartItem::GetComputedTotalPrice).sum();
-        totalQty = cartItemsArrayList.stream().filter(product1 -> product1.getQuantity() > 0).mapToInt(CartItem::getQuantity).sum();
-        double roundOffPrice = (double) Math.round(totalPrice * 100) / 100;
-        tvTotalPrice.setText("Total: P" +roundOffPrice);
-        tvTotalItems.setText("Items: " + totalQty);
+        tvTotalPrice.setText("Total: P" +cartLibrary.totalCartPrice());
+        tvTotalItems.setText("Items: " + cartLibrary.totalCartItems());
     }
 
 }

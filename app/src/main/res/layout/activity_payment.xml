@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white_700"
-    tools:context=".PaymentActivity">
+    tools:context=".views.staff.PaymentActivity">
 
 
 <RelativeLayout
@@ -40,6 +40,11 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
             android:padding="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -50,11 +55,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <TextView
+            <TextView android:id="@+id/tvTotalPrice"
                 android:layout_marginTop="4dp"
                 android:layout_gravity="center"
                 android:textSize="55dp"
-                android:text="P119.00"
+                android:text="P0.00"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -68,7 +73,6 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tvFirstName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Amount Received: "
@@ -78,10 +82,10 @@
                 android:layout_centerHorizontal="true"/>
 
             <EditText
-                android:id="@+id/etFirstName"
+                android:id="@+id/etAmountReceived"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="P0.00"
+                android:hint="0.00"
                 android:digits="@string/valid_double"
                 android:textAlignment="center"
                 android:background="@drawable/form_background"
@@ -94,6 +98,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
         </LinearLayout>
 
         <GridLayout
@@ -164,6 +169,10 @@
 
     </LinearLayout>
 
+
+
+    </LinearLayout>
+
     <LinearLayout android:layout_alignParentBottom="true"
         android:orientation="vertical"
         android:padding="10dp"
@@ -171,15 +180,22 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/tvTotalItems"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:text="Items: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
             android:id="@+id/tvTotalChange"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textSize="22dp"
-            android:text="Change: "
+            android:text="Change: P0.00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <Button
-            android:id="@+id/btnCheckout"
+            android:id="@+id/btnPayment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Proceed" />
