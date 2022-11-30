@@ -1,4 +1,4 @@
-package com.example.inventorymanagementsystem;
+package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,10 +12,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
 import com.example.inventorymanagementsystem.libraries.Validation;
 import com.example.inventorymanagementsystem.models.Product;
-
+import com.example.inventorymanagementsystem.MainActivity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

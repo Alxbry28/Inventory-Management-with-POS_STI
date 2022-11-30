@@ -15,8 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.inventorymanagementsystem.AddEditStaffActivity;
-import com.example.inventorymanagementsystem.AddItemForm;
+import com.example.inventorymanagementsystem.views.staff.*;
 import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.interfaces.TransactionStatusListener;
 import com.example.inventorymanagementsystem.models.Sales;

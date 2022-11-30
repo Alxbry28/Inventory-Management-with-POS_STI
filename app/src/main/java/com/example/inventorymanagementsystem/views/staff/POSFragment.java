@@ -1,4 +1,4 @@
-package com.example.inventorymanagementsystem;
+package com.example.inventorymanagementsystem.views.staff;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.inventorymanagementsystem.databinding.FragmentFirstBinding;
-
+import com.example.inventorymanagementsystem.R;
 public class POSFragment extends Fragment {
 
     private FragmentFirstBinding binding;

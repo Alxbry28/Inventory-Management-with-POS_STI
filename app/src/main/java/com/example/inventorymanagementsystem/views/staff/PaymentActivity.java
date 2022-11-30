@@ -1,4 +1,4 @@
-package com.example.inventorymanagementsystem;
+package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import com.example.inventorymanagementsystem.libraries.CartLibrary;
 import com.example.inventorymanagementsystem.models.CartItem;
 
 import java.util.ArrayList;
+import com.example.inventorymanagementsystem.R;
 
 public class PaymentActivity extends AppCompatActivity {
 
