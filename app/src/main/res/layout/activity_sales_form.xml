@@ -1,46 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".views.staff.SalesForm">
 
-    <TextView
-        android:layout_gravity="center"
-        android:textSize="30sp"
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/purple_200"
-        android:textStyle="bold"
-        android:text="Sales Form" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_centerInParent="true"
-        android:padding="5dp"
-        android:id="@+id/rcSales"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="500dp" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:layout_gravity="center"
-        android:id="@+id/btnback"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:layout_alignParentBottom="true"/>
+        <LinearLayout android:id="@+id/lnrHeader"
+            android:gravity="center"
+            android:background="@color/bg_blue700"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp">
 
-    <TextView
-        android:layout_gravity="center"
-        android:id="@+id/Date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_centerHorizontal="true"
-        android:text="Date"
-        android:textSize="20dp"
-        android:layout_alignParentBottom="true"/>
+            <TextView
+                android:textColor="@color/white"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sales" />
 
-</LinearLayout>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcSales"
+            android:padding="10dp"
+            android:layout_marginBottom="115dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvTotalItems"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:text="Items: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvTotalPrice"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:text="Total: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnCheckout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Payment" />
+
+    </LinearLayout>
+
+</RelativeLayout>

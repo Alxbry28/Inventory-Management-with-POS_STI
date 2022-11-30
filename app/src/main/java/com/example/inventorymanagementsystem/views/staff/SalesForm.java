@@ -23,8 +23,6 @@ import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.MainActivity;
 public class SalesForm extends AppCompatActivity {
 
-    Button back;
-
     private ArrayList<Sales> salesArrayList;
     private RecyclerView rcSales;
 
@@ -32,8 +30,6 @@ public class SalesForm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_form);
-        TextView date = findViewById(R.id.Date);
-        date.setText(time() + "   "+ date());
 
         rcSales = findViewById(R.id.rcSales);
 
@@ -75,21 +71,6 @@ public class SalesForm extends AppCompatActivity {
         RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(SalesForm.this);
         rcSales.setLayoutManager(rcvLayoutManager);
         rcSales.setItemAnimator(new DefaultItemAnimator());
+    }
 
-        back = (Button)findViewById(R.id.btnback);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SalesForm.this, HomeActivity.class));
-            }
-        });
-    }
-    private String time ()
-    {
-        return new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-    }
-    private String date ()
-    {
-        return new SimpleDateFormat("dd/MM/yyyy",Locale.getDefault()).format(new Date());
-    }
 }

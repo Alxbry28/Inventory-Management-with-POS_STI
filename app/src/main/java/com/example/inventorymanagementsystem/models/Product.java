@@ -12,8 +12,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Product {
 
@@ -28,6 +31,7 @@ public class Product {
     public static final String TABLE = "tblProducts";
     private RealtimeFirebaseDB realtimeFirebaseDB;
     private DatabaseReference dbRef;
+    private String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault()).format(new Date());
 
     public Product(){
         this.realtimeFirebaseDB = new RealtimeFirebaseDB();
@@ -36,12 +40,15 @@ public class Product {
 
     public void Create(final TransactionStatusListener transactionStatus){
         this.setId(dbRef.push().getKey());
+        this.setCreated_at(dateTime);
+        this.setUpdated_at(dateTime);
         dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
     public void Update(final TransactionStatusListener transactionStatus){
+        this.setUpdated_at(dateTime);
         dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
