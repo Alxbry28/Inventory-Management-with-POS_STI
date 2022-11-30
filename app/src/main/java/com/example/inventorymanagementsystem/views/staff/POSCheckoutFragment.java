@@ -1,4 +1,4 @@
-package com.example.inventorymanagementsystem;
+package com.example.inventorymanagementsystem.views.staff;
 
 import android.content.Context;
 import android.content.SharedPreferences;

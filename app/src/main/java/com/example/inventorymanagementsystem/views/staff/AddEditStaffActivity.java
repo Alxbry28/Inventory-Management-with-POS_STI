@@ -1,4 +1,4 @@
-package com.example.inventorymanagementsystem;
+package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,10 +13,12 @@ import android.widget.Toast;
 
 import com.example.inventorymanagementsystem.dialogs.PositionChoiceDialog;
 import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
+import com.example.inventorymanagementsystem.MainActivity;
 import com.example.inventorymanagementsystem.interfaces.TransactionStatusListener;
 import com.example.inventorymanagementsystem.interfaces.UserModelListener;
 import com.example.inventorymanagementsystem.models.Staff;
 import com.example.inventorymanagementsystem.models.User;
+import com.example.inventorymanagementsystem.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;

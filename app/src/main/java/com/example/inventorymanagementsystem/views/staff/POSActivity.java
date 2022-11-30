@@ -1,4 +1,4 @@
-package com.example.inventorymanagementsystem;
+package com.example.inventorymanagementsystem.views.staff;
 
 import android.os.Bundle;
 
@@ -15,7 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.inventorymanagementsystem.databinding.ActivityPosactivityBinding;
-
+import com.example.inventorymanagementsystem.R;
 public class POSActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;

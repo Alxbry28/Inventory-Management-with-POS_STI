@@ -1,4 +1,4 @@
-package com.example.inventorymanagementsystem;
+package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -18,7 +18,8 @@ import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
 import com.example.inventorymanagementsystem.models.Staff;
 
 import java.util.ArrayList;
-
+import com.example.inventorymanagementsystem.R;
+import com.example.inventorymanagementsystem.MainActivity;
 public class StaffListActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;

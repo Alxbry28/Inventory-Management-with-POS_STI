@@ -1,4 +1,4 @@
-package com.example.inventorymanagementsystem;
+package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+import com.example.inventorymanagementsystem.R;
+import com.example.inventorymanagementsystem.MainActivity;
 public class POSItemActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;

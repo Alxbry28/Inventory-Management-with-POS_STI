@@ -1,4 +1,4 @@
-package com.example.inventorymanagementsystem;
+package com.example.inventorymanagementsystem.views.staff;
 
 import  android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+import com.example.inventorymanagementsystem.R;
 public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     private Context context;

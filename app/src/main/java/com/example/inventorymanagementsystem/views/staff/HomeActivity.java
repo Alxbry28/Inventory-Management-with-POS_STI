@@ -1,4 +1,4 @@
-package com.example.inventorymanagementsystem;
+package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,9 +11,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.example.inventorymanagementsystem.views.*;
 import com.example.inventorymanagementsystem.dialogs.POSProductSelectionDialog;
 import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
 import com.example.inventorymanagementsystem.interfaces.StoreModelListener;
+import com.example.inventorymanagementsystem.libraries.CartLibrary;
 import com.example.inventorymanagementsystem.models.Staff;
 import com.example.inventorymanagementsystem.models.Store;
 import com.example.inventorymanagementsystem.models.User;
@@ -25,11 +28,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import com.example.inventorymanagementsystem.views.staff.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
+import com.example.inventorymanagementsystem.R;
+import com.example.inventorymanagementsystem.MainActivity;
 public class HomeActivity extends AppCompatActivity {
 
     private String userId, storeId, staffId, businessName;
@@ -42,6 +46,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button btnTest;
     private View.OnClickListener menuButtonClickListener;
     private SessionService sessionService;
+    private CartLibrary cartLibrary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,11 +132,11 @@ public class HomeActivity extends AppCompatActivity {
                         break;
 
                     case R.id.btnPOS:
-                        startActivity(new Intent(HomeActivity.this,POSItemActivity.class));
+                        startActivity(new Intent(HomeActivity.this, POSItemActivity.class));
                         break;
 
                     case R.id.btnStaff:
-                        startActivity(new Intent(HomeActivity.this,StaffListActivity.class));
+                        startActivity(new Intent(HomeActivity.this, StaffListActivity.class));
                         break;
 
                     default:

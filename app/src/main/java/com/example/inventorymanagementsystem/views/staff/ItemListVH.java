@@ -1,10 +1,11 @@
-package com.example.inventorymanagementsystem;
+package com.example.inventorymanagementsystem.views.staff;
 
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.inventorymanagementsystem.R;
 
 public class ItemListVH extends RecyclerView.ViewHolder
 {

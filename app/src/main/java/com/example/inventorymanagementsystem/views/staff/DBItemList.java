@@ -1,4 +1,4 @@
-package com.example.inventorymanagementsystem;
+package com.example.inventorymanagementsystem.views.staff;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;

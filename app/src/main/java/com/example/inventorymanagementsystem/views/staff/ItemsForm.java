@@ -1,4 +1,4 @@
-package com.example.inventorymanagementsystem;
+package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -21,7 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-
+import com.example.inventorymanagementsystem.R;
+import com.example.inventorymanagementsystem.MainActivity;
 public class ItemsForm extends AppCompatActivity {
 
     Button back, Categories, Items;
