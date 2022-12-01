@@ -23,6 +23,7 @@ import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.MainActivity;
 public class SalesForm extends AppCompatActivity {
 
+    private Button btnBack;
     private ArrayList<Sales> salesArrayList;
     private RecyclerView rcSales;
 
@@ -71,6 +72,11 @@ public class SalesForm extends AppCompatActivity {
         RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(SalesForm.this);
         rcSales.setLayoutManager(rcvLayoutManager);
         rcSales.setItemAnimator(new DefaultItemAnimator());
+        btnBack = findViewById(R.id.btnback);
+        btnBack.setOnClickListener(v -> {
+            startActivity(new Intent(SalesForm.this,HomeActivity.class));
+        });
+
     }
 
 }

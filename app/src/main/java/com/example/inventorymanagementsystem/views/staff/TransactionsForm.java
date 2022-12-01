@@ -25,7 +25,7 @@ import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.MainActivity;
 public class TransactionsForm extends AppCompatActivity {
 
-    Button back;
+    private Button btnBack;
 
     private ArrayList<Transaction> transactionsArrayList;
     private RecyclerView rcTransaction;
@@ -76,23 +76,10 @@ public class TransactionsForm extends AppCompatActivity {
         rcTransaction.setLayoutManager(rcvLayoutManager);
         rcTransaction.setItemAnimator(new DefaultItemAnimator());
 
-        TextView date = findViewById(R.id.Date);
-        date.setText(time() + "   "+ date());
-
-        back = (Button)findViewById(R.id.btnback);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> {
                 startActivity(new Intent(TransactionsForm.this,HomeActivity.class));
-            }
         });
     }
-    private String time ()
-    {
-        return new SimpleDateFormat("hh:mm a",Locale.getDefault()).format(new Date());
-    }
-    private String date ()
-    {
-        return new SimpleDateFormat("dd/MM/yyyy",Locale.getDefault()).format(new Date());
-    }
+
 }

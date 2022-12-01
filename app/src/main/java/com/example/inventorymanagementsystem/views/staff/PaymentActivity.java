@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.inventorymanagementsystem.MainActivity;
 import com.example.inventorymanagementsystem.database.SQLiteDB;
+import com.example.inventorymanagementsystem.interfaces.IEntityModelListener;
 import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
 import com.example.inventorymanagementsystem.interfaces.TransactionStatusListener;
 import com.example.inventorymanagementsystem.libraries.CartLibrary;
@@ -41,7 +42,7 @@ public class PaymentActivity extends AppCompatActivity {
     private Button btnExactAmount, btn5Amount, btn10Amount,btn20Amount,
             btn50Amount,btn100Amount,btn200Amount, btn500Amount, btn1000Amount;
     private Button btnPayment, btnBack;
-    private Sales sales;
+    private Sales sales, lastSale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,8 @@ public class PaymentActivity extends AppCompatActivity {
         userId = sharedPreferences.getString("userId",null);
 
         sales = new Sales();
+        lastSale = new Sales();
+
         sales.setStoreId(storeId);
         sales.setUserId(userId);
 
@@ -152,12 +155,12 @@ public class PaymentActivity extends AppCompatActivity {
         });
 
         btnPayment.setOnClickListener(v->{
-
             if(totalChange < 0){
                 Toast.makeText(this, "Unable to proceed to payment", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            sales.setReceiptNo(sales.GeneratedInvoiceNumber());
             sales.setAmountPayable(totalPrice);
             sales.setAmountReceived(totalAmount);
             sales.setAmountChange(totalChange);
