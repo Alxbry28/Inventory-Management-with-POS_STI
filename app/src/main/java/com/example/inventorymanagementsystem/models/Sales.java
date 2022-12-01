@@ -1,5 +1,7 @@
 package com.example.inventorymanagementsystem.models;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
 import com.example.inventorymanagementsystem.database.RealtimeFirebaseDB;
@@ -33,7 +35,6 @@ public class Sales implements IModelRepository<Sales> {
     public static final String TABLE = "tblSales";
     private RealtimeFirebaseDB realtimeFirebaseDB;
     private DatabaseReference dbRef;
-    private String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault()).format(new Date());
 
     public Sales(){
         this.realtimeFirebaseDB = new RealtimeFirebaseDB();
@@ -43,8 +44,8 @@ public class Sales implements IModelRepository<Sales> {
     @Override
     public void Create(TransactionStatusListener transactionStatus) {
         this.setId(dbRef.push().getKey());
-        this.setCreated_at(dateTime);
-        this.setUpdated_at(dateTime);
+        this.setCreated_at(new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault()).format(new Date()));
+        this.setUpdated_at(new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault()).format(new Date()));
         dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
@@ -85,21 +86,9 @@ public class Sales implements IModelRepository<Sales> {
     }
 
     public String GeneratedInvoiceNumber(){
-        Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId()).limitToLast(1);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    Sales salesExist = snapshot.getValue(Sales.class);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        return "";
+        String date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
+        String time = new SimpleDateFormat("sshhmmSSS", Locale.getDefault()).format(new Date());
+        return "IN"+date+"-"+time;
     }
 
     @Override

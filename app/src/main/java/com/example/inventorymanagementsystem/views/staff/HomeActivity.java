@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 
 import com.example.inventorymanagementsystem.database.SQLiteDB;
+import com.example.inventorymanagementsystem.interfaces.IEntityModelListener;
+import com.example.inventorymanagementsystem.models.Sales;
 import com.example.inventorymanagementsystem.views.*;
 import com.example.inventorymanagementsystem.dialogs.POSProductSelectionDialog;
 import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
@@ -31,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.example.inventorymanagementsystem.views.staff.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import com.example.inventorymanagementsystem.R;
@@ -56,6 +59,9 @@ public class HomeActivity extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         sessionService = new SessionService();
         sharedPreferences = getSharedPreferences(MainActivity.TAG, MODE_PRIVATE);
+
+        cartLibrary = new CartLibrary();
+        cartLibrary.setSqLiteDB(new SQLiteDB(HomeActivity.this));
 
         userId = sharedPreferences.getString("userId","");
         storeId = sharedPreferences.getString("storeId","");
@@ -88,6 +94,8 @@ public class HomeActivity extends AppCompatActivity {
 
         TextView date = findViewById(R.id.Date);
         date.setText(time() + "   "+ date());
+
+        cartLibrary.clear();
     }
 
     private void initButtons(){
@@ -142,8 +150,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     default:
                         if(sessionService.End()){
-                            cartLibrary = new CartLibrary();
-                            cartLibrary.setSqLiteDB(new SQLiteDB(HomeActivity.this));
+
                             cartLibrary.clear();
                             FirebaseAuth.getInstance().signOut();
                             startActivity(new Intent(HomeActivity.this, MainActivity.class));

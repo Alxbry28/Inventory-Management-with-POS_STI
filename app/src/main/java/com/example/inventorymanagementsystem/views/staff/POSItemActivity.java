@@ -102,6 +102,11 @@ public class POSItemActivity extends AppCompatActivity {
             public void getSelectedItem(Product product) {
                 int tempQty = product.getQuantity();
 
+                if(tempQty <= 0){
+                    Toast.makeText(POSItemActivity.this, "The quantity of this is 0", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if(cartProducts.size() < 0){
                     Product productToCart = new Product();
                     productToCart.setId(product.getId());
@@ -138,6 +143,7 @@ public class POSItemActivity extends AppCompatActivity {
                             Toast.makeText(POSItemActivity.this, "The quantity of this is equal to inventory quantity", Toast.LENGTH_SHORT).show();
                             return;
                         }
+
                         else{
                             editProduct.setQuantity(editProduct.getQuantity() + 1);
                             cartProducts.set(index,editProduct);
