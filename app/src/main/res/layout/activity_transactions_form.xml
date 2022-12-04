@@ -6,50 +6,109 @@
     android:layout_height="match_parent"
     tools:context=".views.staff.TransactionsForm">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout android:id="@+id/lnrHeader"
-            android:gravity="center"
-            android:background="@color/bg_blue700"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:textColor="@color/white"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Transaction" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/lnrHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bg_blue700"
+                    android:gravity="center"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Transaction"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnStartDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24_white"
+                        android:text="04 Dec 2022" />
+
+                    <Button
+                        android:id="@+id/btnSelectDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24_white"
+                        android:text="04 Dec 2022" />
+
+                </LinearLayout>
+
+<!--
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnEndDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                        android:text="04 Dec - 2022" />
+
+                </LinearLayout>
+-->
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcTransaction"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="115dp"
+                android:padding="10dp" />
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcTransaction"
-            android:padding="10dp"
-            android:layout_marginBottom="115dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+    </ScrollView>
 
-    <LinearLayout android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:padding="10dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/tvTotalPrice"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:text="Total: "
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Total: "
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <Button
             android:id="@+id/btnBack"

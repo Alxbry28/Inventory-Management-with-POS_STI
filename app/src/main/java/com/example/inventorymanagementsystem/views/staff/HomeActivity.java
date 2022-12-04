@@ -150,7 +150,6 @@ public class HomeActivity extends AppCompatActivity {
 
                     default:
                         if(sessionService.End()){
-
                             cartLibrary.clear();
                             FirebaseAuth.getInstance().signOut();
                             startActivity(new Intent(HomeActivity.this, MainActivity.class));

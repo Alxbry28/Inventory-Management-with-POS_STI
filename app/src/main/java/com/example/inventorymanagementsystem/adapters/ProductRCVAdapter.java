@@ -3,6 +3,7 @@ package com.example.inventorymanagementsystem.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,12 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
         Product product = productList.get(position);
         holder.tvProductName.setText(product.getName());
         holder.tvCategory.setText("Category: " + product.getCategory());
-        holder.tvQuantity.setText("Qty: " + String.valueOf(product.getQuantity()));
+
+        String qtyText = (product.getQuantity() > 0) ? "Qty: " + String.valueOf(product.getQuantity()) : "Out of Stock";
+        int qtyColor = (product.getQuantity() <= 0) ? Color.RED : Color.GRAY;
+        holder.tvQuantity.setTextColor(qtyColor);
+        holder.tvQuantity.setText(qtyText);
+
         holder.tvPrice.setText("P" + MoneyLibrary.toTwoDecimalPlaces(product.getPrice()));
         holder.btnEditProduct.setOnClickListener(v -> {
             Intent intent = new Intent(context, AddItemForm.class);
