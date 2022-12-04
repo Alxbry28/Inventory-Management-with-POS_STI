@@ -5,13 +5,20 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.inventorymanagementsystem.adapters.TransactionRCVAdapter;
+import com.example.inventorymanagementsystem.dialogs.DurationChoiceDialog;
+import com.example.inventorymanagementsystem.dialogs.MDCDatePickerDialog;
+import com.example.inventorymanagementsystem.interfaces.IDurationChoiceDialogListener;
+import com.example.inventorymanagementsystem.interfaces.IEntityModelListener;
 import com.example.inventorymanagementsystem.models.Sales;
 import com.example.inventorymanagementsystem.models.Transaction;
 
@@ -21,54 +28,122 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
+
 import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.MainActivity;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+
 public class TransactionsForm extends AppCompatActivity {
 
-    private Button btnBack;
-
+    private SharedPreferences sharedPreferences;
+    private String businessName, storeId, userId;
+    private Button btnBack, btnSelectDuration, btnStartDate, btnEndDate;
     private ArrayList<Transaction> transactionsArrayList;
     private RecyclerView rcTransaction;
+    private Sales sales;
+    private DurationChoiceDialog durationChoiceDialog;
+    private String startDate, endDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactions_form);
+        initDialog();
+        MaterialDatePicker<Long> materialDatePicker = MDCDatePickerDialog.openDatePicker();
+        MaterialDatePicker<Long> materialDatePickerEndDate = MDCDatePickerDialog.endDatePicker();
+
+        MaterialDatePicker materialDateRangePicker = MDCDatePickerDialog.openDateRangePicker();
+
+        sharedPreferences = getSharedPreferences(MainActivity.TAG, Context.MODE_PRIVATE);
+        businessName = sharedPreferences.getString("businessName",null);
+        storeId = sharedPreferences.getString("storeId",null);
+        userId = sharedPreferences.getString("userId",null);
 
         rcTransaction = findViewById(R.id.rcTransaction);
+        sales = new Sales();
+        sales.setStoreId(storeId);
+        sales.GetAll(new IEntityModelListener<Sales>() {
+            @Override
+            public void retrieve(Sales m) {
 
-        transactionsArrayList = new ArrayList<>();
-        Transaction transaction1 = new Transaction();
-        transaction1.setCreatedAt("Customer 1 - Oct 26, 2022");
-        transaction1.setTotal_price(100);
-        transaction1.setQuantity(10);
-        transaction1.setId(1);
+            }
 
-        Transaction transaction2 = new Transaction();
-        transaction2.setCreatedAt("Customer 2 - Oct 27, 2022");
-        transaction2.setTotal_price(200);
-        transaction2.setQuantity(10);
-        transaction2.setId(3);
+            @Override
+            public void getList(ArrayList<Sales> salesArrayList) {
+//                Toast.makeText(TransactionsForm.this, "size " + salesArrayList.size(), Toast.LENGTH_SHORT).show();
+                initRCTransaction(salesArrayList);
+            }
+        });
 
-        Transaction transaction3 = new Transaction();
-        transaction3.setCreatedAt("Customer 3 - Oct 28, 2022");
-        transaction3.setTotal_price(150);
-        transaction3.setQuantity(9);
-        transaction3.setId(2);
+        btnBack = findViewById(R.id.btnBack);
 
-        Transaction transaction4 = new Transaction();
-        transaction4.setCreatedAt("Customer 4 - Nov 03, 2022");
-        transaction4.setTotal_price(100);
-        transaction4.setQuantity(10);
-        transaction4.setId(4);
+        btnBack.setOnClickListener(v -> {
+                startActivity(new Intent(TransactionsForm.this,HomeActivity.class));
+        });
 
-        transactionsArrayList.add(transaction1);
-        transactionsArrayList.add(transaction2);
-        transactionsArrayList.add(transaction3);
-        transactionsArrayList.add(transaction4);
+        btnSelectDuration = findViewById(R.id.btnSelectDuration);
 
+
+        btnSelectDuration.setOnClickListener(v->{
+            Toast.makeText(TransactionsForm.this, btnSelectDuration.getText().toString(), Toast.LENGTH_SHORT).show();
+            durationChoiceDialog.show(getSupportFragmentManager(), "DURATION_CHOICE_DIALOG");
+            durationChoiceDialog.setChosenDuration(btnSelectDuration.getText().toString());
+            durationChoiceDialog.setiDurationChoiceDialogListener(new IDurationChoiceDialogListener() {
+                @Override
+                public void setChosenDuration(String chosenDuration) {
+                    btnSelectDuration.setText(chosenDuration);
+
+                }
+            });
+
+        });
+
+        btnStartDate = findViewById(R.id.btnStartDate);
+        btnStartDate.setOnClickListener(v->{
+            materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER");
+        });
+
+        materialDatePicker.addOnPositiveButtonClickListener(selection ->  {
+
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            calendar.setTimeInMillis(selection);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatShortDate = new SimpleDateFormat("dd MMM yyyy");
+            String formattedDate  = format.format(calendar.getTime());
+            String formattedShortDate  = formatShortDate.format(calendar.getTime());
+            btnStartDate.setText(formattedShortDate);
+            }
+        );
+
+        btnEndDate = findViewById(R.id.btnEndDate);
+        btnEndDate.setOnClickListener(v->{
+            materialDatePickerEndDate.show(getSupportFragmentManager(), "DATE_PICKER_END_DATE");
+        });
+
+        materialDatePickerEndDate.addOnPositiveButtonClickListener(selection ->  {
+                    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                    calendar.setTimeInMillis(selection);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat formatShortDate = new SimpleDateFormat("dd MMM yyyy");
+                    String formattedDate  = format.format(calendar.getTime());
+                    String formattedShortDate  = formatShortDate.format(calendar.getTime());
+                    btnStartDate.setText(formattedShortDate);
+                }
+        );
+
+
+    }
+
+    private void initDialog(){
+        durationChoiceDialog = new DurationChoiceDialog();
+        durationChoiceDialog.setContext(TransactionsForm.this);
+    }
+
+    private void initRCTransaction(ArrayList<Sales> salesArrayList){
         TransactionRCVAdapter transactionRCVAdapter = new TransactionRCVAdapter();
-        transactionRCVAdapter.setTransactionsList(transactionsArrayList);
+        transactionRCVAdapter.setSalesList(salesArrayList);
 
         rcTransaction.setAdapter(transactionRCVAdapter);
 
@@ -76,10 +151,6 @@ public class TransactionsForm extends AppCompatActivity {
         rcTransaction.setLayoutManager(rcvLayoutManager);
         rcTransaction.setItemAnimator(new DefaultItemAnimator());
 
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> {
-                startActivity(new Intent(TransactionsForm.this,HomeActivity.class));
-        });
     }
 
 }

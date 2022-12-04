@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
     app:cardElevation="5dp">
 
@@ -19,21 +19,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <TextView android:id="@+id/tvTransactionName"
-                android:text="TransactionName"
-                android:textSize="22dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            <TextView
+                android:id="@+id/tvTransReceiptNo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="InvoiceNumber"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="22dp" />
 
-            <TextView android:id="@+id/tvTransactionPrice"
-                android:text="TransactionPrice"
+            <TextView android:id="@+id/tvTransDate"
+                android:text="Date"
                 android:textSize="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <TextView android:id="@+id/tvTransactionQuantity"
+            <TextView android:id="@+id/tvTransQuantity"
                 android:text="TransactionQuantity"
+                android:textSize="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:id="@+id/tvAmountPayable"
+                android:text="AmountPayable"
                 android:textSize="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

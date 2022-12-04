@@ -21,15 +21,14 @@ import java.util.Locale;
 
 public class Sales implements IModelRepository<Sales> {
 
-    private String id, product_id, storeId, userId;
+    //Properties
+    private String id, storeId, userId;
     private int quantity;
-    private double total_price;
-    private String status, createdAt;
     private String receiptNo;
     private String customerName;
-    private double price, cost;
     private double amountPayable, amountReceived, amountChange;
     private String created_at, updated_at;
+    private String created_time, updated_time;
     private boolean isDeleted;
 
     public static final String TABLE = "tblSales";
@@ -43,10 +42,15 @@ public class Sales implements IModelRepository<Sales> {
 
     @Override
     public void Create(TransactionStatusListener transactionStatus) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+
         this.setId(dbRef.push().getKey());
-        this.setCreated_at(new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault()).format(new Date()));
-        this.setUpdated_at(new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault()).format(new Date()));
-        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+        this.setCreated_at(date);
+        this.setUpdated_at(date);
+        this.setCreated_time(time);
+        this.setUpdated_time(time);
+        dbRef.child(this.getStoreId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
@@ -54,13 +58,18 @@ public class Sales implements IModelRepository<Sales> {
     @Override
     public void Update(TransactionStatusListener transactionStatus) {
         this.setUpdated_at(new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault()).format(new Date()));
-        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+        dbRef.child(this.getStoreId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
     @Override
     public void Delete(TransactionStatusListener transactionStatus) {
+        dbRef.child(this.getStoreId()).child(this.getId()).removeValue().addOnCompleteListener(task -> {
+            transactionStatus.checkStatus(task.isSuccessful());
+        });
+    }
+    public void DeleteById(TransactionStatusListener transactionStatus) {
         dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
@@ -93,7 +102,26 @@ public class Sales implements IModelRepository<Sales> {
 
     @Override
     public void GetAll(IEntityModelListener<Sales> entityModelListener) {
-        Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId());
+        Query query = dbRef.child(this.getStoreId());
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Sales> soldItemsList = new ArrayList<>();
+                for (DataSnapshot soldItemSnapshot : snapshot.getChildren()) {
+                    Sales soldItemExist = soldItemSnapshot.getValue(Sales.class);
+                    soldItemsList.add(soldItemExist);
+                }
+                entityModelListener.getList(soldItemsList);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void GetAllByDateRange(String startDate, String endDate, IEntityModelListener<Sales> entityModelListener) {
+        Query query = dbRef.child(this.getStoreId()).orderByChild("created_at").startAt(startDate).endAt(endDate);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -119,44 +147,12 @@ public class Sales implements IModelRepository<Sales> {
         this.id = id;
     }
 
-    public String getProduct_id() {
-        return product_id;
-    }
-
-    public void setProduct_id(String product_id) {
-        this.product_id = product_id;
-    }
-
     public int getQuantity() {
         return quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public double getTotal_price() {
-        return total_price;
-    }
-
-    public void setTotal_price(double total_price) {
-        this.total_price = total_price;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
     }
 
     public String getReceiptNo() {
@@ -173,22 +169,6 @@ public class Sales implements IModelRepository<Sales> {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public double getCost() {
-        return cost;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
     }
 
     public double getAmountPayable() {
@@ -253,5 +233,21 @@ public class Sales implements IModelRepository<Sales> {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getCreated_time() {
+        return created_time;
+    }
+
+    public void setCreated_time(String created_time) {
+        this.created_time = created_time;
+    }
+
+    public String getUpdated_time() {
+        return updated_time;
+    }
+
+    public void setUpdated_time(String updated_time) {
+        this.updated_time = updated_time;
     }
 }
