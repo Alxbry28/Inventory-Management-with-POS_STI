@@ -164,7 +164,6 @@ public class PaymentActivity extends AppCompatActivity {
             sales.setAmountPayable(totalPrice);
             sales.setAmountReceived(totalAmount);
             sales.setAmountChange(totalChange);
-
             sales.Create(new TransactionStatusListener() {
                 @Override
                 public void checkStatus(boolean status) {
@@ -205,6 +204,7 @@ public class PaymentActivity extends AppCompatActivity {
             });
 
            if(cartLibrary.clear()){
+
                 startActivity(new Intent(PaymentActivity.this, POSItemActivity.class));
                 finish();
            }

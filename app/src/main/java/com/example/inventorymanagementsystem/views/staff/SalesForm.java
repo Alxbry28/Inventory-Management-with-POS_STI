@@ -1,81 +1,110 @@
 package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.inventorymanagementsystem.adapters.SalesRCVAdapter;
-import com.example.inventorymanagementsystem.models.Product;
+import com.example.inventorymanagementsystem.dialogs.MDCDatePickerDialog;
 import com.example.inventorymanagementsystem.models.Sales;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+
 import com.example.inventorymanagementsystem.R;
-import com.example.inventorymanagementsystem.MainActivity;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+
 public class SalesForm extends AppCompatActivity {
 
-    private Button btnBack;
+    private Button btnBack, btnStartDate, btnEndDate;
+    private PieChart pChartProducts;
+    private BarChart bChartSales;
     private ArrayList<Sales> salesArrayList;
-    private RecyclerView rcSales;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_form);
 
-        rcSales = findViewById(R.id.rcSales);
+        btnStartDate = findViewById(R.id.btnStartDate);
+        btnEndDate = findViewById(R.id.btnEndDate);
 
-        salesArrayList = new ArrayList<>();
-        Sales sales1 = new Sales();
-        sales1.setCreatedAt("Oct 26, 2022");
-        sales1.setTotal_price(100);
-        sales1.setQuantity(10);
-        sales1.setId("1");
 
-        Sales sales2 = new Sales();
-        sales2.setCreatedAt("Oct 27, 2022");
-        sales2.setTotal_price(200);
-        sales2.setQuantity(10);
-        sales2.setId("3");
 
-        Sales sales3 = new Sales();
-        sales3.setCreatedAt("Oct 28, 2022");
-        sales3.setTotal_price(150);
-        sales3.setQuantity(9);
-        sales3.setId("2");
 
-        Sales sales4 = new Sales();
-        sales4.setCreatedAt("Oct 26, 2022");
-        sales4.setTotal_price(100);
-        sales4.setQuantity(10);
-        sales4.setId("4");
+        MaterialDatePicker materialDatePicker = MDCDatePickerDialog.openDatePicker();
+        MaterialDatePicker materialDateRangePicker = MDCDatePickerDialog.openDateRangePicker();
 
-        salesArrayList.add(sales1);
-        salesArrayList.add(sales2);
-        salesArrayList.add(sales3);
-        salesArrayList.add(sales4);
+        btnStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER");
+            }
+        });
 
-        SalesRCVAdapter salesRCVAdapter = new SalesRCVAdapter();
-        salesRCVAdapter.setSalesList(salesArrayList);
+        btnEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                materialDateRangePicker.show(getSupportFragmentManager(), "DATE_PICKER_RANGE");
+            }
+        });
 
-        rcSales.setAdapter(salesRCVAdapter);
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
+                Toast.makeText(SalesForm.this, "selected date: " + materialDatePicker.getHeaderText(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(SalesForm.this);
-        rcSales.setLayoutManager(rcvLayoutManager);
-        rcSales.setItemAnimator(new DefaultItemAnimator());
+        materialDateRangePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
+                Toast.makeText(SalesForm.this, "selected date: " + materialDateRangePicker.getHeaderText(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         btnBack = findViewById(R.id.btnback);
         btnBack.setOnClickListener(v -> {
-            startActivity(new Intent(SalesForm.this,HomeActivity.class));
+            startActivity(new Intent(SalesForm.this, HomeActivity.class));
         });
+        initBarChartSales();
+    }
+
+    private void initBarChartSales(){
+        bChartSales = findViewById(R.id.bChartSales);
+        BarDataSet barDataSetSales = new BarDataSet(salesEntry(), "Sales");
+        barDataSetSales.setColors(ColorTemplate.COLORFUL_COLORS);
+        barDataSetSales.setValueTextColor(Color.BLACK);
+        barDataSetSales.setValueTextSize(18f);
+        BarData barDataSales = new BarData();
+
+        barDataSales.addDataSet(barDataSetSales);
+        bChartSales.setData(barDataSales);
+        bChartSales.getDescription().setEnabled(true);
+        bChartSales.invalidate();
+    }
+
+    private ArrayList<BarEntry> salesEntry(){
+        ArrayList<BarEntry> salesEntry = new ArrayList<>();
+        salesEntry.add(new BarEntry(2f,13));
+//        salesEntry.add(new BarEntry("12/01/2022",13));
+        salesEntry.add(new BarEntry(3f,25));
+        salesEntry.add(new BarEntry(1f,18));
+        salesEntry.add(new BarEntry(4f,14));
+        salesEntry.add(new BarEntry(6f,28));
+        salesEntry.add(new BarEntry(5f,22));
+        return salesEntry;
 
     }
 
