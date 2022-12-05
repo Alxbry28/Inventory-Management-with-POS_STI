@@ -35,28 +35,28 @@ public class SoldItem implements IModelRepository<SoldItem> {
     @Override
     public void Create(TransactionStatusListener transactionStatus) {
         this.setId(dbRef.push().getKey());
-        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+        dbRef.child(this.getStoreId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
     @Override
     public void Update(TransactionStatusListener transactionStatus) {
-        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+        dbRef.child(this.getStoreId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
     @Override
     public void Delete(TransactionStatusListener transactionStatus) {
-        dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
+        dbRef.child(this.getStoreId()).child(this.getId()).removeValue().addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
     @Override
     public void GetById(IEntityModelListener<SoldItem> entityModelListener) {
-        Query query = dbRef.child(this.getId());
+        Query query = dbRef.child(this.getStoreId()).child(this.getId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

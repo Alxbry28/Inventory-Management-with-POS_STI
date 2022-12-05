@@ -40,9 +40,6 @@ public class SalesForm extends AppCompatActivity {
         btnStartDate = findViewById(R.id.btnStartDate);
         btnEndDate = findViewById(R.id.btnEndDate);
 
-
-
-
         MaterialDatePicker materialDatePicker = MDCDatePickerDialog.openDatePicker();
         MaterialDatePicker materialDateRangePicker = MDCDatePickerDialog.openDateRangePicker();
 

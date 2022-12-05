@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(isSignIn){
             int userType = sharedPreferences.getInt("userType", 0);
             redirectUser(userType);
+            finish();
         }
 
         sessionService = new SessionService();
