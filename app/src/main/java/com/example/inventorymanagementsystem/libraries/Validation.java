@@ -11,7 +11,10 @@ public class Validation {
         } catch (NumberFormatException e) {
             return false;
         }
-
     }
+    public static boolean checkPasswordMatch(String password, String confirmPassword){
+        return password.equals(confirmPassword);
+    }
+
 
 }
