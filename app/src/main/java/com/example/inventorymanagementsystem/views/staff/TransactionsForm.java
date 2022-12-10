@@ -119,6 +119,7 @@ public class TransactionsForm extends AppCompatActivity {
             startDate = formattedDate;
             startDateShort = formattedShortDate;
             btnEndDate.callOnClick();
+            btnSelectDuration.setText("Date Range");
         });
 
         materialDatePickerEndDate.addOnPositiveButtonClickListener(selection -> {
@@ -126,7 +127,6 @@ public class TransactionsForm extends AppCompatActivity {
             calendar.setTimeInMillis(selection);
             endDate = simpleDateFormatter.format(calendar.getTime());
             endDateShort = simpleDateFormatterShort.format(calendar.getTime());
-
             sales.GetAllByDateRange(startDate, endDate, new IEntityModelListener<Sales>() {
                 @Override
                 public void retrieve(Sales m) {
@@ -140,6 +140,7 @@ public class TransactionsForm extends AppCompatActivity {
             });
             btnStartDate.setText(startDateShort);
             btnEndDate.setText(endDateShort);
+            btnSelectDuration.setText("Date Range");
         });
 
         btnStartDate.setOnClickListener(v -> {
@@ -321,9 +322,7 @@ public class TransactionsForm extends AppCompatActivity {
                 return;
 
             case "Date Range":
-
-                materialDatePickerStartDate.show(fragmentManager, "DATE_PICKER_START_DATE_RANGE");
-
+                btnStartDate.callOnClick();
                 return;
 
             default:
@@ -365,7 +364,6 @@ public class TransactionsForm extends AppCompatActivity {
         RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(TransactionsForm.this);
         rcTransaction.setLayoutManager(rcvLayoutManager);
         rcTransaction.setItemAnimator(new DefaultItemAnimator());
-
     }
 
 }
