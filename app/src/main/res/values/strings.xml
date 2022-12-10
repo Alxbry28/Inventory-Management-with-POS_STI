@@ -22,7 +22,11 @@
         <item>This Month</item>
         <item>Last Month</item>
 
+        <item>This Year</item>
+        <item>Last Year</item>
+
         <item>All</item>
+
         <item>Single Day</item>
         <item>Date Range</item>
     </string-array>
@@ -31,7 +35,6 @@
         <item>Administrator</item>
         <item>Staff</item>
     </string-array>
-
 
     <string name="title_activity_pos">POS</string>
     <!-- Strings used for fragments for navigation -->

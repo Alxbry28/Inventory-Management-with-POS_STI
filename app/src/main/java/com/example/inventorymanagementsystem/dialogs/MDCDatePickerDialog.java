@@ -13,10 +13,12 @@ import java.util.TimeZone;
 public class MDCDatePickerDialog {
 
     public static MaterialDatePicker openDatePicker(){
+
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
         builder.setTitleText("Select a Date");
         MaterialDatePicker materialDatePicker = builder.build();
         return materialDatePicker;
+
     }
 
     public static MaterialDatePicker DatePicker(String selectedDate){
