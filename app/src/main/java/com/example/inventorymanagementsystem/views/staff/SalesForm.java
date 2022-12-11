@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -27,7 +28,9 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 
 public class SalesForm extends AppCompatActivity {
 
-    private Button btnBack, btnStartDate, btnEndDate;
+    private SharedPreferences sharedPreferences;
+    private String businessName, storeId, userId;
+    private Button btnBack, btnSelectDuration, btnStartDate, btnEndDate;
     private PieChart pChartProducts;
     private BarChart bChartSales;
     private ArrayList<Sales> salesArrayList;
