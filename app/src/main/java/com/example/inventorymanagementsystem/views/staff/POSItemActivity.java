@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +36,7 @@ public class POSItemActivity extends AppCompatActivity {
     private Product product;
     private ArrayList<Product> productList;
     private ArrayList<Product> productSelectedList;
-    private Button btnCheckout,btnCart;
+    private Button btnCheckout,btnCart, btnBack;
     private CartLibrary cartLibrary;
     private double totalPrice = 0;
     private int totalQty = 0;
@@ -46,14 +47,19 @@ public class POSItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_positem);
 
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener((View v) -> {
+                    startActivity(new Intent(POSItemActivity.this, HomeActivity.class));
+                    finish();
+                }
+        );
+
         product = new Product();
         cartLibrary = new CartLibrary();
         cartLibrary.setSqLiteDB(new SQLiteDB(POSItemActivity.this));
         ArrayList<CartItem> cartItemsArrayList = cartLibrary.retrieveCartItems();
         cartLibrary.setCartItemArrayList(cartItemsArrayList);
         cartProducts = new ArrayList<>();
-
-
 
         sharedPreferences = getSharedPreferences(MainActivity.TAG, Context.MODE_PRIVATE);
 

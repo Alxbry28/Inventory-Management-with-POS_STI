@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +28,7 @@ import com.example.inventorymanagementsystem.R;
 public class CartActivity extends AppCompatActivity {
 
     private TextView tvTotalPrice, tvTotalItems;
-    private Button btnCheckout;
+    private Button btnCheckout,btnBack;
     private ArrayList<CartItem> cartItemsArrayList;
     private CartLibrary cartLibrary;
     private RecyclerView rcCartItems;
@@ -38,6 +39,12 @@ public class CartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener((View v) -> {
+                startActivity(new Intent(CartActivity.this, POSItemActivity.class));
+                finish();
+            }
+        );
 
         btnCheckout = findViewById(R.id.btnCheckout);
         tvTotalItems = findViewById(R.id.tvTotalItems);

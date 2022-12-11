@@ -57,7 +57,10 @@ public class Sales implements IModelRepository<Sales> {
 
     @Override
     public void Update(TransactionStatusListener transactionStatus) {
-        this.setUpdated_at(new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault()).format(new Date()));
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+        this.setUpdated_at(date);
+        this.setUpdated_time(time);
         dbRef.child(this.getStoreId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
@@ -69,15 +72,10 @@ public class Sales implements IModelRepository<Sales> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
-    public void DeleteById(TransactionStatusListener transactionStatus) {
-        dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
-            transactionStatus.checkStatus(task.isSuccessful());
-        });
-    }
 
     @Override
     public void GetById(IEntityModelListener<Sales> entityModelListener) {
-        Query query = dbRef.child(this.getId());
+        Query query = dbRef.child(this.getStoreId()).child(this.getId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
