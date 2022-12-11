@@ -12,7 +12,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class SoldItem implements IModelRepository<SoldItem> {
 
@@ -21,6 +24,7 @@ public class SoldItem implements IModelRepository<SoldItem> {
     private String name, category;
     private double productPrice, totalPrice;
     private String created_at, updated_at;
+    private String created_time, updated_time;
     private boolean isDeleted;
 
     public static final String TABLE = "tblSoldItems";
@@ -34,29 +38,39 @@ public class SoldItem implements IModelRepository<SoldItem> {
 
     @Override
     public void Create(TransactionStatusListener transactionStatus) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
         this.setId(dbRef.push().getKey());
-        dbRef.child(this.getStoreId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+        this.setCreated_at(date);
+        this.setUpdated_at(date);
+        this.setCreated_time(time);
+        this.setUpdated_time(time);
+        dbRef.child(this.getStoreId()).child(this.getSalesId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
     @Override
     public void Update(TransactionStatusListener transactionStatus) {
-        dbRef.child(this.getStoreId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+        this.setUpdated_at(date);
+        this.setUpdated_time(time);
+        dbRef.child(this.getStoreId()).child(this.getSalesId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
     @Override
     public void Delete(TransactionStatusListener transactionStatus) {
-        dbRef.child(this.getStoreId()).child(this.getId()).removeValue().addOnCompleteListener(task -> {
+        dbRef.child(this.getStoreId()).child(this.getSalesId()).child(this.getId()).removeValue().addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
     @Override
     public void GetById(IEntityModelListener<SoldItem> entityModelListener) {
-        Query query = dbRef.child(this.getStoreId()).child(this.getId());
+        Query query = dbRef.child(this.getStoreId()).child(this.getSalesId()).child(this.getId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -75,7 +89,7 @@ public class SoldItem implements IModelRepository<SoldItem> {
 
     @Override
     public void GetAll(IEntityModelListener<SoldItem> entityModelListener) {
-        Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId());
+        Query query = dbRef.child(this.getStoreId()).child(this.getSalesId());
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -92,6 +106,22 @@ public class SoldItem implements IModelRepository<SoldItem> {
 
             }
         });
+    }
+
+    public String getCreated_time() {
+        return created_time;
+    }
+
+    public void setCreated_time(String created_time) {
+        this.created_time = created_time;
+    }
+
+    public String getUpdated_time() {
+        return updated_time;
+    }
+
+    public void setUpdated_time(String updated_time) {
+        this.updated_time = updated_time;
     }
 
     public String getProductId() {

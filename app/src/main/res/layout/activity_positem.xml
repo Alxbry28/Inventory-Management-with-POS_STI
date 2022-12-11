@@ -33,7 +33,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcPOSProductItem"
         android:padding="10dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="108dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -58,6 +58,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Clear Cart Items" />
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back" />
 
     </LinearLayout>
 

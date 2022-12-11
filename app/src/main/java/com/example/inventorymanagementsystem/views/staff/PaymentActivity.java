@@ -162,6 +162,7 @@ public class PaymentActivity extends AppCompatActivity {
 
             sales.setReceiptNo(sales.GeneratedInvoiceNumber());
             sales.setAmountPayable(totalPrice);
+            sales.setQuantity(totalQty);
             sales.setAmountReceived(totalAmount);
             sales.setAmountChange(totalChange);
             sales.Create(new TransactionStatusListener() {
@@ -169,6 +170,7 @@ public class PaymentActivity extends AppCompatActivity {
                 public void checkStatus(boolean status) {
                     ArrayList<SoldItem> soldItems = cartLibrary.getConvertedSoldItemArray();
                     for (int i = 0; i < soldItems.size(); i++) {
+
                         SoldItem soldItem = soldItems.get(i);
                         soldItem.setSalesId(sales.getId());
                         soldItem.Create(new TransactionStatusListener() {
@@ -204,7 +206,6 @@ public class PaymentActivity extends AppCompatActivity {
             });
 
            if(cartLibrary.clear()){
-
                 startActivity(new Intent(PaymentActivity.this, POSItemActivity.class));
                 finish();
            }
@@ -212,7 +213,8 @@ public class PaymentActivity extends AppCompatActivity {
         });
 
         btnBack.setOnClickListener(v->{
-         finish();
+            startActivity(new Intent(PaymentActivity.this, CartActivity.class));
+             finish();
         });
 
         etAmountReceived.addTextChangedListener(new TextWatcher() {

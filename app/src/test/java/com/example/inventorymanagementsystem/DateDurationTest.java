@@ -145,6 +145,7 @@ public class DateDurationTest {
         endDateShort = dateTimeDateShort.format(currentDate);
 
         assertArrayEquals(new String[]{"2022-01-01", "2022-12-10", "01 Jan 2022", "10 Dec 2022"}, new String[]{startDate, endDate, startDateShort, endDateShort});
+
     }
 
 }

@@ -50,9 +50,10 @@ public class TransactionsForm extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private String businessName, storeId, userId;
     private Button btnBack, btnSelectDuration, btnStartDate, btnEndDate;
-    private ArrayList<Transaction> transactionsArrayList;
+    private TextView tvTotal;
     private RecyclerView rcTransaction;
     private Sales sales;
+    private ArrayList<Sales> tempSalesArrayList;
     private DurationChoiceDialog durationChoiceDialog;
     private String startDate, endDate, startDateShort, endDateShort;
     private String dateToday, dateTodayShorted;
@@ -65,17 +66,21 @@ public class TransactionsForm extends AppCompatActivity {
     private DateTimeFormatter dateTimeDateShort = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
     private LocalDate currentDate;
     private FragmentManager fragmentManager;
-
+    private TextView tvEmptyTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactions_form);
+        tempSalesArrayList = new ArrayList<>();
         fragmentManager = getSupportFragmentManager();
         currentDate = LocalDate.now();
         startDate = dateTimeFormatter.format(currentDate);
+        endDate = dateTimeFormatter.format(currentDate);
 
         initDialog();
+        tvEmptyTransaction = findViewById(R.id.tvEmptyTransaction);
+        tvTotal = findViewById(R.id.tvTotal);
 
         sharedPreferences = getSharedPreferences(MainActivity.TAG, Context.MODE_PRIVATE);
         businessName = sharedPreferences.getString("businessName", null);
@@ -85,14 +90,15 @@ public class TransactionsForm extends AppCompatActivity {
         rcTransaction = findViewById(R.id.rcTransaction);
         sales = new Sales();
         sales.setStoreId(storeId);
-        selectedDuration(dateTimeFormatter.format(currentDate));
 
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> {
             startActivity(new Intent(TransactionsForm.this, HomeActivity.class));
+            finish();
         });
 
         btnSelectDuration = findViewById(R.id.btnSelectDuration);
+        selectedDuration(btnSelectDuration.getText().toString());
         btnSelectDuration.setOnClickListener(v -> {
             durationChoiceDialog.show(fragmentManager, "DURATION_CHOICE_DIALOG");
             durationChoiceDialog.setChosenDuration(btnSelectDuration.getText().toString());
@@ -105,66 +111,26 @@ public class TransactionsForm extends AppCompatActivity {
             });
         });
 
+        setFirstEventDateRange();
+        setSecondEventDateRange();
+
         btnStartDate = findViewById(R.id.btnStartDate);
         btnStartDate.setText(dateTodayShorted);
 
         btnEndDate = findViewById(R.id.btnEndDate);
         btnEndDate.setText(dateTodayShorted);
-
-        materialDatePickerStartDate.addOnPositiveButtonClickListener(selection -> {
-            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
-            calendar.setTimeInMillis(selection);
-            String formattedDate = simpleDateFormatter.format(calendar.getTime());
-            String formattedShortDate = simpleDateFormatterShort.format(calendar.getTime());
-            startDate = formattedDate;
-            startDateShort = formattedShortDate;
-            btnEndDate.callOnClick();
-            btnSelectDuration.setText("Date Range");
-        });
-
-        materialDatePickerEndDate.addOnPositiveButtonClickListener(selection -> {
-            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
-            calendar.setTimeInMillis(selection);
-            endDate = simpleDateFormatter.format(calendar.getTime());
-            endDateShort = simpleDateFormatterShort.format(calendar.getTime());
-            sales.GetAllByDateRange(startDate, endDate, new IEntityModelListener<Sales>() {
-                @Override
-                public void retrieve(Sales m) {
-
-                }
-
-                @Override
-                public void getList(ArrayList<Sales> salesArrayList) {
-                    initRCTransaction(salesArrayList);
-                }
-            });
-            btnStartDate.setText(startDateShort);
-            btnEndDate.setText(endDateShort);
-            btnSelectDuration.setText("Date Range");
-        });
-
-        btnStartDate.setOnClickListener(v -> {
-            materialDatePickerStartDate.show(fragmentManager, "DATE_PICKER_START_DATE");
-
-        });
-        btnEndDate.setOnClickListener(v -> {
-            materialDatePickerEndDate.show(fragmentManager, "DATE_PICKER_END_DATE");
-        });
-
-
+        firstEventListener();
     }
 
     private void removeFragmentDatePicker(){
-        Fragment oldStartDate = fragmentManager.findFragmentByTag("DATE_PICKER_START_DATE");
-        Fragment oldEndDate = fragmentManager.findFragmentByTag("DATE_PICKER_END_DATE");
+        Fragment oldStartDate = fragmentManager.findFragmentByTag("DATE_PICKER_RANGE_START_DATE");
+        Fragment oldEndDate = fragmentManager.findFragmentByTag("DATE_PICKER_RANGE_END_DATE");
         if (oldStartDate != null) {
             fragmentManager.beginTransaction().remove(oldStartDate).commit();
             if (oldStartDate.isAdded()) {
                 fragmentManager.beginTransaction().remove(oldStartDate).commit();
             }
         }
-
-
 
         if (oldEndDate != null) {
             fragmentManager.beginTransaction().remove(oldEndDate).commit();
@@ -173,12 +139,9 @@ public class TransactionsForm extends AppCompatActivity {
             }
         }
 
-
-
     }
 
     private void selectedDuration(String dateDuration) {
-
         initRCTransaction(new ArrayList<Sales>());
         LocalDate firstDay, lastDay;
         switch (dateDuration) {
@@ -282,6 +245,7 @@ public class TransactionsForm extends AppCompatActivity {
                 break;
 
             case "All":
+                setFirstEventDateRange();
                 sales.GetAll(new IEntityModelListener<Sales>() {
                     @Override
                     public void retrieve(Sales m) {
@@ -290,15 +254,27 @@ public class TransactionsForm extends AppCompatActivity {
 
                     @Override
                     public void getList(ArrayList<Sales> salesArrayList) {
-                        initRCTransaction(salesArrayList);
+                        if(salesArrayList != null || (!salesArrayList.isEmpty())){
+                            tempSalesArrayList = salesArrayList;
+
+                            if(salesArrayList.size() > 0){
+                                LocalDate start = LocalDate.parse(salesArrayList.get(0).getCreated_at());
+                                LocalDate end = LocalDate.parse(salesArrayList.get(salesArrayList.size() - 1).getCreated_at());
+                                startDateShort = dateTimeDateShort.format(start);
+                                endDateShort = dateTimeDateShort.format(end);
+                                btnStartDate.setText(startDateShort);
+                                btnEndDate.setText(endDateShort);
+                            }
+
+                            initRCTransaction(salesArrayList);
+                        }
                     }
                 });
                 return;
 
             case "Single Day":
-
-                materialDatePickerStartDate.show(fragmentManager, "DATE_PICKER_SINGLE_DATE");
-                materialDatePickerStartDate.addOnPositiveButtonClickListener(selection -> {
+                materialDatePickerSingleDate.show(fragmentManager, "DATE_PICKER_SINGLE_DATE");
+                materialDatePickerSingleDate.addOnPositiveButtonClickListener(selection -> {
                     Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
                     calendar.setTimeInMillis(selection);
                     String formattedDate = simpleDateFormatter.format(calendar.getTime());
@@ -311,6 +287,7 @@ public class TransactionsForm extends AppCompatActivity {
 
                         @Override
                         public void getList(ArrayList<Sales> salesArrayList) {
+                            tempSalesArrayList = salesArrayList;
                             initRCTransaction(salesArrayList);
                         }
                     });
@@ -322,6 +299,7 @@ public class TransactionsForm extends AppCompatActivity {
                 return;
 
             case "Date Range":
+                secondEventListener();
                 btnStartDate.callOnClick();
                 return;
 
@@ -338,13 +316,129 @@ public class TransactionsForm extends AppCompatActivity {
 
             @Override
             public void getList(ArrayList<Sales> salesArrayList) {
+                tempSalesArrayList = salesArrayList;
                 initRCTransaction(salesArrayList);
             }
         });
 
     }
 
+    private void setFirstEventDateRange(){
+        materialDatePickerStartDate.addOnPositiveButtonClickListener(selection -> {
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
+            calendar.setTimeInMillis(selection);
+            String formattedDate = simpleDateFormatter.format(calendar.getTime());
+            String formattedShortDate = simpleDateFormatterShort.format(calendar.getTime());
+            startDate = formattedDate;
+            startDateShort = formattedShortDate;
+            sales.GetAllByDateRange(startDate, endDate, new IEntityModelListener<Sales>() {
+                @Override
+                public void retrieve(Sales m) {
 
+                }
+
+                @Override
+                public void getList(ArrayList<Sales> salesArrayList) {
+                    initRCTransaction(salesArrayList);
+                }
+            });
+            btnStartDate.setText(startDateShort);
+            btnEndDate.setText(endDateShort);
+            btnSelectDuration.setText("Date Range");
+        });
+
+        materialDatePickerEndDate.addOnPositiveButtonClickListener(selection -> {
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
+            calendar.setTimeInMillis(selection);
+            endDate = simpleDateFormatter.format(calendar.getTime());
+            endDateShort = simpleDateFormatterShort.format(calendar.getTime());
+            sales.GetAllByDateRange(startDate, endDate, new IEntityModelListener<Sales>() {
+                @Override
+                public void retrieve(Sales m) {
+
+                }
+
+                @Override
+                public void getList(ArrayList<Sales> salesArrayList) {
+                    initRCTransaction(salesArrayList);
+                }
+            });
+            btnStartDate.setText(startDateShort);
+            btnEndDate.setText(endDateShort);
+            btnSelectDuration.setText("Date Range");
+        });
+
+    }
+
+    private void firstEventListener(){
+        View.OnClickListener buttonRangeClickListener = (View v) ->{
+            switch (v.getId()){
+                case R.id.btnStartDate:
+                    materialDatePickerStartDate.show(fragmentManager, "DATE_PICKER_START_DATE");
+                    break;
+                case R.id.btnEndDate:
+                    materialDatePickerEndDate.show(fragmentManager, "DATE_PICKER_END_DATE");
+                    break;
+            }
+        };
+
+        btnStartDate.setOnClickListener(buttonRangeClickListener);
+        btnEndDate.setOnClickListener(buttonRangeClickListener);
+    }
+
+    private void secondEventListener(){
+        View.OnClickListener buttonRangeClickListener = (View v) ->{
+            switch (v.getId()){
+                case R.id.btnStartDate:
+                    materialDatePickerRangeStartDate.show(fragmentManager, "DATE_PICKER_RANGE_START_DATE");
+                    return;
+                case R.id.btnEndDate:
+                    materialDatePickerRangeEndDate.show(fragmentManager, "DATE_PICKER_RANGE_END_DATE");
+                    firstEventListener();
+                    return;
+            }
+        };
+        btnStartDate.setOnClickListener(buttonRangeClickListener);
+        btnEndDate.setOnClickListener(buttonRangeClickListener);
+    }
+
+    private void setSecondEventDateRange(){
+        materialDatePickerRangeStartDate.addOnPositiveButtonClickListener(selection -> {
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
+            calendar.setTimeInMillis(selection);
+            String formattedDate = simpleDateFormatter.format(calendar.getTime());
+            String formattedShortDate = simpleDateFormatterShort.format(calendar.getTime());
+            startDate = formattedDate;
+            startDateShort = formattedShortDate;
+            btnSelectDuration.setText("Date Range");
+            removeFragmentDatePicker();
+            btnEndDate.callOnClick();
+        });
+
+        materialDatePickerRangeEndDate.addOnPositiveButtonClickListener(selection -> {
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
+            calendar.setTimeInMillis(selection);
+            endDate = simpleDateFormatter.format(calendar.getTime());
+            endDateShort = simpleDateFormatterShort.format(calendar.getTime());
+            sales.GetAllByDateRange(startDate, endDate, new IEntityModelListener<Sales>() {
+                @Override
+                public void retrieve(Sales m) {
+
+                }
+
+                @Override
+                public void getList(ArrayList<Sales> salesArrayList) {
+                    initRCTransaction(salesArrayList);
+                }
+            });
+
+            btnStartDate.setText(startDateShort);
+            btnEndDate.setText(endDateShort);
+            btnSelectDuration.setText("Date Range");
+
+        });
+
+    }
 
     private void initDialog() {
         durationChoiceDialog = new DurationChoiceDialog();
@@ -352,18 +446,22 @@ public class TransactionsForm extends AppCompatActivity {
         dateToday = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         dateTodayShorted = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date());
         materialDatePickerStartDate = MDCDatePickerDialog.startDatePicker();
+        materialDatePickerSingleDate = MDCDatePickerDialog.startDatePicker();
+        materialDatePickerRangeStartDate = MDCDatePickerDialog.startDatePicker();
         materialDatePickerEndDate = MDCDatePickerDialog.endDatePicker(dateToday);
-        Toast.makeText(this, "dateToday" + dateToday, Toast.LENGTH_SHORT).show();
+        materialDatePickerRangeEndDate = MDCDatePickerDialog.endDatePicker(dateToday);
     }
 
     private void initRCTransaction(ArrayList<Sales> salesArrayList) {
         TransactionRCVAdapter transactionRCVAdapter = new TransactionRCVAdapter();
         transactionRCVAdapter.setSalesList(salesArrayList);
-
         rcTransaction.setAdapter(transactionRCVAdapter);
         RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(TransactionsForm.this);
         rcTransaction.setLayoutManager(rcvLayoutManager);
         rcTransaction.setItemAnimator(new DefaultItemAnimator());
+        int visibility = (salesArrayList.size() <= 0) ? View.VISIBLE : View.GONE;
+        tvEmptyTransaction.setVisibility(visibility);
+        tvTotal.setText("Total Transaction: " + salesArrayList.size());
     }
 
 }

@@ -41,12 +41,11 @@ public class MDCDatePickerDialog {
         MaterialDatePicker materialDatePicker = builder.build();
 
         return materialDatePicker;
+
     }
 
     public static MaterialDatePicker startDatePicker(){
-
         long today = MaterialDatePicker.todayInUtcMilliseconds();
-
 
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
         builder.setTitleText("Select Start Date");
@@ -57,10 +56,10 @@ public class MDCDatePickerDialog {
         builder.setCalendarConstraints(constraintBuilder.build());
         MaterialDatePicker materialDatePicker = builder.build();
         return materialDatePicker;
+
     }
 
     public static MaterialDatePicker endDatePicker(String selectedDate){
-
         String[] date = selectedDate.split("-");
         int year = Integer.parseInt(date[0]);
         int month = Integer.parseInt(date[1]) - 1;

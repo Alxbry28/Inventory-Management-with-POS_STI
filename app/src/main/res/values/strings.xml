@@ -6,10 +6,16 @@
     <string name="valid_username_password">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_@</string>
     <string name="valid_quantity">1234567890</string>
 
+
     <string-array name="array_name">
         <item>kilograms</item>
         <item>piece</item>
         <item>grams</item>
+    </string-array>
+
+    <string-array name="orderby_choice">
+        <item>ASC</item>
+        <item>DESC</item>
     </string-array>
 
     <string-array name="duration_choice">
