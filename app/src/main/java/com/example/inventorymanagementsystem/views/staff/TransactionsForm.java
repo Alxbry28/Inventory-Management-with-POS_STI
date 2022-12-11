@@ -454,6 +454,8 @@ public class TransactionsForm extends AppCompatActivity {
 
     private void initRCTransaction(ArrayList<Sales> salesArrayList) {
         TransactionRCVAdapter transactionRCVAdapter = new TransactionRCVAdapter();
+        transactionRCVAdapter.setContext(TransactionsForm.this);
+        transactionRCVAdapter.setActivity(TransactionsForm.this);
         transactionRCVAdapter.setSalesList(salesArrayList);
         rcTransaction.setAdapter(transactionRCVAdapter);
         RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(TransactionsForm.this);

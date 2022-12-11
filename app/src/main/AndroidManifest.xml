@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InventoryManagementSystem">
         <activity
-            android:name=".TransactionDetailsActivity"
+            android:name=".views.staff.TransactionDetailsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
