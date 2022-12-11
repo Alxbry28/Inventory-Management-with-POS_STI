@@ -108,6 +108,10 @@ public class SoldItem implements IModelRepository<SoldItem> {
         });
     }
 
+    public double GetComputedSubtotal(){
+        return quantity * productPrice;
+    }
+
     public String getCreated_time() {
         return created_time;
     }
