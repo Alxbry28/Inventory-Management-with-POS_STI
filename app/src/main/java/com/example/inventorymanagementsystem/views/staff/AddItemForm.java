@@ -57,7 +57,7 @@ public class AddItemForm extends AppCompatActivity  {
                     etProductCategory.setText(product.getCategory());
                     etPrice.setText(String.valueOf(product.getPrice()));
                     etStocks.setText(String.valueOf(product.getQuantity()));
-                    etStocks.setEnabled(false);
+//                    etStocks.setEnabled(false);
                 }
 
                 @Override
