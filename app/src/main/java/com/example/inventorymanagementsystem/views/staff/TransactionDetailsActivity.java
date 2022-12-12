@@ -120,6 +120,7 @@ public class TransactionDetailsActivity extends AppCompatActivity {
 
             soldItem.setStoreId(storeId);
             soldItem.setSalesId(salesId);
+            soldItem.setReceiptNo(receiptNo);
             soldItem.GetAll(new IEntityModelListener<SoldItem>() {
                 @Override
                 public void retrieve(SoldItem m) {
@@ -132,13 +133,15 @@ public class TransactionDetailsActivity extends AppCompatActivity {
                     for (SoldItem sold_temp : soldItems) {
                         SoldItemReport soldItemReport = new SoldItemReport();
                         soldItemReport.setSoldItemToReport(sold_temp);
+                        soldItemReport.setReceiptNo(receiptNo);
                         soldItemReport.Update(new TransactionStatusListener() {
                             @Override
                             public void checkStatus(boolean status) {
-                                Toast.makeText(TransactionDetailsActivity.this, "Created: " + status, Toast.LENGTH_SHORT).show();
+                                // SoldItemReport Updating
+//                                Toast.makeText(TransactionDetailsActivity.this, "Created: " + status, Toast.LENGTH_SHORT).show();
                             }
                         });
-                        Toast.makeText(TransactionDetailsActivity.this, "Created: " + count, Toast.LENGTH_SHORT).show();
+
                         count++;
                     }
 

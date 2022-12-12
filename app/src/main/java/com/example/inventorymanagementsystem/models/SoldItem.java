@@ -26,6 +26,7 @@ public class SoldItem implements IModelRepository<SoldItem> {
     private String created_at, updated_at;
     private String created_time, updated_time;
     private boolean isDeleted;
+    private String receiptNo;
 
     public static final String TABLE = "tblSoldItems";
     private RealtimeFirebaseDB realtimeFirebaseDB;
@@ -277,5 +278,13 @@ public class SoldItem implements IModelRepository<SoldItem> {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public String getReceiptNo() {
+        return receiptNo;
+    }
+
+    public void setReceiptNo(String receiptNo) {
+        this.receiptNo = receiptNo;
     }
 }

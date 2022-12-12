@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class SoldItemReport  implements IModelRepository<SoldItemReport> {
+public class SoldItemReport implements IModelRepository<SoldItemReport> {
 
     private int quantity;
     private String id, userId,  productId, salesId, storeId;
@@ -26,6 +26,7 @@ public class SoldItemReport  implements IModelRepository<SoldItemReport> {
     private String created_at, updated_at;
     private String created_time, updated_time;
     private boolean isDeleted;
+    private String receiptNo;
 
     public static final String TABLE = "tblSoldItemReport";
     private RealtimeFirebaseDB realtimeFirebaseDB;
@@ -61,7 +62,6 @@ public class SoldItemReport  implements IModelRepository<SoldItemReport> {
         this.created_time = soldItem.getCreated_time();
         this.updated_time = soldItem.getUpdated_time();
     }
-
 
     @Override
     public void Create(TransactionStatusListener transactionStatus) {
@@ -100,6 +100,7 @@ public class SoldItemReport  implements IModelRepository<SoldItemReport> {
     public void GetById(IEntityModelListener<SoldItemReport> entityModelListener) {
         Query query = dbRef.child(this.getId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
@@ -112,11 +113,13 @@ public class SoldItemReport  implements IModelRepository<SoldItemReport> {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
         });
     }
 
     public void GetAllBySalesId(IEntityModelListener<SoldItemReport> entityModelListener) {
         Query query = dbRef.orderByChild("salesId").equalTo(this.getSalesId());
+
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -125,13 +128,16 @@ public class SoldItemReport  implements IModelRepository<SoldItemReport> {
                     SoldItemReport soldItemExist = soldItemSnapshot.getValue(SoldItemReport.class);
                     soldItemsList.add(soldItemExist);
                 }
+
                 entityModelListener.getList(soldItemsList);
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
         });
     }
 
@@ -298,5 +304,13 @@ public class SoldItemReport  implements IModelRepository<SoldItemReport> {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public String getReceiptNo() {
+        return receiptNo;
+    }
+
+    public void setReceiptNo(String receiptNo) {
+        this.receiptNo = receiptNo;
     }
 }

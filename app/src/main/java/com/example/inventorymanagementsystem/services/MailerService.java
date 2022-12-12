@@ -10,6 +10,7 @@ import android.text.Html;
 import android.util.Log;
 
 import com.example.inventorymanagementsystem.interfaces.TransactionStatusListener;
+import com.example.inventorymanagementsystem.models.Sales;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,6 +62,7 @@ public class MailerService {
         String message = "Hello this is your first message.";
 
         try {
+
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
@@ -76,7 +78,7 @@ public class MailerService {
             mimeMessage.setSubject(subject);
             mimeMessage.setText(message);
 
-            File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "test2.xlsx");
+            File filePath = Sales.FILE_PATH;
 
             String filename = filePath.getAbsolutePath();
             DataSource source = new FileDataSource(filePath);
@@ -129,7 +131,7 @@ public class MailerService {
             mimeMessage.setSubject(subject);
             mimeMessage.setText(message);
 
-            File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "sales_generated.xlsx");
+            File filePath = Sales.FILE_PATH;
 
             String filename = filePath.getAbsolutePath();
             DataSource source = new FileDataSource(filePath);
