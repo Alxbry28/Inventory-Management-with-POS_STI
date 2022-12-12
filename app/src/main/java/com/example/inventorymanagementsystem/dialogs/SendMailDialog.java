@@ -43,7 +43,7 @@ public class SendMailDialog extends AppCompatDialogFragment {
                 mailerService = new MailerService();
                 mailerService.setContext(context);
                 mailerService.setReceiverEmail(etEmail.getText().toString());
-                mailerService.sendMailTest();
+                mailerService.sendSalesReport();
         });
         return builder.create();
     }

@@ -57,9 +57,9 @@ public class MailerService {
         properties.put("mail.smtp.auth", auth);
     }
 
-    public void sendMailTest() {
-        String subject = "Subject: Testing Java Mailer";
-        String message = "Hello this is your first message.";
+    public void sendSalesReport() {
+        String subject = "Subject: Sales Report";
+        String message = "Here is the generated sales report.";
 
         try {
 

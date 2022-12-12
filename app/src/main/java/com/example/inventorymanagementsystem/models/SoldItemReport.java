@@ -49,6 +49,7 @@ public class SoldItemReport implements IModelRepository<SoldItemReport> {
     public void setSoldItemToReport(SoldItem soldItem) {
         this.quantity = soldItem.getQuantity();
         this.id = soldItem.getId();
+        this.receiptNo = soldItem.getReceiptNo();
         this.userId = soldItem.getUserId();
         this.productId = soldItem.getProductId();
         this.salesId = soldItem.getSalesId();

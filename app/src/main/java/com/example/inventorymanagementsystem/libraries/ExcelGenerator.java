@@ -32,6 +32,7 @@ public class ExcelGenerator {
     private ArrayList<Sales> tempSalesList;
     private ArrayList<SoldItemReport> tempSoldItemList;
     private String businessName, startDate, endDate, dateGenerated;
+    private String fileNameUnique;
 
     public ExcelGenerator(Context context) {
         this.context = context;
@@ -42,11 +43,21 @@ public class ExcelGenerator {
         SalesWorkbook();
         SoldProductWorkbook();
 
-        File filePath = Sales.FILE_PATH;
+        File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), Sales.FILENAME);
+
         try {
-            if (!filePath.exists()){
+            if (filePath.exists()){
+                filePath.delete();
+
+                if (!filePath.exists()){
+                    filePath.createNewFile();
+                }
+
+            }
+            else{
                 filePath.createNewFile();
             }
+
 
             FileOutputStream fileOutputStream = new FileOutputStream(filePath);
             hssfWorkbook.write(fileOutputStream);
@@ -66,7 +77,8 @@ public class ExcelGenerator {
     }
 
     private void SalesWorkbook(){
-        HSSFSheet hssfSheet = hssfWorkbook.createSheet("Sales Report");
+//        HSSFSheet hssfSheet = hssfWorkbook.createSheet("Sales Report");
+        HSSFSheet hssfSheet = hssfWorkbook.createSheet();
         HSSFRow hssfRowHeader = hssfSheet.createRow(0);
         HSSFCell hssfCellHeader  = hssfRowHeader.createCell(2);
         hssfCellHeader.setCellValue("Sales Report");
@@ -128,7 +140,8 @@ public class ExcelGenerator {
     }
 
     private void SoldProductWorkbook(){
-        HSSFSheet hssfSheet = hssfWorkbook.createSheet("Sold Product Report");
+//        HSSFSheet hssfSheet = hssfWorkbook.createSheet("Sold Product Report");
+        HSSFSheet hssfSheet = hssfWorkbook.createSheet();
         HSSFRow hssfRowHeader = hssfSheet.createRow(0);
         HSSFCell hssfCellHeader  = hssfRowHeader.createCell(3);
         hssfCellHeader.setCellValue("Sold Product Report");

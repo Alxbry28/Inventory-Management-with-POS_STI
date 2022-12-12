@@ -28,6 +28,7 @@ import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.models.Product;
 import com.example.inventorymanagementsystem.models.Sales;
 import com.example.inventorymanagementsystem.models.SoldItem;
+import com.example.inventorymanagementsystem.models.SoldItemReport;
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -172,11 +173,21 @@ public class PaymentActivity extends AppCompatActivity {
                     for (int i = 0; i < soldItems.size(); i++) {
 
                         SoldItem soldItem = soldItems.get(i);
+                        soldItem.setReceiptNo(sales.getReceiptNo());
                         soldItem.setSalesId(sales.getId());
                         soldItem.Create(new TransactionStatusListener() {
                             @Override
                             public void checkStatus(boolean status) {
                                 Toast.makeText(PaymentActivity.this, "Sold Item Created", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        SoldItemReport soldItemReport = new SoldItemReport();
+                        soldItemReport.setSoldItemToReport(soldItem);
+                        soldItemReport.Update(new TransactionStatusListener() {
+                            @Override
+                            public void checkStatus(boolean status) {
+
                             }
                         });
 
@@ -195,10 +206,12 @@ public class PaymentActivity extends AppCompatActivity {
                                     }
                                 });
                             }
+
                             @Override
                             public void getProductList(ArrayList<Product> productArrayList) {
 
                             }
+                            
                         });
 
                     }
