@@ -119,6 +119,7 @@ public class TransactionsForm extends AppCompatActivity {
 
         btnEndDate = findViewById(R.id.btnEndDate);
         btnEndDate.setText(dateTodayShorted);
+
         firstEventListener();
     }
 
