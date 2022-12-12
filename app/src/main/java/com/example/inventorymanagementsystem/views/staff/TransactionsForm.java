@@ -102,12 +102,9 @@ public class TransactionsForm extends AppCompatActivity {
         btnSelectDuration.setOnClickListener(v -> {
             durationChoiceDialog.show(fragmentManager, "DURATION_CHOICE_DIALOG");
             durationChoiceDialog.setChosenDuration(btnSelectDuration.getText().toString());
-            durationChoiceDialog.setiDurationChoiceDialogListener(new IDurationChoiceDialogListener() {
-                @Override
-                public void setChosenDuration(String chosenDuration) {
+            durationChoiceDialog.setiDurationChoiceDialogListener((String chosenDuration) -> {
                     btnSelectDuration.setText(chosenDuration);
                     selectedDuration(chosenDuration);
-                }
             });
         });
 
@@ -292,10 +289,8 @@ public class TransactionsForm extends AppCompatActivity {
                             initRCTransaction(salesArrayList);
                         }
                     });
-
                     btnStartDate.setText(formattedShortDate);
                     btnEndDate.setText(formattedShortDate);
-
                 });
                 return;
 

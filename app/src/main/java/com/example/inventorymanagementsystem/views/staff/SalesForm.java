@@ -41,10 +41,14 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import com.example.inventorymanagementsystem.R;
+import com.example.inventorymanagementsystem.models.SoldItem;
+import com.example.inventorymanagementsystem.models.SoldItemReport;
 import com.example.inventorymanagementsystem.models.Staff;
 import com.example.inventorymanagementsystem.models.User;
 import com.example.inventorymanagementsystem.services.MailerService;
@@ -84,6 +88,8 @@ public class SalesForm extends AppCompatActivity {
     private TextView tvEmptyTransaction;
     private Sales sales;
     private ArrayList<Sales> tempSalesArrayList;
+    private ArrayList<SoldItem> tempSoldItemArrayList;
+    private ArrayList<SoldItemReport> tempSoldItemReportsList;
     private User userOwner;
     private Staff staff;
     private String receiverEmail;
@@ -98,6 +104,10 @@ public class SalesForm extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
 
         tempSalesArrayList = new ArrayList<>();
+
+        tempSoldItemReportsList = new ArrayList<>();
+        tempSoldItemArrayList = new ArrayList<>();
+
         mailerService = new MailerService();
         excelGenerator = new ExcelGenerator(SalesForm.this);
 
@@ -106,7 +116,7 @@ public class SalesForm extends AppCompatActivity {
         btnStartDate = findViewById(R.id.btnStartDate);
         btnEndDate = findViewById(R.id.btnEndDate);
         sales = new Sales();
-        staff= new Staff();
+        staff = new Staff();
         userOwner = new User();
         initDialog();
 
@@ -140,6 +150,8 @@ public class SalesForm extends AppCompatActivity {
             }
         });
 
+        pChartProducts = findViewById(R.id.pChartProducts);
+
         btnSelectDuration = findViewById(R.id.btnSelectDuration);
         selectedDuration(btnSelectDuration.getText().toString());
         btnSelectDuration.setOnClickListener(v -> {
@@ -166,10 +178,12 @@ public class SalesForm extends AppCompatActivity {
         firstEventListener();
 
         initBarChartSales();
-        initPieChartSoldItems();
+//        initPieChartSoldItems();
 
         btnSendMail = findViewById(R.id.btnSendMail);
         btnSendMail.setOnClickListener((View v) -> {
+
+            Toast.makeText(SalesForm.this, "sizetempSold: " + tempSoldItemArrayList.size(), Toast.LENGTH_SHORT).show();
 
             SendMailDialog sendMailDialog = new SendMailDialog(SalesForm.this);
             sendMailDialog.show(getSupportFragmentManager(), "DIALOG_SEND_EMAIL");
@@ -182,10 +196,10 @@ public class SalesForm extends AppCompatActivity {
 
         btnGenerateReport = findViewById(R.id.btnGenerateReport);
         btnGenerateReport.setOnClickListener((View v) -> {
-                boolean isGenerated = excelGenerator.testGenerate();
-                Toast.makeText(SalesForm.this, "isGenerated: " +  isGenerated, Toast.LENGTH_LONG).show();
+                    boolean isGenerated = excelGenerator.testGenerate();
+                    Toast.makeText(SalesForm.this, "isGenerated: " + isGenerated, Toast.LENGTH_LONG).show();
 
-            }
+                }
         );
 
 
@@ -219,10 +233,20 @@ public class SalesForm extends AppCompatActivity {
 
     }
 
-    private void initPieChartSoldItems() {
-        pChartProducts = findViewById(R.id.pChartProducts);
-        PieDataSet pieDataSetSales = new PieDataSet(soldItemsEntry(), "Top Sold Items");
-        pieDataSetSales.setColors(ColorTemplate.COLORFUL_COLORS);
+    private void populatePieChartData(ArrayList<SoldItemReport> temp_SoldItemList) {
+        Map<String, Double> tempSoldItemMap = new HashMap<>();
+        for (SoldItemReport item : temp_SoldItemList) {
+            tempSoldItemMap.computeIfPresent(item.getName(), (s, v) -> v + item.GetComputedSubtotal());
+            tempSoldItemMap.putIfAbsent(item.getName(), item.GetComputedSubtotal());
+        }
+
+        ArrayList<PieEntry> soldItemsEntry = new ArrayList<>();
+        for (Map.Entry<String, Double> set : tempSoldItemMap.entrySet()) {
+            soldItemsEntry.add(new PieEntry(set.getValue().floatValue(), set.getKey().toString()));
+        }
+
+        PieDataSet pieDataSetSales = new PieDataSet(soldItemsEntry, "Top Sold Items");
+        pieDataSetSales.setColors(ColorTemplate.MATERIAL_COLORS);
         pieDataSetSales.setValueTextColor(Color.BLACK);
         pieDataSetSales.setValueTextSize(18f);
 
@@ -236,21 +260,12 @@ public class SalesForm extends AppCompatActivity {
         pChartProducts.invalidate();
     }
 
-    private ArrayList<PieEntry> soldItemsEntry() {
-        ArrayList<PieEntry> soldItemsEntry = new ArrayList<>();
-        soldItemsEntry.add(new PieEntry(500, "2016"));
-        soldItemsEntry.add(new PieEntry(600, "2017"));
-        soldItemsEntry.add(new PieEntry(750, "2018"));
-        soldItemsEntry.add(new PieEntry(800, "2019"));
-        soldItemsEntry.add(new PieEntry(900, "2020"));
-        soldItemsEntry.add(new PieEntry(1000, "2021"));
-        return soldItemsEntry;
-    }
-
-
     private void selectedDuration(String dateDuration) {
-
         LocalDate firstDay, lastDay;
+
+        SoldItemReport soldItem = new SoldItemReport();
+        soldItem.setStoreId(storeId);
+
         switch (dateDuration) {
             case "Today":
                 startDate = dateTimeFormatter.format(currentDate);
@@ -281,6 +296,7 @@ public class SalesForm extends AppCompatActivity {
 
                 btnStartDate.setText(startDateShort);
                 btnEndDate.setText(endDateShort);
+
                 break;
 
             case "Last Week":
@@ -362,7 +378,6 @@ public class SalesForm extends AppCompatActivity {
                     public void getList(ArrayList<Sales> salesArrayList) {
                         if (salesArrayList != null || (!salesArrayList.isEmpty())) {
                             tempSalesArrayList = salesArrayList;
-
                             if (salesArrayList.size() > 0) {
                                 LocalDate start = LocalDate.parse(salesArrayList.get(0).getCreated_at());
                                 LocalDate end = LocalDate.parse(salesArrayList.get(salesArrayList.size() - 1).getCreated_at());
@@ -375,6 +390,22 @@ public class SalesForm extends AppCompatActivity {
                         }
                     }
                 });
+
+
+                soldItem.setStoreId(storeId);
+                soldItem.GetAll(new IEntityModelListener<SoldItemReport>() {
+                    @Override
+                    public void retrieve(SoldItemReport m) {
+
+                    }
+
+                    @Override
+                    public void getList(ArrayList<SoldItemReport> soldItemReports) {
+                        tempSoldItemReportsList = soldItemReports;
+                        populatePieChartData(soldItemReports);
+                    }
+                });
+
                 return;
 
             case "Single Day":
@@ -384,18 +415,36 @@ public class SalesForm extends AppCompatActivity {
                     calendar.setTimeInMillis(selection);
                     String formattedDate = simpleDateFormatter.format(calendar.getTime());
                     String formattedShortDate = simpleDateFormatterShort.format(calendar.getTime());
-                    sales.GetAllByDateRange(formattedDate, formattedDate, new IEntityModelListener<Sales>() {
-                        @Override
-                        public void retrieve(Sales m) {
 
-                        }
+                    startDate = formattedDate;
+                    endDate = formattedDate;
 
-                        @Override
-                        public void getList(ArrayList<Sales> salesArrayList) {
-                            tempSalesArrayList = salesArrayList;
 
-                        }
-                    });
+//                    sales.GetAllByDateRange(formattedDate, formattedDate, new IEntityModelListener<Sales>() {
+//                        @Override
+//                        public void retrieve(Sales m) {
+//
+//                        }
+//
+//                        @Override
+//                        public void getList(ArrayList<Sales> salesArrayList) {
+//                            tempSalesArrayList = salesArrayList;
+//
+//                        }
+//                    });
+//
+//                    soldItem.GetAllByDateRange(startDate, endDate, new IEntityModelListener<SoldItemReport>() {
+//                        @Override
+//                        public void retrieve(SoldItemReport m) {
+//
+//                        }
+//
+//                        @Override
+//                        public void getList(ArrayList<SoldItemReport> soldItemReports) {
+//                            tempSoldItemReportsList = soldItemReports;
+//                            populatePieChartData(soldItemReports);
+//                        }
+//                    });
 
                     btnStartDate.setText(formattedShortDate);
                     btnEndDate.setText(formattedShortDate);
@@ -413,6 +462,20 @@ public class SalesForm extends AppCompatActivity {
                 break;
         }
 
+
+        soldItem.GetAllByDateRange(startDate, endDate, new IEntityModelListener<SoldItemReport>() {
+            @Override
+            public void retrieve(SoldItemReport m) {
+
+            }
+
+            @Override
+            public void getList(ArrayList<SoldItemReport> soldItemReports) {
+                tempSoldItemReportsList = soldItemReports;
+                populatePieChartData(soldItemReports);
+            }
+        });
+
         sales.GetAllByDateRange(startDate, endDate, new IEntityModelListener<Sales>() {
             @Override
             public void retrieve(Sales m) {
@@ -422,9 +485,12 @@ public class SalesForm extends AppCompatActivity {
             @Override
             public void getList(ArrayList<Sales> salesArrayList) {
                 tempSalesArrayList = salesArrayList;
+                Toast.makeText(SalesForm.this, "salesArrayList: " + salesArrayList.size(), Toast.LENGTH_SHORT).show();
 
             }
         });
+
+        Toast.makeText(this, "startDate: " + startDate + " endDate: " + endDate, Toast.LENGTH_SHORT).show();
 
     }
 

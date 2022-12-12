@@ -10,9 +10,11 @@ import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.adapters.SoldItemRCVAdapter;
 import com.example.inventorymanagementsystem.interfaces.IEntityModelListener;
 import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
+import com.example.inventorymanagementsystem.interfaces.TransactionStatusListener;
 import com.example.inventorymanagementsystem.libraries.MoneyLibrary;
 import com.example.inventorymanagementsystem.models.Sales;
 import com.example.inventorymanagementsystem.models.SoldItem;
+import com.example.inventorymanagementsystem.models.SoldItemReport;
 import com.example.inventorymanagementsystem.models.Staff;
 
 import android.content.Context;
@@ -113,6 +115,7 @@ public class TransactionDetailsActivity extends AppCompatActivity {
                 public void getList(ArrayList<Sales> salesArrayList) {
 
                 }
+
             });
 
             soldItem.setStoreId(storeId);
@@ -125,6 +128,20 @@ public class TransactionDetailsActivity extends AppCompatActivity {
 
                 @Override
                 public void getList(ArrayList<SoldItem> soldItems) {
+                    int count = 1;
+                    for (SoldItem sold_temp : soldItems) {
+                        SoldItemReport soldItemReport = new SoldItemReport();
+                        soldItemReport.setSoldItemToReport(sold_temp);
+                        soldItemReport.Update(new TransactionStatusListener() {
+                            @Override
+                            public void checkStatus(boolean status) {
+                                Toast.makeText(TransactionDetailsActivity.this, "Created: " + status, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        Toast.makeText(TransactionDetailsActivity.this, "Created: " + count, Toast.LENGTH_SHORT).show();
+                        count++;
+                    }
+
                     initRCTransactionItems(soldItems);
                 }
             });

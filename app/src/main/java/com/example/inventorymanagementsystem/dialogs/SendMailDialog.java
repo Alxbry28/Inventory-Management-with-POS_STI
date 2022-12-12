@@ -34,21 +34,16 @@ public class SendMailDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.dialog_send_email_sales,null);
         EditText etEmail = view.findViewById(R.id.etEmail);
         builder.setView(view).setTitle("Send Mail Sales Report");
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        builder.setNegativeButton("Cancel", (DialogInterface dialog, int which) -> {
                 dialog.dismiss();
-            }
         });
-        builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+
+        builder.setPositiveButton("Send", (DialogInterface dialog, int which) -> {
                 dialog.dismiss();
                 mailerService = new MailerService();
                 mailerService.setContext(context);
                 mailerService.setReceiverEmail(etEmail.getText().toString());
                 mailerService.sendMailTest();
-            }
         });
         return builder.create();
     }
