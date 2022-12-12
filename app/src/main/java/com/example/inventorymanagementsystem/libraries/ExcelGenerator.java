@@ -15,14 +15,11 @@ import java.io.FileOutputStream;
 public class ExcelGenerator {
 
     private HSSFWorkbook hssfWorkbook;
-    private File filePath;
+//    private File filePath;
     private Context context;
     public ExcelGenerator(Context context) {
         this.context = context;
         hssfWorkbook = new HSSFWorkbook();
-//        filePath = new File( context.getFilesDir() + "/POS_INVENTORY/test.xls");
-        filePath = new File( Environment.getDataDirectory() + "POS_INVENTORY/test.xls");
-//        filePath = new File( Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/POS_INVENTORY/test.xls");
     }
 
     public boolean testGenerate() {
@@ -30,6 +27,8 @@ public class ExcelGenerator {
         HSSFRow hssfRow = hssfSheet.createRow(0);
         HSSFCell hssfCell = hssfRow.createCell(0);
         hssfCell.setCellValue("Testing Geneation of Excel");
+
+        File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "testing.xlsx");
 
         try {
             if (!filePath.exists()){
@@ -53,8 +52,33 @@ public class ExcelGenerator {
 
     }
 
-    private void generateSales() {
+    private boolean generateSales() {
+        HSSFSheet hssfSheet = hssfWorkbook.createSheet();
+        HSSFRow hssfRow = hssfSheet.createRow(0);
+        HSSFCell hssfCell = hssfRow.createCell(0);
+        hssfCell.setCellValue("Generated Sales");
 
+        File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "sales.xlsx");
+
+        try {
+            if (!filePath.exists()){
+                filePath.createNewFile();
+            }
+
+            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+            hssfWorkbook.write(fileOutputStream);
+
+            if (fileOutputStream != null){
+                fileOutputStream.flush();
+                fileOutputStream.close();
+            }
+
+            return filePath.exists();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
 
     }
 }

@@ -1,5 +1,6 @@
 package com.example.inventorymanagementsystem.views.staff;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -13,14 +14,17 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.inventorymanagementsystem.MainActivity;
 import com.example.inventorymanagementsystem.dialogs.DurationChoiceDialog;
 import com.example.inventorymanagementsystem.dialogs.MDCDatePickerDialog;
+import com.example.inventorymanagementsystem.dialogs.SendMailDialog;
 import com.example.inventorymanagementsystem.interfaces.IDurationChoiceDialogListener;
 import com.example.inventorymanagementsystem.interfaces.IEntityModelListener;
 import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
@@ -28,6 +32,7 @@ import com.example.inventorymanagementsystem.interfaces.UserModelListener;
 import com.example.inventorymanagementsystem.libraries.ExcelGenerator;
 import com.example.inventorymanagementsystem.models.Sales;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -135,7 +140,6 @@ public class SalesForm extends AppCompatActivity {
             }
         });
 
-
         btnSelectDuration = findViewById(R.id.btnSelectDuration);
         selectedDuration(btnSelectDuration.getText().toString());
         btnSelectDuration.setOnClickListener(v -> {
@@ -165,24 +169,24 @@ public class SalesForm extends AppCompatActivity {
         initPieChartSoldItems();
 
         btnSendMail = findViewById(R.id.btnSendMail);
-        btnSendMail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(SalesForm.this, "receiverMail " + receiverEmail, Toast.LENGTH_SHORT).show();
-                mailerService.setContext(SalesForm.this);
-                mailerService.setReceiverEmail(receiverEmail);
-                mailerService.sendMailTest();
-            }
+        btnSendMail.setOnClickListener((View v) -> {
+
+            SendMailDialog sendMailDialog = new SendMailDialog(SalesForm.this);
+            sendMailDialog.show(getSupportFragmentManager(), "DIALOG_SEND_EMAIL");
+
+//                Toast.makeText(SalesForm.this, "receiverMail " + receiverEmail, Toast.LENGTH_SHORT).show();
+//                mailerService.setContext(SalesForm.this);
+//                mailerService.setReceiverEmail(receiverEmail);
+//                mailerService.sendMailTest();
         });
 
         btnGenerateReport = findViewById(R.id.btnGenerateReport);
-        btnGenerateReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnGenerateReport.setOnClickListener((View v) -> {
                 boolean isGenerated = excelGenerator.testGenerate();
-                Toast.makeText(SalesForm.this, "isGenerated: " + isGenerated, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SalesForm.this, "isGenerated: " +  isGenerated, Toast.LENGTH_LONG).show();
+
             }
-        });
+        );
 
 
     }

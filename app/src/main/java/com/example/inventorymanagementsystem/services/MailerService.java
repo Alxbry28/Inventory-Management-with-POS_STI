@@ -5,15 +5,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.text.Html;
 import android.util.Log;
 
 import com.example.inventorymanagementsystem.interfaces.TransactionStatusListener;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -51,7 +57,6 @@ public class MailerService {
     }
 
     public void sendMailTest() {
-        receiverEmail = "testingsystem28@gmail.com";
         String subject = "Subject: Testing Java Mailer";
         String message = "Hello this is your first message.";
 
@@ -71,31 +76,24 @@ public class MailerService {
             mimeMessage.setSubject(subject);
             mimeMessage.setText(message);
 
-	    /*
-	     * Use the following approach instead of the above line if
-	     * you want to control the MIME type of the attached file.
-	     * Normally you should never need to do this.
-	     *
-	    FileDataSource fds = new FileDataSource(filename) {
-		public String getContentType() {
-		    return "application/octet-stream";
-		}
-	    };
-	    mbp2.setDataHandler(new DataHandler(fds));
-	    mbp2.setFileName(fds.getName());
-	     */
+            File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "test2.xlsx");
 
+            String filename = filePath.getAbsolutePath();
+            DataSource source = new FileDataSource(filePath);
+
+            mimeMessage.setSentDate(new Date());
             // create the second message part
-//            MimeBodyPart mbpAttachments = new MimeBodyPart();
+            MimeBodyPart mbpAttachments = new MimeBodyPart();
 
-//            // attach the file to the message
-//            mbpAttachments.attachFile(filename);
+            // attach the file to the message
+            mbpAttachments.setDataHandler(new DataHandler(source));
+            mbpAttachments.attachFile(filePath);
 
             // create the Multipart and add its parts to it
-//            Multipart mp = new MimeMultipart();
-//            mp.addBodyPart(mbpAttachments);
-//
-//            mimeMessage.setContent(mp);
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mbpAttachments);
+
+            mimeMessage.setContent(multipart);
 
             SendMail sendMail = new SendMail();
             sendMail.setContext(context);
@@ -105,6 +103,8 @@ public class MailerService {
             ae.printStackTrace();
         } catch (MessagingException me) {
             me.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
@@ -129,6 +129,24 @@ public class MailerService {
             mimeMessage.setSubject(subject);
             mimeMessage.setText(message);
 
+            File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "sales_generated.xlsx");
+
+            String filename = filePath.getAbsolutePath();
+            DataSource source = new FileDataSource(filePath);
+
+            mimeMessage.setSentDate(new Date());
+            // create the second message part
+            MimeBodyPart mbpAttachments = new MimeBodyPart();
+
+            // attach the file to the message
+            mbpAttachments.setDataHandler(new DataHandler(source));
+            mbpAttachments.attachFile(filePath);
+
+            // create the Multipart and add its parts to it
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mbpAttachments);
+
+            mimeMessage.setContent(multipart);
             SendMail sendMail = new SendMail();
             sendMail.setContext(context);
             sendMail.execute(mimeMessage);
@@ -137,6 +155,8 @@ public class MailerService {
             ae.printStackTrace();
         } catch (MessagingException me) {
             me.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -173,7 +193,7 @@ public class MailerService {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = ProgressDialog.show(context, "Please Wait", "Sending Mail To Store Owner....", true);
+            progressDialog = ProgressDialog.show(context, "Please Wait", "Sending Mail....", true);
         }
 
         @Override
