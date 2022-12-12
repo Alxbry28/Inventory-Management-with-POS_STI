@@ -130,7 +130,11 @@ public class SalesForm extends AppCompatActivity {
 
         btnBack = findViewById(R.id.btnback);
         btnBack.setOnClickListener(v -> {
+            if(Sales.FILE_PATH.exists()){
+                Sales.FILE_PATH.delete();
+            }
             startActivity(new Intent(SalesForm.this, HomeActivity.class));
+            finish();
         });
 
         sharedPreferences = getSharedPreferences(MainActivity.TAG, Context.MODE_PRIVATE);
@@ -214,9 +218,15 @@ public class SalesForm extends AppCompatActivity {
 
                 }
         );
+        if(Sales.FILE_PATH.exists()){
+            Sales.FILE_PATH.delete();
+        }
     }
 
     private void generateExcelDetails() {
+        if(Sales.FILE_PATH.exists()){
+            Sales.FILE_PATH.delete();
+        }
         excelGenerator.setBusinessName(businessName.toUpperCase());
         excelGenerator.setStartDate(startDateShort);
         excelGenerator.setEndDate(endDateShort);
@@ -266,7 +276,6 @@ public class SalesForm extends AppCompatActivity {
             barDataSales.addDataSet(barDataSetSales1);
             count++;
         }
-
 
         bChartSales.setData(barDataSales);
         bChartSales.getDescription().setEnabled(true);
