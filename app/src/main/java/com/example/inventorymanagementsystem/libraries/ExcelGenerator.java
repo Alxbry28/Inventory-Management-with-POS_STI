@@ -1,5 +1,6 @@
 package com.example.inventorymanagementsystem.libraries;
 
+import android.content.Context;
 import android.os.Environment;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -15,15 +16,16 @@ public class ExcelGenerator {
 
     private HSSFWorkbook hssfWorkbook;
     private File filePath;
-
-    public ExcelGenerator() {
+    private Context context;
+    public ExcelGenerator(Context context) {
+        this.context = context;
         hssfWorkbook = new HSSFWorkbook();
-        filePath = new File(Environment.getExternalStorageDirectory() + "/POS_INVENTORY/test.xls");
-
+//        filePath = new File( context.getFilesDir() + "/POS_INVENTORY/test.xls");
+        filePath = new File( Environment.getDataDirectory() + "POS_INVENTORY/test.xls");
+//        filePath = new File( Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/POS_INVENTORY/test.xls");
     }
 
-    private boolean testGenerate() {
-
+    public boolean testGenerate() {
         HSSFSheet hssfSheet = hssfWorkbook.createSheet();
         HSSFRow hssfRow = hssfSheet.createRow(0);
         HSSFCell hssfCell = hssfRow.createCell(0);
@@ -37,13 +39,11 @@ public class ExcelGenerator {
             FileOutputStream fileOutputStream = new FileOutputStream(filePath);
             hssfWorkbook.write(fileOutputStream);
 
-
-
-
             if (fileOutputStream != null){
                 fileOutputStream.flush();
                 fileOutputStream.close();
             }
+
             return filePath.exists();
 
         } catch (Exception e) {

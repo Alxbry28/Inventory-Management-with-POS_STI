@@ -25,6 +25,7 @@ import com.example.inventorymanagementsystem.interfaces.IDurationChoiceDialogLis
 import com.example.inventorymanagementsystem.interfaces.IEntityModelListener;
 import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
 import com.example.inventorymanagementsystem.interfaces.UserModelListener;
+import com.example.inventorymanagementsystem.libraries.ExcelGenerator;
 import com.example.inventorymanagementsystem.models.Sales;
 
 import java.text.SimpleDateFormat;
@@ -78,10 +79,11 @@ public class SalesForm extends AppCompatActivity {
     private TextView tvEmptyTransaction;
     private Sales sales;
     private ArrayList<Sales> tempSalesArrayList;
-    private MailerService mailerService;
     private User userOwner;
     private Staff staff;
     private String receiverEmail;
+    private MailerService mailerService;
+    private ExcelGenerator excelGenerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,8 @@ public class SalesForm extends AppCompatActivity {
 
         tempSalesArrayList = new ArrayList<>();
         mailerService = new MailerService();
+        excelGenerator = new ExcelGenerator(SalesForm.this);
+
         fragmentManager = getSupportFragmentManager();
         currentDate = LocalDate.now();
         btnStartDate = findViewById(R.id.btnStartDate);
@@ -170,6 +174,16 @@ public class SalesForm extends AppCompatActivity {
                 mailerService.sendMailTest();
             }
         });
+
+        btnGenerateReport = findViewById(R.id.btnGenerateReport);
+        btnGenerateReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isGenerated = excelGenerator.testGenerate();
+                Toast.makeText(SalesForm.this, "isGenerated: " + isGenerated, Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 
