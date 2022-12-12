@@ -1,5 +1,6 @@
 package com.example.inventorymanagementsystem.models;
 
+import android.os.Environment;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,12 +34,25 @@ public class Sales implements IModelRepository<Sales> {
     private boolean isDeleted;
 
     public static final String TABLE = "tblSales";
+    public static final String FILENAME = "sales_generated_report.xls";
+    public static final File FILE_PATH = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), Sales.FILENAME);
+
+
     private RealtimeFirebaseDB realtimeFirebaseDB;
     private DatabaseReference dbRef;
 
     public Sales(){
         this.realtimeFirebaseDB = new RealtimeFirebaseDB();
         this.dbRef = realtimeFirebaseDB.SalesTable();
+    }
+
+    // Unit Testing Purposes
+    public Sales(int quantity, double amountPayable, double amountReceived, double amountChange, String created_at){
+        this.quantity = quantity;
+        this.amountPayable = amountPayable;
+        this.amountReceived = amountReceived;
+        this.amountChange = amountChange;
+        this.created_at = created_at;
     }
 
     @Override

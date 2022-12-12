@@ -34,7 +34,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -44,6 +46,7 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 public class TransactionsForm extends AppCompatActivity {
 
@@ -102,12 +105,9 @@ public class TransactionsForm extends AppCompatActivity {
         btnSelectDuration.setOnClickListener(v -> {
             durationChoiceDialog.show(fragmentManager, "DURATION_CHOICE_DIALOG");
             durationChoiceDialog.setChosenDuration(btnSelectDuration.getText().toString());
-            durationChoiceDialog.setiDurationChoiceDialogListener(new IDurationChoiceDialogListener() {
-                @Override
-                public void setChosenDuration(String chosenDuration) {
+            durationChoiceDialog.setiDurationChoiceDialogListener((String chosenDuration) -> {
                     btnSelectDuration.setText(chosenDuration);
                     selectedDuration(chosenDuration);
-                }
             });
         });
 
@@ -259,8 +259,12 @@ public class TransactionsForm extends AppCompatActivity {
                             tempSalesArrayList = salesArrayList;
 
                             if(salesArrayList.size() > 0){
-                                LocalDate start = LocalDate.parse(salesArrayList.get(0).getCreated_at());
-                                LocalDate end = LocalDate.parse(salesArrayList.get(salesArrayList.size() - 1).getCreated_at());
+                                List<Sales> sortedSales = salesArrayList.stream()
+                                        .sorted(Comparator.comparing(Sales::getCreated_at)).collect(Collectors.toList());
+
+                                LocalDate start = LocalDate.parse(sortedSales.get(0).getCreated_at());
+                                LocalDate end = LocalDate.parse(sortedSales.get(salesArrayList.size() - 1).getCreated_at());
+
                                 startDateShort = dateTimeDateShort.format(start);
                                 endDateShort = dateTimeDateShort.format(end);
                                 btnStartDate.setText(startDateShort);
@@ -292,10 +296,8 @@ public class TransactionsForm extends AppCompatActivity {
                             initRCTransaction(salesArrayList);
                         }
                     });
-
                     btnStartDate.setText(formattedShortDate);
                     btnEndDate.setText(formattedShortDate);
-
                 });
                 return;
 

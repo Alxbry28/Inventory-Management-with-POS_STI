@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.example.inventorymanagementsystem.database.SQLiteDB;
 import com.example.inventorymanagementsystem.interfaces.IEntityModelListener;
 import com.example.inventorymanagementsystem.models.Sales;
-import com.example.inventorymanagementsystem.views.*;
 import com.example.inventorymanagementsystem.dialogs.POSProductSelectionDialog;
 import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
 import com.example.inventorymanagementsystem.interfaces.StoreModelListener;

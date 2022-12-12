@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class SoldItem implements IModelRepository<SoldItem> {
+public class SoldItemReport implements IModelRepository<SoldItemReport> {
 
     private int quantity;
     private String id, userId,  productId, salesId, storeId;
@@ -28,34 +28,51 @@ public class SoldItem implements IModelRepository<SoldItem> {
     private boolean isDeleted;
     private String receiptNo;
 
-    public static final String TABLE = "tblSoldItems";
+    public static final String TABLE = "tblSoldItemReport";
     private RealtimeFirebaseDB realtimeFirebaseDB;
     private DatabaseReference dbRef;
 
-    public SoldItem(){
+    public SoldItemReport(){
         this.realtimeFirebaseDB = new RealtimeFirebaseDB();
-        this.dbRef = realtimeFirebaseDB.SoldItemTable();
+        this.dbRef = realtimeFirebaseDB.SoldItemReportTable();
     }
 
-    // Unit Testing Purposes
-    public SoldItem(String name, String category, int quantity, double productPrice, String created_at) {
+    public SoldItemReport(String name, String category, int quantity, double productPrice, String created_at, String created_time) {
         this.quantity = quantity;
         this.name = name;
         this.category = category;
         this.productPrice = productPrice;
         this.created_at = created_at;
+        this.created_time = created_time;
+    }
+
+    public void setSoldItemToReport(SoldItem soldItem) {
+        this.quantity = soldItem.getQuantity();
+        this.id = soldItem.getId();
+        this.userId = soldItem.getUserId();
+        this.productId = soldItem.getProductId();
+        this.salesId = soldItem.getSalesId();
+        this.storeId = soldItem.getStoreId();
+        this.name = soldItem.getName();
+        this.category = soldItem.getCategory();
+        this.productPrice = soldItem.getProductPrice();
+        this.totalPrice = soldItem.GetComputedSubtotal();
+        this.created_at = soldItem.getCreated_at();
+        this.updated_at = soldItem.getUpdated_at();
+        this.created_time = soldItem.getCreated_time();
+        this.updated_time = soldItem.getUpdated_time();
     }
 
     @Override
     public void Create(TransactionStatusListener transactionStatus) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-        this.setId(dbRef.push().getKey());
+        this.setId(this.getId());
         this.setCreated_at(date);
         this.setUpdated_at(date);
         this.setCreated_time(time);
         this.setUpdated_time(time);
-        dbRef.child(this.getStoreId()).child(this.getSalesId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
@@ -66,26 +83,28 @@ public class SoldItem implements IModelRepository<SoldItem> {
         String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
         this.setUpdated_at(date);
         this.setUpdated_time(time);
-        dbRef.child(this.getStoreId()).child(this.getSalesId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+//        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+        dbRef.child(this.getStoreId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
     @Override
     public void Delete(TransactionStatusListener transactionStatus) {
-        dbRef.child(this.getStoreId()).child(this.getSalesId()).child(this.getId()).removeValue().addOnCompleteListener(task -> {
+        dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
     @Override
-    public void GetById(IEntityModelListener<SoldItem> entityModelListener) {
-        Query query = dbRef.child(this.getStoreId()).child(this.getSalesId()).child(this.getId());
+    public void GetById(IEntityModelListener<SoldItemReport> entityModelListener) {
+        Query query = dbRef.child(this.getId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    SoldItem soldItemExist = snapshot.getValue(SoldItem.class);
+                    SoldItemReport soldItemExist = snapshot.getValue(SoldItemReport.class);
                     entityModelListener.retrieve(soldItemExist);
                 }
             }
@@ -94,36 +113,44 @@ public class SoldItem implements IModelRepository<SoldItem> {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
         });
     }
 
-    public void GetBySalesId(IEntityModelListener<SoldItem> entityModelListener) {
-        Query query = dbRef.child(this.getStoreId()).child(this.getSalesId());
+    public void GetAllBySalesId(IEntityModelListener<SoldItemReport> entityModelListener) {
+        Query query = dbRef.orderByChild("salesId").equalTo(this.getSalesId());
+
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    SoldItem soldItemExist = snapshot.getValue(SoldItem.class);
-                    entityModelListener.retrieve(soldItemExist);
+                ArrayList<SoldItemReport> soldItemsList = new ArrayList<>();
+                for (DataSnapshot soldItemSnapshot : snapshot.getChildren()) {
+                    SoldItemReport soldItemExist = soldItemSnapshot.getValue(SoldItemReport.class);
+                    soldItemsList.add(soldItemExist);
                 }
+
+                entityModelListener.getList(soldItemsList);
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
         });
     }
 
     @Override
-    public void GetAll(IEntityModelListener<SoldItem> entityModelListener) {
-        Query query = dbRef.child(this.getStoreId()).child(this.getSalesId());
+    public void GetAll(IEntityModelListener<SoldItemReport> entityModelListener) {
+//        Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId());
+        Query query = dbRef.child(this.getStoreId());
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<SoldItem> soldItemsList = new ArrayList<>();
+                ArrayList<SoldItemReport> soldItemsList = new ArrayList<>();
                 for (DataSnapshot soldItemSnapshot : snapshot.getChildren()) {
-                    SoldItem soldItemExist = soldItemSnapshot.getValue(SoldItem.class);
+                    SoldItemReport soldItemExist = soldItemSnapshot.getValue(SoldItemReport.class);
                     soldItemsList.add(soldItemExist);
                 }
                 entityModelListener.getList(soldItemsList);
@@ -136,19 +163,18 @@ public class SoldItem implements IModelRepository<SoldItem> {
         });
     }
 
-    public void GetAllIds(IEntityModelListener<String> entityModelListener) {
-        Query query = dbRef.child(this.getStoreId());
+    public void GetAllByDateRange(String startDate, String endDate, IEntityModelListener<SoldItemReport> entityModelListener) {
+        Query query = dbRef.child(this.getStoreId()).orderByChild("created_at").startAt(startDate).endAt(endDate);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<String> soldItemsIdList = new ArrayList<>();
+                ArrayList<SoldItemReport> soldItemsList = new ArrayList<>();
                 for (DataSnapshot soldItemSnapshot : snapshot.getChildren()) {
-                    String soldItemExistId = soldItemSnapshot.getKey().toString();
-                    soldItemsIdList.add(soldItemExistId);
+                    SoldItemReport soldItemExist = soldItemSnapshot.getValue(SoldItemReport.class);
+                    soldItemsList.add(soldItemExist);
                 }
-                entityModelListener.getList(soldItemsIdList);
+                entityModelListener.getList(soldItemsList);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
