@@ -1,13 +1,16 @@
 package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +23,8 @@ import com.example.inventorymanagementsystem.dialogs.DurationChoiceDialog;
 import com.example.inventorymanagementsystem.dialogs.MDCDatePickerDialog;
 import com.example.inventorymanagementsystem.interfaces.IDurationChoiceDialogListener;
 import com.example.inventorymanagementsystem.interfaces.IEntityModelListener;
+import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
+import com.example.inventorymanagementsystem.interfaces.UserModelListener;
 import com.example.inventorymanagementsystem.models.Sales;
 
 import java.text.SimpleDateFormat;
@@ -34,6 +39,9 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import com.example.inventorymanagementsystem.R;
+import com.example.inventorymanagementsystem.models.Staff;
+import com.example.inventorymanagementsystem.models.User;
+import com.example.inventorymanagementsystem.services.MailerService;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
@@ -51,6 +59,7 @@ public class SalesForm extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private String businessName, storeId, userId;
     private Button btnBack, btnSelectDuration, btnStartDate, btnEndDate;
+    private Button btnSendMail, btnGenerateReport;
     private PieChart pChartProducts;
     private BarChart bChartSales;
     private ArrayList<Sales> salesArrayList;
@@ -58,7 +67,7 @@ public class SalesForm extends AppCompatActivity {
     private String startDate, endDate, startDateShort, endDateShort;
     private String dateToday, dateTodayShorted;
     private MaterialDatePicker<Long> materialDatePickerStartDate, materialDatePickerEndDate;
-    private MaterialDatePicker<Long>  materialDatePickerRangeStartDate, materialDatePickerRangeEndDate;
+    private MaterialDatePicker<Long> materialDatePickerRangeStartDate, materialDatePickerRangeEndDate;
     private MaterialDatePicker<Long> materialDatePickerSingleDate, materialDatePickerRangeDate;
     private SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat simpleDateFormatterShort = new SimpleDateFormat("dd MMM yyyy");
@@ -69,17 +78,27 @@ public class SalesForm extends AppCompatActivity {
     private TextView tvEmptyTransaction;
     private Sales sales;
     private ArrayList<Sales> tempSalesArrayList;
+    private MailerService mailerService;
+    private User userOwner;
+    private Staff staff;
+    private String receiverEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_form);
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
+
         tempSalesArrayList = new ArrayList<>();
+        mailerService = new MailerService();
         fragmentManager = getSupportFragmentManager();
         currentDate = LocalDate.now();
         btnStartDate = findViewById(R.id.btnStartDate);
         btnEndDate = findViewById(R.id.btnEndDate);
         sales = new Sales();
+        staff= new Staff();
+        userOwner = new User();
         initDialog();
 
         btnBack = findViewById(R.id.btnback);
@@ -91,8 +110,27 @@ public class SalesForm extends AppCompatActivity {
         businessName = sharedPreferences.getString("businessName", null);
         storeId = sharedPreferences.getString("storeId", null);
         userId = sharedPreferences.getString("userId", null);
-
+        staff.setStoreId(storeId);
         sales.setStoreId(storeId);
+
+        staff.GetBusinessOwner(new StaffModelListener() {
+            @Override
+            public void retrieveStaff(Staff staff) {
+                userOwner.setId(staff.getUserId());
+                userOwner.GetById(new UserModelListener() {
+                    @Override
+                    public void retrieveUser(User user) {
+                        receiverEmail = user.getEmail();
+                    }
+                });
+            }
+
+            @Override
+            public void getStaffList(ArrayList<Staff> staffList) {
+
+            }
+        });
+
 
         btnSelectDuration = findViewById(R.id.btnSelectDuration);
         selectedDuration(btnSelectDuration.getText().toString());
@@ -122,10 +160,22 @@ public class SalesForm extends AppCompatActivity {
         initBarChartSales();
         initPieChartSoldItems();
 
+        btnSendMail = findViewById(R.id.btnSendMail);
+        btnSendMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(SalesForm.this, "receiverMail " + receiverEmail, Toast.LENGTH_SHORT).show();
+                mailerService.setContext(SalesForm.this);
+                mailerService.setReceiverEmail(receiverEmail);
+                mailerService.sendMailTest();
+            }
+        });
+
     }
 
-    private void initBarChartSales(){
+    private void initBarChartSales() {
         bChartSales = findViewById(R.id.bChartSales);
+//        BarDataSet barDataSetSales = new BarDataSet(salesEntry(), "Sales");
         BarDataSet barDataSetSales = new BarDataSet(salesEntry(), "Sales");
         barDataSetSales.setColors(ColorTemplate.COLORFUL_COLORS);
         barDataSetSales.setValueTextColor(Color.BLACK);
@@ -138,19 +188,20 @@ public class SalesForm extends AppCompatActivity {
         bChartSales.invalidate();
     }
 
-    private ArrayList<BarEntry> salesEntry(){
+    private ArrayList<BarEntry> salesEntry() {
         ArrayList<BarEntry> salesEntry = new ArrayList<>();
-        salesEntry.add(new BarEntry(2f,13));
+        salesEntry.add(new BarEntry(2f, 13));
 //        salesEntry.add(new BarEntry("12/01/2022",13));
-        salesEntry.add(new BarEntry(3f,25));
-        salesEntry.add(new BarEntry(1f,18));
-        salesEntry.add(new BarEntry(4f,14));
-        salesEntry.add(new BarEntry(6f,28));
-        salesEntry.add(new BarEntry(5f,22));
+        salesEntry.add(new BarEntry(3f, 25));
+        salesEntry.add(new BarEntry(1f, 18));
+        salesEntry.add(new BarEntry(4f, 14));
+        salesEntry.add(new BarEntry(6f, 28));
+        salesEntry.add(new BarEntry(5f, 22));
         return salesEntry;
 
     }
-    private void initPieChartSoldItems(){
+
+    private void initPieChartSoldItems() {
         pChartProducts = findViewById(R.id.pChartProducts);
         PieDataSet pieDataSetSales = new PieDataSet(soldItemsEntry(), "Top Sold Items");
         pieDataSetSales.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -167,14 +218,14 @@ public class SalesForm extends AppCompatActivity {
         pChartProducts.invalidate();
     }
 
-    private ArrayList<PieEntry> soldItemsEntry(){
+    private ArrayList<PieEntry> soldItemsEntry() {
         ArrayList<PieEntry> soldItemsEntry = new ArrayList<>();
-        soldItemsEntry.add(new PieEntry(500,"2016"));
-        soldItemsEntry.add(new PieEntry(600,"2017"));
-        soldItemsEntry.add(new PieEntry(750,"2018"));
-        soldItemsEntry.add(new PieEntry(800,"2019"));
-        soldItemsEntry.add(new PieEntry(900,"2020"));
-        soldItemsEntry.add(new PieEntry(1000,"2021"));
+        soldItemsEntry.add(new PieEntry(500, "2016"));
+        soldItemsEntry.add(new PieEntry(600, "2017"));
+        soldItemsEntry.add(new PieEntry(750, "2018"));
+        soldItemsEntry.add(new PieEntry(800, "2019"));
+        soldItemsEntry.add(new PieEntry(900, "2020"));
+        soldItemsEntry.add(new PieEntry(1000, "2021"));
         return soldItemsEntry;
     }
 
@@ -291,10 +342,10 @@ public class SalesForm extends AppCompatActivity {
 
                     @Override
                     public void getList(ArrayList<Sales> salesArrayList) {
-                        if(salesArrayList != null || (!salesArrayList.isEmpty())){
+                        if (salesArrayList != null || (!salesArrayList.isEmpty())) {
                             tempSalesArrayList = salesArrayList;
 
-                            if(salesArrayList.size() > 0){
+                            if (salesArrayList.size() > 0) {
                                 LocalDate start = LocalDate.parse(salesArrayList.get(0).getCreated_at());
                                 LocalDate end = LocalDate.parse(salesArrayList.get(salesArrayList.size() - 1).getCreated_at());
                                 startDateShort = dateTimeDateShort.format(start);
@@ -358,7 +409,8 @@ public class SalesForm extends AppCompatActivity {
         });
 
     }
-    private void setFirstEventDateRange(){
+
+    private void setFirstEventDateRange() {
         materialDatePickerStartDate.addOnPositiveButtonClickListener(selection -> {
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
             calendar.setTimeInMillis(selection);
@@ -407,9 +459,9 @@ public class SalesForm extends AppCompatActivity {
 
     }
 
-    private void firstEventListener(){
-        View.OnClickListener buttonRangeClickListener = (View v) ->{
-            switch (v.getId()){
+    private void firstEventListener() {
+        View.OnClickListener buttonRangeClickListener = (View v) -> {
+            switch (v.getId()) {
                 case R.id.btnStartDate:
                     materialDatePickerStartDate.show(fragmentManager, "DATE_PICKER_START_DATE");
                     break;
@@ -423,9 +475,9 @@ public class SalesForm extends AppCompatActivity {
         btnEndDate.setOnClickListener(buttonRangeClickListener);
     }
 
-    private void secondEventListener(){
-        View.OnClickListener buttonRangeClickListener = (View v) ->{
-            switch (v.getId()){
+    private void secondEventListener() {
+        View.OnClickListener buttonRangeClickListener = (View v) -> {
+            switch (v.getId()) {
                 case R.id.btnStartDate:
                     materialDatePickerRangeStartDate.show(fragmentManager, "DATE_PICKER_RANGE_START_DATE");
                     return;
@@ -439,7 +491,7 @@ public class SalesForm extends AppCompatActivity {
         btnEndDate.setOnClickListener(buttonRangeClickListener);
     }
 
-    private void setSecondEventDateRange(){
+    private void setSecondEventDateRange() {
         materialDatePickerRangeStartDate.addOnPositiveButtonClickListener(selection -> {
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
             calendar.setTimeInMillis(selection);
@@ -490,7 +542,7 @@ public class SalesForm extends AppCompatActivity {
         materialDatePickerRangeEndDate = MDCDatePickerDialog.endDatePicker(dateToday);
     }
 
-    private void removeFragmentDatePicker(){
+    private void removeFragmentDatePicker() {
         Fragment oldStartDate = fragmentManager.findFragmentByTag("DATE_PICKER_RANGE_START_DATE");
         Fragment oldEndDate = fragmentManager.findFragmentByTag("DATE_PICKER_RANGE_END_DATE");
         if (oldStartDate != null) {
@@ -502,7 +554,7 @@ public class SalesForm extends AppCompatActivity {
 
         if (oldEndDate != null) {
             fragmentManager.beginTransaction().remove(oldEndDate).commit();
-            if(oldEndDate.isAdded()){
+            if (oldEndDate.isAdded()) {
                 fragmentManager.beginTransaction().remove(oldEndDate).commit();
             }
         }
