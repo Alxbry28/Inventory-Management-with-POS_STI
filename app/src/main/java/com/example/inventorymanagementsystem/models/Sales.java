@@ -40,6 +40,15 @@ public class Sales implements IModelRepository<Sales> {
         this.dbRef = realtimeFirebaseDB.SalesTable();
     }
 
+    // Unit Testing Purposes
+    public Sales(int quantity, double amountPayable, double amountReceived, double amountChange, String created_at){
+        this.quantity = quantity;
+        this.amountPayable = amountPayable;
+        this.amountReceived = amountReceived;
+        this.amountChange = amountChange;
+        this.created_at = created_at;
+    }
+
     @Override
     public void Create(TransactionStatusListener transactionStatus) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());

@@ -36,13 +36,13 @@ public class SoldItem implements IModelRepository<SoldItem> {
         this.dbRef = realtimeFirebaseDB.SoldItemTable();
     }
 
-    public SoldItem(String name, String category, int quantity, double productPrice, String created_at, String created_time) {
+    // Unit Testing Purposes
+    public SoldItem(String name, String category, int quantity, double productPrice, String created_at) {
         this.quantity = quantity;
         this.name = name;
         this.category = category;
         this.productPrice = productPrice;
         this.created_at = created_at;
-        this.created_time = created_time;
     }
 
     @Override
