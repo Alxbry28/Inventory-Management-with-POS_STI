@@ -13,6 +13,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 public class Staff {
 
@@ -22,32 +23,32 @@ public class Staff {
     private RealtimeFirebaseDB realtimeFirebaseDB;
     private DatabaseReference dbRef;
 
-    public Staff(){
+    public Staff() {
         realtimeFirebaseDB = new RealtimeFirebaseDB();
         dbRef = realtimeFirebaseDB.StaffTable();
     }
 
-    public void Create(final TransactionStatusListener transactionStatus){
+    public void Create(final TransactionStatusListener transactionStatus) {
         this.setId(dbRef.push().getKey());
         dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
-    public void Delete(final TransactionStatusListener transactionStatus){
+    public void Delete(final TransactionStatusListener transactionStatus) {
         dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
-    public void GetByUserId(final StaffModelListener staffModelListener){
+    public void GetByUserId(final StaffModelListener staffModelListener) {
         Query query = dbRef.orderByChild("userId").equalTo(this.getUserId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     Staff staffExist = null;
-                    for (DataSnapshot staffSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot staffSnapshot : snapshot.getChildren()) {
                         staffExist = staffSnapshot.getValue(Staff.class);
                     }
                     staffModelListener.retrieveStaff(staffExist);
@@ -61,12 +62,34 @@ public class Staff {
         });
     }
 
-    public void GetById(final StaffModelListener staffModelListener){
+    public void GetAll(final StaffModelListener staffModelListener) {
+        Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    ArrayList<Staff> staffArrayList = new ArrayList<>();
+                    for (DataSnapshot staffSnapShot : snapshot.getChildren()) {
+                        Staff staff = staffSnapShot.getValue(Staff.class);
+                        staffArrayList.add(staff);
+                    }
+                    staffModelListener.getStaffList(staffArrayList);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void GetById(final StaffModelListener staffModelListener) {
         Query query = dbRef.child(this.getId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     Staff staffExist = snapshot.getValue(Staff.class);
                     staffModelListener.retrieveStaff(staffExist);
                 }
@@ -78,23 +101,27 @@ public class Staff {
             }
         });
     }
-    public void Update(final TransactionStatusListener transactionStatus){
+
+    public void Update(final TransactionStatusListener transactionStatus) {
         dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
-    public void GetAll(final StaffModelListener staffModelListener){
+
+    public void GetBusinessOwner(final StaffModelListener staffModelListener) {
         Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId());
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 ArrayList<Staff> staffList = new ArrayList<>();
                 for (DataSnapshot staffSnapShot : snapshot.getChildren()) {
                     Staff staff = staffSnapShot.getValue(Staff.class);
                     staffList.add(staff);
                 }
-                staffModelListener.getStaffList(staffList);
+
+                Staff staffOwner = staffList.stream().filter(staff -> staff.getPosition().equals("Business Owner")).findFirst().orElse(null);
+
+                staffModelListener.retrieveStaff(staffOwner);
             }
 
             @Override
@@ -104,9 +131,10 @@ public class Staff {
         });
     }
 
-    public String getFullname(){
+    public String getFullname() {
         return getFirstname() + " " + getLastname();
     }
+
     public String getId() {
         return id;
     }

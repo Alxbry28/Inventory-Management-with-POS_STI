@@ -55,7 +55,6 @@
             android:text="Point Of Sale" />
 
         <Button
-
             android:id="@+id/btnSales"
             android:layout_width="100dp"
             android:layout_height="100dp"
