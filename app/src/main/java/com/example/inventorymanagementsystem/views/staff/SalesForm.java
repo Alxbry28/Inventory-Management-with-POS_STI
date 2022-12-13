@@ -229,15 +229,18 @@ public class SalesForm extends AppCompatActivity {
     }
 
     private void generateExcelDetails() {
+
         if(Sales.FILE_PATH.exists()){
             Sales.FILE_PATH.delete();
         }
+
+        DateTimeFormatter dateGenFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy hh:mm a", Locale.ENGLISH);
         excelGenerator.setBusinessName(businessName.toUpperCase());
         excelGenerator.setStartDate(startDateShort);
         excelGenerator.setEndDate(endDateShort);
         excelGenerator.setTempSalesList(tempSalesArrayList);
         excelGenerator.setTempSoldItemList(tempSoldItemReportsList);
-        excelGenerator.setDateGenerated(dateTimeDateShort.format(LocalDate.now()));
+        excelGenerator.setDateGenerated(dateGenFormatter.format(LocalDate.now()));
     }
 
     private void populateBarChartSales(ArrayList<Sales> temp_SaleItemList, String duration) {

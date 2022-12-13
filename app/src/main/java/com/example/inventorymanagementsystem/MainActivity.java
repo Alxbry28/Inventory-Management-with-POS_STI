@@ -193,7 +193,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void redirectUser(int userType){
         switch (userType){
             case 1:
-                Toast.makeText(MainActivity.this, "Super Admin", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Super Admin", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, HomeActivity.class));
                 break;
             case 2:
                 startActivity(new Intent(MainActivity.this, HomeActivity.class));
