@@ -65,8 +65,8 @@ public class HomeActivity extends AppCompatActivity {
         sessionService = new SessionService();
         sharedPreferences = getSharedPreferences(MainActivity.TAG, MODE_PRIVATE);
 
-        String path = this.getFilesDir().getAbsolutePath();
-        Toast.makeText(this, "path " + path, Toast.LENGTH_SHORT).show();
+//        String path = this.getFilesDir().getAbsolutePath();
+//        Toast.makeText(this, "path " + path, Toast.LENGTH_SHORT).show();
 
 //        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
 

@@ -7,11 +7,11 @@
         <deviceKey>
           <Key>
             <type value="SERIAL_NUMBER" />
-            <value value="adb-5c69afe1-LsO5ev._adb-tls-connect._tcp" />
+            <value value="emulator-5554" />
           </Key>
         </deviceKey>
       </Target>
     </runningDeviceTargetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-12-13T03:48:44.274670100Z" />
+    <timeTargetWasSelectedWithDropDown value="2022-12-13T04:04:41.535591Z" />
   </component>
 </project>

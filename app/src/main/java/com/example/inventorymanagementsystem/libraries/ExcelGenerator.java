@@ -2,11 +2,9 @@ package com.example.inventorymanagementsystem.libraries;
 
 import android.content.Context;
 import android.os.Environment;
-
 import com.example.inventorymanagementsystem.models.Sales;
 import com.example.inventorymanagementsystem.models.SoldItem;
 import com.example.inventorymanagementsystem.models.SoldItemReport;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -18,7 +16,6 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDate;
@@ -35,19 +32,20 @@ public class ExcelGenerator {
     private String fileNameUnique;
 
     public ExcelGenerator(Context context) {
+
         this.context = context;
         hssfWorkbook = new HSSFWorkbook();
+
     }
 
     public boolean generateSales() {
+
         SalesWorkbook();
         SoldProductWorkbook();
 
         File filePath = new File(context.getFilesDir(), Sales.FILENAME);
 
-//               File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), Sales.FILENAME);
-
-
+//  File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), Sales.FILENAME);
 
         try {
             if (filePath.exists()){
