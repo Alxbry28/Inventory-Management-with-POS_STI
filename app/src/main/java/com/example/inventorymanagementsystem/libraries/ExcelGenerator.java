@@ -43,7 +43,11 @@ public class ExcelGenerator {
         SalesWorkbook();
         SoldProductWorkbook();
 
-        File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), Sales.FILENAME);
+        File filePath = new File(context.getFilesDir(), Sales.FILENAME);
+
+//               File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), Sales.FILENAME);
+
+
 
         try {
             if (filePath.exists()){
@@ -58,7 +62,7 @@ public class ExcelGenerator {
                 filePath.createNewFile();
             }
 
-
+//            context.openFileOutput()
             FileOutputStream fileOutputStream = new FileOutputStream(filePath);
             hssfWorkbook.write(fileOutputStream);
 

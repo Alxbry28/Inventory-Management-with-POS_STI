@@ -2,9 +2,13 @@ package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -55,9 +59,16 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+//        getSupportActionBar().hide();
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         sessionService = new SessionService();
         sharedPreferences = getSharedPreferences(MainActivity.TAG, MODE_PRIVATE);
+
+        String path = this.getFilesDir().getAbsolutePath();
+        Toast.makeText(this, "path " + path, Toast.LENGTH_SHORT).show();
+
+//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
 
         cartLibrary = new CartLibrary();
         cartLibrary.setSqLiteDB(new SQLiteDB(HomeActivity.this));

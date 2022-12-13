@@ -39,6 +39,7 @@ public class CartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+//        getSupportActionBar().hide();
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener((View v) -> {
                 startActivity(new Intent(CartActivity.this, POSItemActivity.class));

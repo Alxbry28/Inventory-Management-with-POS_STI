@@ -52,6 +52,7 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:textSize="13sp"
                         android:id="@+id/btnStartDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -61,6 +62,7 @@
                         android:text="04 Dec 2022" />
 
                     <Button
+                        android:textSize="13sp"
                         android:id="@+id/btnEndDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -87,6 +89,7 @@
                         android:textSize="20sp" />
 
                     <Button
+                        android:textSize="13sp"
                         android:id="@+id/btnSelectDuration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -248,6 +251,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
+                        android:textSize="13sp"
                         android:text="Generate Report" />
 
                     <Button
@@ -255,6 +259,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="13sp"
                         android:text="Send Mail" />
 
 

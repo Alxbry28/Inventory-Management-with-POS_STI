@@ -38,6 +38,7 @@ public class ItemsForm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items_form);
+//        getSupportActionBar().hide();
         product = new Product();
         sharedPreferences = getSharedPreferences(MainActivity.TAG,MODE_PRIVATE);
         businessName = sharedPreferences.getString("businessName",null);

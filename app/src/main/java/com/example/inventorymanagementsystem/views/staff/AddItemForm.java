@@ -35,7 +35,7 @@ public class AddItemForm extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item_form);
-
+//        getSupportActionBar().hide();
 		// edit product
 		boolean isEditProduct = getIntent().getBooleanExtra("isEditProduct", false);
 		

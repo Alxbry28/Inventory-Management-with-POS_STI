@@ -108,7 +108,7 @@ public class SalesForm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_form);
-
+//        getSupportActionBar().hide();
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
 
         tempSalesArrayList = new ArrayList<>();
@@ -198,6 +198,9 @@ public class SalesForm extends AppCompatActivity {
                 SendMailDialog sendMailDialog = new SendMailDialog(SalesForm.this);
                 sendMailDialog.show(getSupportFragmentManager(), "DIALOG_SEND_EMAIL");
             }
+            else{
+                Toast.makeText(this, "Failed to generate", Toast.LENGTH_SHORT).show();
+            }
         });
 
         btnGenerateReport = findViewById(R.id.btnGenerateReport);
@@ -215,7 +218,9 @@ public class SalesForm extends AppCompatActivity {
                         intent.setDataAndType(uri.fromFile(Sales.FILE_PATH), "application/vnd.ms-excel");
                         startActivity(Intent.createChooser(intent, "Open Folder"));
                     }
-
+                    else{
+                        Toast.makeText(this, "Failed to generate", Toast.LENGTH_SHORT).show();
+                    }
                 }
         );
         if(Sales.FILE_PATH.exists()){

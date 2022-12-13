@@ -46,7 +46,7 @@ public class POSItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_positem);
-
+//        getSupportActionBar().hide();
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener((View v) -> {
                     startActivity(new Intent(POSItemActivity.this, HomeActivity.class));

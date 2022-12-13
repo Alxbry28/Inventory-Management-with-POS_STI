@@ -55,9 +55,11 @@ public class MailerService {
         properties.put("mail.smtp.port", port);
         properties.put("mail.smtp.ssl.enable", ssl);
         properties.put("mail.smtp.auth", auth);
+
     }
 
     public void sendSalesReport() {
+
         String subject = "Subject: Sales Report";
         String message = "Here is the generated sales report.";
 
@@ -78,7 +80,8 @@ public class MailerService {
             mimeMessage.setSubject(subject);
             mimeMessage.setText(message);
 
-            File filePath = Sales.FILE_PATH;
+//            File filePath = Sales.FILE_PATH;
+            File filePath = new File(context.getFilesDir(), Sales.FILENAME);
 
             String filename = filePath.getAbsolutePath();
             DataSource source = new FileDataSource(filePath);

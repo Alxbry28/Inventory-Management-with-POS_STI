@@ -75,6 +75,7 @@ public class TransactionsForm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactions_form);
+//        getSupportActionBar().hide();
         tempSalesArrayList = new ArrayList<>();
         fragmentManager = getSupportFragmentManager();
         currentDate = LocalDate.now();

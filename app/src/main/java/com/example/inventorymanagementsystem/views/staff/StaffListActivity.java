@@ -34,6 +34,7 @@ public class StaffListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_list);
+//        getSupportActionBar().hide();
         staff = new Staff();
 
         sharedPreferences = getSharedPreferences(MainActivity.TAG,MODE_PRIVATE);

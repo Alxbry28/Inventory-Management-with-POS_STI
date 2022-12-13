@@ -50,7 +50,7 @@ public class TransactionDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_details);
-
+//        getSupportActionBar().hide();
         sharedPreferences = getSharedPreferences(MainActivity.TAG, Context.MODE_PRIVATE);
         businessName = sharedPreferences.getString("businessName", null);
         storeId = sharedPreferences.getString("storeId", null);

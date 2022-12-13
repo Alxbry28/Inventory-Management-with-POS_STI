@@ -27,6 +27,7 @@ public class POSActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initDialog();
         binding = ActivityPosactivityBinding.inflate(getLayoutInflater());
+//        getSupportActionBar().hide();
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);

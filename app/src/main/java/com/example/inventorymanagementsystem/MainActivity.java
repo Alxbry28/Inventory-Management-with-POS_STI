@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         logUser = new User();
         sharedPreferences = getSharedPreferences(TAG, MODE_PRIVATE);
         boolean isSignIn = sharedPreferences.getBoolean("isSignIn", false);

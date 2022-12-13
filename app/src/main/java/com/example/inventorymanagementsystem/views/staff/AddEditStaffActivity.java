@@ -44,7 +44,7 @@ public class AddEditStaffActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_staff);
-
+//        getSupportActionBar().hide();
         sharedPreferences = getSharedPreferences(MainActivity.TAG,MODE_PRIVATE);
         businessName = sharedPreferences.getString("businessName",null);
         storeId = sharedPreferences.getString("storeId",null);

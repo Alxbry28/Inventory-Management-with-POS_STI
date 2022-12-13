@@ -38,6 +38,7 @@ public class InventoryForm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory_form);
+//        getSupportActionBar().hide();
 
         sharedPreferences = getSharedPreferences(MainActivity.TAG, Context.MODE_PRIVATE);
         businessName = sharedPreferences.getString("businessName", null);
