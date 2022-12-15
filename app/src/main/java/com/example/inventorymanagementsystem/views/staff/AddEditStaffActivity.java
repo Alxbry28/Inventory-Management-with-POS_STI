@@ -16,6 +16,7 @@ import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
 import com.example.inventorymanagementsystem.MainActivity;
 import com.example.inventorymanagementsystem.interfaces.TransactionStatusListener;
 import com.example.inventorymanagementsystem.interfaces.UserModelListener;
+import com.example.inventorymanagementsystem.libraries.Validation;
 import com.example.inventorymanagementsystem.models.Staff;
 import com.example.inventorymanagementsystem.models.User;
 import com.example.inventorymanagementsystem.R;
@@ -151,6 +152,12 @@ public class AddEditStaffActivity extends AppCompatActivity {
                 staff.setPosition(etRole.getText().toString());
                 user.setEmail(etEmail.getText().toString());
                 user.setPassword(etPassword.getText().toString());
+
+                if(!Validation.checkPasswordMatch(user.getPassword(),etConfirmPassword.getText().toString())){
+                    Toast.makeText(AddEditStaffActivity.this, "Password is not match to confirm password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
                 isEdit = getIntent().getBooleanExtra("isEditStaff", false);
                 if(isEdit){
                     staff.Update(new TransactionStatusListener() {

@@ -59,7 +59,6 @@ public class MailerService {
     }
 
     public void sendSalesReport() {
-
         String subject = "Subject: Sales Report";
         String message = "Here is the generated sales report.";
 

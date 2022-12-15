@@ -45,30 +45,34 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="2dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp">
 
                     <Button
-                        android:textSize="13sp"
                         android:id="@+id/btnStartDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:layout_weight="1"
                         android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
                         android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24_white"
-                        android:text="04 Dec 2022" />
+                        android:text="04 Dec 2022"
+                        android:textSize="11sp" />
 
                     <Button
-                        android:textSize="13sp"
                         android:id="@+id/btnEndDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
                         android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24_white"
-                        android:text="04 Dec 2022" />
+                        android:text="04 Dec 2022"
+                        android:textSize="11sp" />
 
                 </LinearLayout>
 
@@ -89,14 +93,14 @@
                         android:textSize="20sp" />
 
                     <Button
-                        android:textSize="13sp"
                         android:id="@+id/btnSelectDuration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignLeft="@id/btnOrderBy"
                         android:layout_marginRight="5dp"
                         android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24_white"
-                        android:text="All" />
+                        android:text="All"
+                        android:textSize="13sp" />
 
                     <Button
                         android:id="@+id/btnOrderBy"
@@ -251,16 +255,16 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:textSize="13sp"
-                        android:text="Generate Report" />
+                        android:text="Generate Report"
+                        android:textSize="13sp" />
 
                     <Button
                         android:id="@+id/btnSendMail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textSize="13sp"
-                        android:text="Send Mail" />
+                        android:text="Send Mail"
+                        android:textSize="13sp" />
 
 
                 </LinearLayout>

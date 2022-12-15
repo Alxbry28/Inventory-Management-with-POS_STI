@@ -103,7 +103,7 @@ public class SalesForm extends AppCompatActivity {
     private ArrayList<Sales> tempSalesArrayList;
     private ArrayList<SoldItem> tempSoldItemArrayList;
     private ArrayList<SoldItemReport> tempSoldItemReportsList;
-
+    private  File filePath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -223,15 +223,16 @@ public class SalesForm extends AppCompatActivity {
                     }
                 }
         );
-        if(Sales.FILE_PATH.exists()){
-            Sales.FILE_PATH.delete();
+        filePath = new File(getFilesDir(), Sales.FILENAME);
+        if(filePath.exists()){
+            filePath.delete();
         }
     }
 
     private void generateExcelDetails() {
 
-        if(Sales.FILE_PATH.exists()){
-            Sales.FILE_PATH.delete();
+        if(filePath.exists()){
+            filePath.delete();
         }
 
         DateTimeFormatter dateGenFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy hh:mm a", Locale.ENGLISH);
@@ -620,7 +621,6 @@ public class SalesForm extends AppCompatActivity {
             btnStartDate.setText(startDateShort);
             btnEndDate.setText(endDateShort);
             btnSelectDuration.setText("Date Range");
-
         });
 
     }
