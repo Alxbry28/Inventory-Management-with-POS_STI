@@ -52,20 +52,21 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:textSize="13sp"
                         android:id="@+id/btnStartDate"
-                        android:layout_width="wrap_content"
+                        android:layout_width="161dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
                         android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24_white"
-                        android:text="04 Dec 2022" />
+                        android:text="04 Dec 2022"
+                        android:textSize="13sp" />
 
                     <Button
                         android:textSize="13sp"
                         android:id="@+id/btnEndDate"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="161dp"
                         android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
                         android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24_white"
                         android:text="04 Dec 2022" />
@@ -175,8 +176,7 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="340dp"
                     android:layout_marginLeft="3dp"
@@ -219,7 +219,8 @@
                             <com.github.mikephil.charting.charts.PieChart
                                 android:id="@+id/pChartProducts"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:background="#03A9F4" />
 
                         </LinearLayout>
 

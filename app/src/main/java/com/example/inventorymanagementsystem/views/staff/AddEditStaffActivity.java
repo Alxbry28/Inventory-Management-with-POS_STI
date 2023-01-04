@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -157,13 +158,28 @@ public class AddEditStaffActivity extends AppCompatActivity {
                         @Override
                         public void checkStatus(boolean status) {
                             if(status){
-                                Toast.makeText(AddEditStaffActivity.this, "Edit Success", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddEditStaffActivity.this, "Edited Successfully", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         }
                     });
                 }
-                else{
+                if (etFirstname.getText().toString().isEmpty() || etLastname.getText().toString().isEmpty() ||
+                        etRole.getText().toString().isEmpty() || etEmail.getText().toString().isEmpty())
+                {
+                    Toast.makeText(AddEditStaffActivity.this,"Please fill out all the fields.",Toast.LENGTH_LONG).show();
+                }
+                if(!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString()).matches()){
+                    etEmail.setError("Please provide valid email!");
+                    return;
+                }
+                if (!etPassword.getText().toString().equals(etConfirmPassword.getText().toString()))
+                {
+                    etConfirmPassword.setError("Password dont match.");
+                    etConfirmPassword.requestFocus();
+                }
+                else
+                {
                     mAuth.createUserWithEmailAndPassword(user.getEmail(),user.getPassword())
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()){

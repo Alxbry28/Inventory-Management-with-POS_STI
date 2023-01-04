@@ -164,13 +164,19 @@ public class POSItemActivity extends AppCompatActivity {
 
 
         btnCheckout.setOnClickListener( v->{
-            cartLibrary.clear();
-            cartLibrary.setProductArrayList(cartProducts);
-            ArrayList<CartItem> cartItems = cartLibrary.getConvertedCartItemArray();
-            cartLibrary.setCartItemArrayList(cartItems);
-            cartLibrary.saveCartItems();
+            if (totalQty == 0)
+            {
+                Toast.makeText(this, "No items in cart", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                cartLibrary.clear();
+                cartLibrary.setProductArrayList(cartProducts);
+                ArrayList<CartItem> cartItems = cartLibrary.getConvertedCartItemArray();
+                cartLibrary.setCartItemArrayList(cartItems);
+                cartLibrary.saveCartItems();
 
-            startActivity(new Intent(POSItemActivity.this, CartActivity.class));
+                startActivity(new Intent(POSItemActivity.this, CartActivity.class));
+            }
 //            finish();
         });
 

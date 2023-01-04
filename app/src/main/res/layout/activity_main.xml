@@ -19,7 +19,7 @@
         android:textColor="@color/white"
         android:gravity="center"
         android:textAllCaps="true"
-        android:text="Inventory Management App"
+        android:text="Generic Inventory Management App"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -32,7 +32,7 @@
         android:textSize="18sp"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="Track your stocks. "
+
         android:layout_below="@id/banner" />
 
 <com.google.android.material.textfield.TextInputLayout

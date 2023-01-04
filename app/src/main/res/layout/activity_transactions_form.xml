@@ -40,7 +40,7 @@
 
             <Button
                 android:id="@+id/btnStartDate"
-                android:layout_width="wrap_content"
+                android:layout_width="161dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
@@ -49,7 +49,7 @@
 
             <Button
                 android:id="@+id/btnEndDate"
-                android:layout_width="wrap_content"
+                android:layout_width="161dp"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
                 android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24_white"

@@ -83,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnClose = findViewById(R.id.btnClose);
         btnClose.setOnClickListener((View v) -> {
-            Toast.makeText(this, "Test ", Toast.LENGTH_SHORT).show();
+            finish();
+            System.exit(0);
         });
 
         etEmail = (TextInputLayout) findViewById(R.id.email);

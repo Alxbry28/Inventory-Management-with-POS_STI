@@ -25,7 +25,7 @@ public class PositionChoiceDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         typeOfPosition = getResources().getStringArray(R.array.array_position_admin);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-        dialogBuilder.setTitle("Choose Rolce");
+        dialogBuilder.setTitle("Choose Role");
         int index = Arrays.asList(typeOfPosition).indexOf(chosenPosition);
         int selectedIndex = (index >= 0) ? index : -1;
         dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

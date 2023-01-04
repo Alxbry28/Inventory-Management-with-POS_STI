@@ -33,7 +33,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcCartItems"
             android:padding="10dp"
-            android:layout_marginBottom="115dp"
+            android:layout_marginBottom="130dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
