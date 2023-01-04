@@ -96,8 +96,6 @@ public class AddEditStaffActivity extends AppCompatActivity {
                 }
             });
 
-
-
             btnAddEditStaff.setText("Save");
             tvStaffTransactionType.setText("Edit Staff");
         }
