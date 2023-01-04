@@ -8,11 +8,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.inventorymanagementsystem.adapters.POSRCVAdapter;
 import com.example.inventorymanagementsystem.adapters.ProductRCVAdapter;
 import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
 import com.example.inventorymanagementsystem.models.Product;
@@ -33,6 +38,7 @@ public class ItemsForm extends AppCompatActivity {
     private RecyclerView rcProducts;
     private ArrayList<Product> productList;
     private Product product;
+    private EditText etSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +68,7 @@ public class ItemsForm extends AppCompatActivity {
                         tvEmptyProductMsg.setVisibility(View.INVISIBLE);
                         rcProducts.setVisibility(View.VISIBLE);
 
-                        ProductRCVAdapter productRCVAdapter = new ProductRCVAdapter();
-                        productRCVAdapter.setContext(ItemsForm.this);
-                        productRCVAdapter.setProductList(productList);
-
-                        rcProducts.setAdapter(productRCVAdapter);
-                        RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(ItemsForm.this);
-                        rcProducts.setLayoutManager(rcvLayoutManager);
-                        rcProducts.setItemAnimator(new DefaultItemAnimator());
+                        initRCVProductsItem(productArrayList);
 
                     }
                 }
@@ -92,7 +91,81 @@ public class ItemsForm extends AppCompatActivity {
             }
         });
 
+        etSearch = findViewById(R.id.etSearch);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String search = s.toString();
+                search(search);
+            }
+        });
     }
+
+    private void search(String search) {
+        Product tempProduct = new Product();
+        tempProduct.setUserId(userId);
+        tempProduct.setStoreId(storeId);
+
+        if (TextUtils.isEmpty(search)) {
+            tempProduct.GetAll(new ProductModelListener() {
+                @Override
+                public void retrieveProduct(Product product) {
+
+                }
+
+                @Override
+                public void getProductList(ArrayList<Product> productArrayList) {
+                    if(!productArrayList.isEmpty()){
+                        productList = productArrayList;
+                        if(!(productList == null || productList.isEmpty())){
+                            initRCVProductsItem(productArrayList);
+                        }
+                    }
+                }
+            });
+        } else {
+            tempProduct.Search(search,new ProductModelListener() {
+                @Override
+                public void retrieveProduct(Product product) {
+
+
+                }
+
+                @Override
+                public void getProductList(ArrayList<Product> productArrayList) {
+                    if(!productArrayList.isEmpty()){
+                        productList = productArrayList;
+                        if(!(productList == null || productList.isEmpty())){
+                            initRCVProductsItem(productArrayList);
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+
+    private void initRCVProductsItem(ArrayList<Product> productArrayList){
+        ProductRCVAdapter productRCVAdapter = new ProductRCVAdapter();
+        productRCVAdapter.setContext(ItemsForm.this);
+        productRCVAdapter.setProductList(productArrayList);
+
+        rcProducts.setAdapter(productRCVAdapter);
+        RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(ItemsForm.this);
+        rcProducts.setLayoutManager(rcvLayoutManager);
+        rcProducts.setItemAnimator(new DefaultItemAnimator());
+    }
+
     private String time ()
     {
         return new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());

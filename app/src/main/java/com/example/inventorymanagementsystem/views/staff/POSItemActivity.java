@@ -9,8 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.inventorymanagementsystem.adapters.POSRCVAdapter;
@@ -41,12 +45,17 @@ public class POSItemActivity extends AppCompatActivity {
     private double totalPrice = 0;
     private int totalQty = 0;
     private ArrayList<Product> cartProducts;
+    private EditText etSearch;
+    private   POSRCVAdapter posRCVAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_positem);
 //        getSupportActionBar().hide();
+
+
+
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener((View v) -> {
                     startActivity(new Intent(POSItemActivity.this, HomeActivity.class));
@@ -72,7 +81,7 @@ public class POSItemActivity extends AppCompatActivity {
         btnCheckout = findViewById(R.id.btnCheckout);
         btnCart = findViewById(R.id.btnCart);
         rcPOSProductItem = findViewById(R.id.rcPOSProductItem);
-        POSRCVAdapter posRCVAdapter = new POSRCVAdapter();
+         posRCVAdapter = new POSRCVAdapter();
         product.GetAll(new ProductModelListener() {
             @Override
             public void retrieveProduct(Product product) {
@@ -85,14 +94,7 @@ public class POSItemActivity extends AppCompatActivity {
                 if(!productArrayList.isEmpty()){
                     productList = productArrayList;
                     if(!(productList == null || productList.isEmpty())){
-
-                        posRCVAdapter.setContext(POSItemActivity.this);
-                        posRCVAdapter.setProductList(productArrayList);
-                        rcPOSProductItem.setAdapter(posRCVAdapter);
-
-                        RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(POSItemActivity.this);
-                        rcPOSProductItem.setLayoutManager(rcvLayoutManager);
-                        rcPOSProductItem.setItemAnimator(new DefaultItemAnimator());
+                        initRCVPOSItem(productArrayList);
                     }
                 }
             }
@@ -181,8 +183,84 @@ public class POSItemActivity extends AppCompatActivity {
             Toast.makeText(this, "Cart clear", Toast.LENGTH_SHORT).show();
         });
 
+        etSearch = findViewById(R.id.etSearch);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String search = s.toString();
+                search(search);
+            }
+        });
+
     }
 
+    private void search(String search) {
+        Product tempProduct = new Product();
+        tempProduct.setUserId(userId);
+        tempProduct.setStoreId(storeId);
+
+
+        if (TextUtils.isEmpty(search)) {
+            tempProduct.GetAll(new ProductModelListener() {
+                @Override
+                public void retrieveProduct(Product product) {
+
+
+                }
+
+                @Override
+                public void getProductList(ArrayList<Product> productArrayList) {
+                    if(!productArrayList.isEmpty()){
+                        productList = productArrayList;
+                        if(!(productList == null || productList.isEmpty())){
+                            initRCVPOSItem(productArrayList);
+                        }
+                    }
+                }
+            });
+        } else {
+            tempProduct.Search(search,new ProductModelListener() {
+                @Override
+                public void retrieveProduct(Product product) {
+
+
+                }
+
+                @Override
+                public void getProductList(ArrayList<Product> productArrayList) {
+                    if(!productArrayList.isEmpty()){
+                        productList = productArrayList;
+                        if(!(productList == null || productList.isEmpty())){
+                            initRCVPOSItem(productArrayList);
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+
+    private void initRCVPOSItem(ArrayList<Product> productArrayList){
+        posRCVAdapter = new POSRCVAdapter();
+        posRCVAdapter.setContext(POSItemActivity.this);
+        posRCVAdapter.setProductList(productArrayList);
+        rcPOSProductItem.setAdapter(posRCVAdapter);
+
+        RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(POSItemActivity.this);
+        rcPOSProductItem.setLayoutManager(rcvLayoutManager);
+        rcPOSProductItem.setItemAnimator(new DefaultItemAnimator());
+    }
+    
     private void showTotal(){
         totalPrice = cartProducts.stream().filter(product1 -> product1.GetComputedTotalPrice() > 0).mapToDouble(Product::GetComputedTotalPrice).sum();
 

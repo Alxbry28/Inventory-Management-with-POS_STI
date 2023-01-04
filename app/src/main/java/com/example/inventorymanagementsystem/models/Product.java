@@ -1,5 +1,7 @@
 package com.example.inventorymanagementsystem.models;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
 import com.example.inventorymanagementsystem.database.RealtimeFirebaseDB;
@@ -47,6 +49,7 @@ public class Product {
         });
     }
 
+
     public void Update(final TransactionStatusListener transactionStatus){
         this.setUpdated_at(dateTime);
         dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
@@ -83,6 +86,26 @@ public class Product {
 
     public void GetAll(final ProductModelListener productModelListener){
         Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId());
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Product> productArrayList = new ArrayList<>();
+                for (DataSnapshot productSnapShot : snapshot.getChildren()) {
+                    Product product = productSnapShot.getValue(Product.class);
+                    productArrayList.add(product);
+                }
+                productModelListener.getProductList(productArrayList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void Search(String search,final ProductModelListener productModelListener){
+        Query query = dbRef.orderByChild("storeId").startAt(search).endAt(search + "\uf0ff");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

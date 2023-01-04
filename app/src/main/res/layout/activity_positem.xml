@@ -31,6 +31,16 @@
 
         </LinearLayout>
 
+
+        <EditText android:id="@+id/etSearch"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search Product"
+            android:textColorHint="@color/gray_450"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcPOSProductItem"
             android:layout_width="match_parent"

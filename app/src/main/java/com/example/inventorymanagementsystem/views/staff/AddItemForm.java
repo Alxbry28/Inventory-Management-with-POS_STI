@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,7 +58,6 @@ public class AddItemForm extends AppCompatActivity  {
                     etProductCategory.setText(product.getCategory());
                     etPrice.setText(String.valueOf(product.getPrice()));
                     etStocks.setText(String.valueOf(product.getQuantity()));
-//                    etStocks.setEnabled(false);
                 }
 
                 @Override
@@ -65,14 +65,16 @@ public class AddItemForm extends AppCompatActivity  {
 
                 }
             });
+
             String transType = "Edit Product";
-            Toast.makeText(this, transType, Toast.LENGTH_SHORT).show();
             tvProductTransactionType.setText(transType);
             btnAdd.setText("Save");
-        }
-        initEventButtons();
 
+        }
+
+        initEventButtons();
         tvBusinessName.setText(businessName);
+
     }
 
     private void initComponents(){
@@ -92,6 +94,12 @@ public class AddItemForm extends AppCompatActivity  {
 
             if(!Validation.isValueDouble(etPrice.getText().toString())){
                 Toast.makeText(AddItemForm.this, "Price is not valid", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(TextUtils.isEmpty(etStocks.getText().toString()) || TextUtils.isEmpty(etPrice.getText().toString())
+                    || TextUtils.isEmpty(etProductName.getText().toString()) || TextUtils.isEmpty((etProductCategory.getText().toString()))){
+                Toast.makeText(this, "Empty fields. Cannot proceed.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -121,13 +129,12 @@ public class AddItemForm extends AppCompatActivity  {
                     }
                 });
             }
-
-
         });
 
         btnBack.setOnClickListener(v ->{
             finish();
         });
+
     }
 
 
