@@ -36,7 +36,6 @@ public class Sales implements IModelRepository<Sales> {
     public static final String FILENAME = "sales_generated_report.xls";
     public static final File FILE_PATH = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), Sales.FILENAME);
 
-
     private RealtimeFirebaseDB realtimeFirebaseDB;
     private DatabaseReference dbRef;
 

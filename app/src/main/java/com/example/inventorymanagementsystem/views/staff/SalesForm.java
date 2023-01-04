@@ -1,13 +1,20 @@
 package com.example.inventorymanagementsystem.views.staff;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +23,10 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.FileUtils;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -103,12 +114,16 @@ public class SalesForm extends AppCompatActivity {
     private ArrayList<Sales> tempSalesArrayList;
     private ArrayList<SoldItem> tempSoldItemArrayList;
     private ArrayList<SoldItemReport> tempSoldItemReportsList;
+    private File filePath;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_form);
+
 //        getSupportActionBar().hide();
+
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
 
         tempSalesArrayList = new ArrayList<>();
@@ -192,10 +207,12 @@ public class SalesForm extends AppCompatActivity {
 
         btnSendMail = findViewById(R.id.btnSendMail);
         btnSendMail.setOnClickListener((View v) -> {
+            excelGenerator = new ExcelGenerator(SalesForm.this);
             generateExcelDetails();
             boolean isGenerated = excelGenerator.generateSales();
             if (isGenerated) {
                 SendMailDialog sendMailDialog = new SendMailDialog(SalesForm.this);
+                sendMailDialog.setFilePath(excelGenerator.getFilePath());
                 sendMailDialog.show(getSupportFragmentManager(), "DIALOG_SEND_EMAIL");
             }
             else{
@@ -205,42 +222,40 @@ public class SalesForm extends AppCompatActivity {
 
         btnGenerateReport = findViewById(R.id.btnGenerateReport);
         btnGenerateReport.setOnClickListener((View v) -> {
+                    excelGenerator = new ExcelGenerator(SalesForm.this);
                     generateExcelDetails();
                     boolean isGenerated = excelGenerator.generateSales();
 
                     if (isGenerated) {
-                        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/";
                         Toast.makeText(this, "Successfully saved", Toast.LENGTH_SHORT).show();
-                        Uri uri = Uri.parse(path);
+                        Uri uri = Uri.parse(excelGenerator.getFilePath().getAbsolutePath());
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.putExtra(Intent.ACTION_VIEW, uri);
-
-                        intent.setDataAndType(uri.fromFile(Sales.FILE_PATH), "application/vnd.ms-excel");
-                        startActivity(Intent.createChooser(intent, "Open Folder"));
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        intent.setDataAndType(uri, "application/vnd.ms-excel");
+                        startActivity(intent);
                     }
                     else{
                         Toast.makeText(this, "Failed to generate", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
-        if(Sales.FILE_PATH.exists()){
-            Sales.FILE_PATH.delete();
-        }
+
     }
 
+
     private void generateExcelDetails() {
-
-        if(Sales.FILE_PATH.exists()){
-            Sales.FILE_PATH.delete();
-        }
-
-        DateTimeFormatter dateGenFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy hh:mm a", Locale.ENGLISH);
+//        DateTimeFormatter todayDateFormatter = DateTimeFormatter.ofPattern("uuuuMMddHHmmss");
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMddHHmmss");
+        SimpleDateFormat time = new SimpleDateFormat("hh:mm a");
+        DateTimeFormatter dateGenFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
         excelGenerator.setBusinessName(businessName.toUpperCase());
         excelGenerator.setStartDate(startDateShort);
         excelGenerator.setEndDate(endDateShort);
         excelGenerator.setTempSalesList(tempSalesArrayList);
         excelGenerator.setTempSoldItemList(tempSoldItemReportsList);
-        excelGenerator.setDateGenerated(dateGenFormatter.format(LocalDate.now()));
+        excelGenerator.setDateGenerated(dateGenFormatter.format(LocalDate.now()) + " " + time.format(new Date()));
+        excelGenerator.setFileNameUnique(businessName+"_"+f.format(new Date()));
     }
 
     private void populateBarChartSales(ArrayList<Sales> temp_SaleItemList, String duration) {
@@ -620,7 +635,6 @@ public class SalesForm extends AppCompatActivity {
             btnStartDate.setText(startDateShort);
             btnEndDate.setText(endDateShort);
             btnSelectDuration.setText("Date Range");
-
         });
 
     }

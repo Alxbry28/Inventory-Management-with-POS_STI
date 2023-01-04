@@ -29,8 +29,9 @@ public class ExcelGenerator {
     private ArrayList<Sales> tempSalesList;
     private ArrayList<SoldItemReport> tempSoldItemList;
     private String businessName, startDate, endDate, dateGenerated;
+    private String dateTimeCreated;
     private String fileNameUnique;
-
+    private File filePath;
     public ExcelGenerator(Context context) {
 
         this.context = context;
@@ -38,14 +39,27 @@ public class ExcelGenerator {
 
     }
 
-    public boolean generateSales() {
+    public String getFileNameUnique() {
+        return fileNameUnique;
+    }
 
+    public void setFileNameUnique(String fileNameUnique) {
+        this.fileNameUnique = fileNameUnique;
+    }
+
+    public File getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(File filePath) {
+        this.filePath = filePath;
+    }
+
+    public boolean generateSales() {
         SalesWorkbook();
         SoldProductWorkbook();
 
-        File filePath = new File(context.getFilesDir(), Sales.FILENAME);
-
-//  File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), Sales.FILENAME);
+   filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), fileNameUnique+"_"+Sales.FILENAME);
 
         try {
             if (filePath.exists()){
@@ -60,7 +74,6 @@ public class ExcelGenerator {
                 filePath.createNewFile();
             }
 
-//            context.openFileOutput()
             FileOutputStream fileOutputStream = new FileOutputStream(filePath);
             hssfWorkbook.write(fileOutputStream);
 

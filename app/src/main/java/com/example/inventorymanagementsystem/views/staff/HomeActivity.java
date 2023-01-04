@@ -35,6 +35,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.example.inventorymanagementsystem.views.staff.*;
+import com.example.inventorymanagementsystem.models.Sales;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,8 +67,9 @@ public class HomeActivity extends AppCompatActivity {
         sessionService = new SessionService();
         sharedPreferences = getSharedPreferences(MainActivity.TAG, MODE_PRIVATE);
 
-//        String path = this.getFilesDir().getAbsolutePath();
-//        Toast.makeText(this, "path " + path, Toast.LENGTH_SHORT).show();
+        File filePath = new File(getFilesDir(), com.example.inventorymanagementsystem.models.Sales.FILENAME);
+        String path = this.getFilesDir().getAbsolutePath();
+//        Toast.makeText(this, "path " + path + " " + filePath.toPath().toAbsolutePath().toString(), Toast.LENGTH_SHORT).show();
 
 //        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
 

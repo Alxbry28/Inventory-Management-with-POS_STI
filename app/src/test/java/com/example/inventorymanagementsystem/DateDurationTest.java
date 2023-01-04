@@ -26,10 +26,12 @@ public class DateDurationTest {
 
     @Test
     public void validationTest() {
+
         String password = "qwerqwer123";
         String confirmPassword = "qwer123qwer";
         boolean isMatch = Validation.checkPasswordMatch(password, confirmPassword);
         assertFalse(isMatch);
+
     }
 
     @Test

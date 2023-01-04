@@ -17,13 +17,25 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.services.MailerService;
 
+import java.io.File;
+
 public class SendMailDialog extends AppCompatDialogFragment {
 
     private Context context;
     private MailerService mailerService;
+    private File filePath;
+
 
     public SendMailDialog(Context context){
         this.context = context;
+    }
+
+    public File getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(File filePath) {
+        this.filePath = filePath;
     }
 
     @NonNull
@@ -41,6 +53,7 @@ public class SendMailDialog extends AppCompatDialogFragment {
         builder.setPositiveButton("Send", (DialogInterface dialog, int which) -> {
                 dialog.dismiss();
                 mailerService = new MailerService();
+                mailerService.setFilePath(this.getFilePath());
                 mailerService.setContext(context);
                 mailerService.setReceiverEmail(etEmail.getText().toString());
                 mailerService.sendSalesReport();

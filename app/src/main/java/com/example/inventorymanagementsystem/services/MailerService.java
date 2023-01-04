@@ -40,6 +40,7 @@ public class MailerService {
     private String senderEmail, receiverEmail;
     private String senderPassword;
     private Context context;
+    private File filePath;
 
     public MailerService() {
         senderEmail = "thesis0812@gmail.com";
@@ -58,8 +59,15 @@ public class MailerService {
 
     }
 
-    public void sendSalesReport() {
+    public File getFilePath() {
+        return filePath;
+    }
 
+    public void setFilePath(File filePath) {
+        this.filePath = filePath;
+    }
+
+    public void sendSalesReport() {
         String subject = "Subject: Sales Report";
         String message = "Here is the generated sales report.";
 
@@ -81,7 +89,7 @@ public class MailerService {
             mimeMessage.setText(message);
 
 //            File filePath = Sales.FILE_PATH;
-            File filePath = new File(context.getFilesDir(), Sales.FILENAME);
+//            File filePath = new File(context.getFilesDir(), Sales.FILENAME);
 
             String filename = filePath.getAbsolutePath();
             DataSource source = new FileDataSource(filePath);
@@ -134,7 +142,7 @@ public class MailerService {
             mimeMessage.setSubject(subject);
             mimeMessage.setText(message);
 
-            File filePath = Sales.FILE_PATH;
+//            File filePath = Sales.FILE_PATH;
 
             String filename = filePath.getAbsolutePath();
             DataSource source = new FileDataSource(filePath);
