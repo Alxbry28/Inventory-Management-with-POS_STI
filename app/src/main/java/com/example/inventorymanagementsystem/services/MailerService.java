@@ -41,10 +41,11 @@ public class MailerService {
     private String senderPassword;
     private Context context;
     private File filePath;
+    private static final String TAG = "MailerService";
 
     public MailerService() {
-        senderEmail = "thesis0812@gmail.com";
-        senderPassword = "hqhhgweigykddwac";
+        senderEmail = "posinventorymanagementsystem@gmail.com";
+        senderPassword = "ksifovzcmjwzkskq";
 
         String host = "smtp.gmail.com";
         String port = "465";
@@ -88,9 +89,6 @@ public class MailerService {
             mimeMessage.setSubject(subject);
             mimeMessage.setText(message);
 
-//            File filePath = Sales.FILE_PATH;
-//            File filePath = new File(context.getFilesDir(), Sales.FILENAME);
-
             String filename = filePath.getAbsolutePath();
             DataSource source = new FileDataSource(filePath);
 
@@ -113,12 +111,16 @@ public class MailerService {
             sendMail.execute(mimeMessage);
 
         } catch (AddressException ae) {
+            Log.e(TAG, "sendSalesReport: " + ae.getMessage() );
             ae.printStackTrace();
         } catch (MessagingException me) {
+            Log.e(TAG, "sendSalesReport: " + me.getMessage() );
             me.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
+            Log.e(TAG, "sendSalesReport: " + e.getMessage() );
             e.printStackTrace();
         }
+
 
     }
 
@@ -165,10 +167,13 @@ public class MailerService {
             sendMail.execute(mimeMessage);
 
         } catch (AddressException ae) {
+            Log.e(TAG, "sendSalesReport: " + ae.getMessage() );
             ae.printStackTrace();
         } catch (MessagingException me) {
+            Log.e(TAG, "sendSalesReport: " + me.getMessage() );
             me.printStackTrace();
         } catch (Exception e) {
+            Log.e(TAG, "sendSalesReport: " + e.getMessage() );
             e.printStackTrace();
         }
 
@@ -215,6 +220,7 @@ public class MailerService {
                 Transport.send(messages[0]);
                 return "Success";
             } catch (MessagingException me) {
+                Log.e("MailerService: 218", "doInBackground: " + me.getMessage() );
                 me.printStackTrace();
                 return "Failed";
             }

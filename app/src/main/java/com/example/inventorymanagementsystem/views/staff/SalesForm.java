@@ -225,7 +225,6 @@ public class SalesForm extends AppCompatActivity {
                     excelGenerator = new ExcelGenerator(SalesForm.this);
                     generateExcelDetails();
                     boolean isGenerated = excelGenerator.generateSales();
-
                     if (isGenerated) {
                         Toast.makeText(this, "Successfully saved", Toast.LENGTH_SHORT).show();
                         Uri uri = Uri.parse(excelGenerator.getFilePath().getAbsolutePath());
