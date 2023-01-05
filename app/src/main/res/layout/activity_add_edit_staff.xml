@@ -8,7 +8,6 @@
     android:background="@color/white_700"
     tools:context=".views.staff.AddEditStaffActivity">
 
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -194,11 +193,8 @@
 
             </LinearLayout>
 
-
         </ScrollView>
 
-
     </LinearLayout>
-
 
 </LinearLayout>

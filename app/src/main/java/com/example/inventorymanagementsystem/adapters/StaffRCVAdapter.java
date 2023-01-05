@@ -47,6 +47,11 @@ public class StaffRCVAdapter extends RecyclerView.Adapter<StaffRCVAdapter.StaffV
         if(currentUserId.equals(staff.getUserId())){
             holder.btnDeleteStaff.setVisibility(View.GONE);
         }
+
+        if(staff.getPosition().equals("Business Owner")){
+            holder.btnDeleteStaff.setVisibility(View.GONE);
+        }
+
         holder.btnDeleteStaff.setOnClickListener(v -> {
             AlertDialog.Builder alertDeleteDialog = new AlertDialog.Builder(context);
             alertDeleteDialog.setTitle("Delete Staff");
