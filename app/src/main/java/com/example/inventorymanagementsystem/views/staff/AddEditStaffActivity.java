@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -77,6 +78,8 @@ public class AddEditStaffActivity extends AppCompatActivity {
                     user = user1;
                     etEmail.setText(user1.getEmail());
                     etEmail.setEnabled(false);
+
+
                 }
             });
 
@@ -88,6 +91,8 @@ public class AddEditStaffActivity extends AppCompatActivity {
                     etFirstname.setText(staff1.getFirstname());
                     etLastname.setText(staff1.getLastname());
                     etRole.setText(staff1.getPosition());
+
+
                 }
 
                 @Override
@@ -96,6 +101,7 @@ public class AddEditStaffActivity extends AppCompatActivity {
                 }
             });
 
+            if(etRole.getText().toString().equals("Business Owner")) etRole.setEnabled(false);
             btnAddEditStaff.setText("Save");
             tvStaffTransactionType.setText("Edit Staff");
         }
@@ -131,31 +137,44 @@ public class AddEditStaffActivity extends AppCompatActivity {
         etRole.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                positionChoiceDialog.setChosenPosition(etRole.getText().toString());
-                positionChoiceDialog.show(getSupportFragmentManager(),"dialog_choose_position");
-                positionChoiceDialog.getPositionChoice(new PositionChoiceDialog.PositionChoiceListener() {
-                    @Override
-                    public void setPositionChoice(String choice) {
-                        etRole.setText(choice);
-                    }
-                });
+                if(!etRole.getText().toString().equals("Business Owner")) {
+                    positionChoiceDialog.setChosenPosition(etRole.getText().toString());
+                    positionChoiceDialog.show(getSupportFragmentManager(),"dialog_choose_position");
+                    positionChoiceDialog.getPositionChoice(new PositionChoiceDialog.PositionChoiceListener() {
+                        @Override
+                        public void setPositionChoice(String choice) {
+                            etRole.setText(choice);
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(AddEditStaffActivity.this, "Unable to edit this field, you are the business owner.", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         });
 
         btnAddEditStaff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(TextUtils.isEmpty(etFirstname.getText().toString()) || TextUtils.isEmpty(etLastname.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString()) || TextUtils.isEmpty((etConfirmPassword.getText().toString()))){
+                    Toast.makeText(AddEditStaffActivity.this, "Empty fields. Cannot proceed.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(!Validation.checkPasswordMatch(etPassword.getText().toString(),etConfirmPassword.getText().toString())){
+                    Toast.makeText(AddEditStaffActivity.this, "Password is not match to confirm password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 staff.setFirstname(etFirstname.getText().toString());
                 staff.setLastname(etLastname.getText().toString());
                 staff.setPosition(etRole.getText().toString());
                 user.setEmail(etEmail.getText().toString());
                 user.setPassword(etPassword.getText().toString());
 
-                if(!Validation.checkPasswordMatch(user.getPassword(),etConfirmPassword.getText().toString())){
-                    Toast.makeText(AddEditStaffActivity.this, "Password is not match to confirm password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                
                 isEdit = getIntent().getBooleanExtra("isEditStaff", false);
                 if(isEdit){
                     staff.Update(new TransactionStatusListener() {
