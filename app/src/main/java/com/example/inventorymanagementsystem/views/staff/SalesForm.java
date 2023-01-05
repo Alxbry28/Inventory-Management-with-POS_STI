@@ -511,7 +511,7 @@ public class SalesForm extends AppCompatActivity {
                 return;
 
             default:
-                Toast.makeText(this, "Default ko na", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Default", Toast.LENGTH_SHORT).show();
                 break;
         }
 
