@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_700">#ecf0f1</color>
+    <color name="gray">#B3B0B0</color>
+    <color name="gray_450">#706E6E</color>
     <color name="bg_blue700">#0679EB</color>
     <color name="bg_blue500">#0385E1</color>
     <color name="bg_blue200">#00B9FF</color>
@@ -18,4 +20,5 @@
     <color name="bg_orange">#E47703</color>
     <color name="bg_yellow">#EAAB0C</color>
     <color name="bg_red">#e74c3c</color>
+    <color name="bg_red_dark">#F41E08</color>
 </resources>

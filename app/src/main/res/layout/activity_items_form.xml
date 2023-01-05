@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ItemsForm">
+    tools:context=".views.staff.ItemsForm">
 
     <LinearLayout
         android:orientation="vertical"
@@ -31,18 +31,24 @@
 
         </LinearLayout>
 
+        <EditText android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search Product"
+            android:visibility="gone"
+            android:textColorHint="@color/gray_450"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:visibility="invisible"
             android:padding="8dp"
             android:id="@+id/rcProducts"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="86dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </LinearLayout>
-
-
-
 
     <LinearLayout android:layout_alignParentBottom="true"
         android:padding="10dp"

@@ -40,6 +40,8 @@
     android:layout_marginTop="25dp"
     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
     android:hint="Email"
+    android:textColorHint="@color/gray_450"
+
     app:boxBackgroundColor="@color/white"
     app:startIconDrawable="@drawable/ic_baseline_email_24"
     android:layout_width="match_parent"
@@ -47,7 +49,8 @@
 
 <com.google.android.material.textfield.TextInputEditText
     android:inputType="textPersonName"
-    android:textSize="22sp"
+    android:textSize="16sp"
+    android:textColor="@color/black"
     android:ems="10"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
@@ -59,14 +62,17 @@
     android:layout_marginTop="10dp"
     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
     android:hint="Password"
+        app:hintTextColor="@color/gray_450"
     app:boxBackgroundColor="@color/white"
     app:startIconDrawable="@drawable/ic_baseline_lock_24"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
 <com.google.android.material.textfield.TextInputEditText
     android:ems="10"
-    android:textSize="22sp"
+    android:textColor="@color/black"
+    android:textSize="16sp"
     android:inputType="textPassword"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>

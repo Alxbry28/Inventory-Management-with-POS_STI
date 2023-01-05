@@ -2,6 +2,7 @@ package com.example.inventorymanagementsystem.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.inventorymanagementsystem.R;
+import com.example.inventorymanagementsystem.interfaces.POSSelectedItemListener;
+import com.example.inventorymanagementsystem.libraries.MoneyLibrary;
 import com.example.inventorymanagementsystem.models.Product;
 
 import java.util.ArrayList;
@@ -38,11 +41,15 @@ public class POSRCVAdapter extends RecyclerView.Adapter<POSRCVAdapter.POSViewHol
         Product product = productList.get(position);
         holder.tvProductName.setText(product.getName());
         holder.tvCategory.setText(product.getCategory());
-        holder.tvQuantity.setText("Qty: " + String.valueOf(product.getQuantity()));
-        holder.tvPrice.setText("P" + String.valueOf(product.getPrice()));
+
+        String qtyText = (product.getQuantity() > 0) ? "Qty: " + String.valueOf(product.getQuantity()) : "Out of Stock";
+        int qtyColor = (product.getQuantity() <= 0) ? Color.RED : Color.GRAY;
+        holder.tvQuantity.setTextColor(qtyColor);
+        holder.tvQuantity.setText(qtyText);
+
+        holder.tvPrice.setText("P" + MoneyLibrary.toTwoDecimalPlaces(product.getPrice()));
         holder.cvProductItem.setOnClickListener(v -> {
             posSelectedItemListener.getSelectedItem(product);
-
         });
     }
 
@@ -66,12 +73,7 @@ public class POSRCVAdapter extends RecyclerView.Adapter<POSRCVAdapter.POSViewHol
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvQuantity = itemView.findViewById(R.id.tvQuantity);
             view = itemView;
-
         }
-    }
-
-    public interface POSSelectedItemListener{
-        void getSelectedItem(Product product);
     }
 
     public ArrayList<Product> getProductList() {

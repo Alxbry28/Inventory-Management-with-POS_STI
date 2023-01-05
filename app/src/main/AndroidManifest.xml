@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,28 +13,56 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InventoryManagementSystem">
         <activity
-            android:name=".AddEditStaffActivity"
+            android:name=".views.staff.TransactionDetailsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".StaffListActivity"
+            android:name=".views.staff.HomeActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".POSItemActivity"
+            android:name=".views.staff.PaymentActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".POSActivity"
+            android:name=".views.staff.CartActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".views.staff.AddEditStaffActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".views.staff.StaffListActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".views.staff.POSItemActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".views.staff.POSActivity"
             android:exported="false"
             android:label="@string/title_activity_posactivity"
             android:theme="@style/Theme.InventoryManagementSystem.NoActionBar">
@@ -38,13 +70,12 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".AddItemForm" />
-        <activity android:name=".InventoryForm" />
-        <activity android:name=".ItemsForm" />
-        <activity android:name=".TransactionsForm" />
-        <activity android:name=".SalesForm" />
+        <activity android:name=".views.staff.AddItemForm" />
+        <activity android:name=".views.staff.InventoryForm" />
+        <activity android:name=".views.staff.ItemsForm" />
+        <activity android:name=".views.staff.TransactionsForm" />
+        <activity android:name=".views.staff.SalesForm" />
         <activity android:name=".ForgotPassword" />
-        <activity android:name=".HomeActivity" />
         <activity android:name=".RegisterUser" />
         <activity
             android:name=".MainActivity"

@@ -4,46 +4,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".POSItemActivity">
+    tools:context=".views.staff.POSItemActivity">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <LinearLayout android:id="@+id/lnrHeaderProduct"
-        android:gravity="center"
-        android:background="@color/bg_blue700"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp">
-
-        <TextView
-            android:textColor="@color/white"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            android:textSize="24sp"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/lnrHeaderProduct"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Point Of Sale" />
+            android:background="@color/bg_blue700"
+            android:gravity="center"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Point Of Sale"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <EditText android:id="@+id/etSearch"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search Product"
+            android:textColorHint="@color/gray_450"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcPOSProductItem"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="108dp"
+            android:padding="10dp" />
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcPOSProductItem"
-        android:padding="10dp"
-        android:layout_marginBottom="50dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    </LinearLayout>
-
-    <Button android:layout_alignParentBottom="true"
-        android:id="@+id/btnCheckout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="0 Items" />
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_marginRight="5dp"
+                android:id="@+id/btnCart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:drawableEnd="@drawable/ic_baseline_delete_24_white"
+                android:text="Clear Items" />
+
+            <Button
+                android:id="@+id/btnCheckout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24_white"
+                android:text="No Items" />
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+
+    </LinearLayout>
 
 </RelativeLayout>

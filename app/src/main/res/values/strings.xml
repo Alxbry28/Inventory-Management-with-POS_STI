@@ -1,11 +1,47 @@
 <resources>
     <string name="app_name">InventoryManagementSystem</string>
     <string name="sign_up"><![CDATA[This is an <u>underline</u>.]]></string>
+    <string name="valid_name">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ nbsp</string>
+    <string name="valid_double">1234567890.</string>
+    <string name="valid_username_password">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_@</string>
+    <string name="valid_quantity">1234567890</string>
+
+
     <string-array name="array_name">
         <item>kilograms</item>
         <item>piece</item>
         <item>grams</item>
     </string-array>
+
+    <string-array name="orderby_choice">
+        <item>ASC</item>
+        <item>DESC</item>
+    </string-array>
+
+    <string-array name="duration_choice">
+        <item>Today</item>
+        <item>Last Day</item>
+
+        <item>This Week</item>
+        <item>Last Week</item>
+
+        <item>This Month</item>
+        <item>Last Month</item>
+
+        <item>This Year</item>
+        <item>Last Year</item>
+
+        <item>All</item>
+
+        <item>Single Day</item>
+        <item>Date Range</item>
+    </string-array>
+
+    <string-array name="array_position_admin">
+        <item>Administrator</item>
+        <item>Staff</item>
+    </string-array>
+
     <string name="title_activity_pos">POS</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">Point Of Sale</string>

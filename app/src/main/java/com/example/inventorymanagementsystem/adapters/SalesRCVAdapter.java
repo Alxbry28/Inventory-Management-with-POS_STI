@@ -51,9 +51,7 @@ public class SalesRCVAdapter extends RecyclerView.Adapter<SalesRCVAdapter.SalesV
     @Override
     public void onBindViewHolder(@NonNull SalesRCVAdapter.SalesViewHolder holder, int position) {
         Sales sales = salesList.get(position);
-        holder.tvSalesName.setText(sales.getCreatedAt());
-        holder.tvSalesPrice.setText("P" + String.valueOf(sales.getTotal_price()));
-        holder.tvSalesQuantity.setText("Qty: " + String.valueOf(sales.getQuantity()));
+
     }
 
     @Override

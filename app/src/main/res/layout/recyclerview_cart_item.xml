@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    android:id="@+id/cvProductItem"
+    android:layout_margin="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView android:id="@+id/tvProductName"
+                android:text="Coca Cola"
+                android:textSize="20dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:id="@+id/tvCategory"
+                android:text="Softdrinks"
+                android:textSize="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:id="@+id/tvProductPrice"
+                android:text="P123.25"
+                android:textSize="15dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:id="@+id/tvPrice"
+                android:text="P246.50"
+                android:textSize="17dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:background="@color/bg_red"
+                android:id="@+id/iBtnDeleteItem"
+                android:src="@drawable/ic_baseline_delete_24_white"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                />
+
+            <Button
+                android:id="@+id/btnMinusQty"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textSize="25dp" />
+
+            <EditText
+                android:id="@+id/etQuantity"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="2"
+                android:gravity="center"
+                android:background="@drawable/form_background"
+                android:backgroundTint="@color/white_700"
+                android:layout_margin="5dp" />
+
+            <Button
+                android:id="@+id/btnPlusQty"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:textSize="25dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

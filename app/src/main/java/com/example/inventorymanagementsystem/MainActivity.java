@@ -1,8 +1,10 @@
 package com.example.inventorymanagementsystem;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -12,7 +14,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.inventorymanagementsystem.views.staff.*;
 import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
 import com.example.inventorymanagementsystem.interfaces.StoreModelListener;
 import com.example.inventorymanagementsystem.interfaces.UserModelListener;
@@ -57,12 +59,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         logUser = new User();
         sharedPreferences = getSharedPreferences(TAG, MODE_PRIVATE);
         boolean isSignIn = sharedPreferences.getBoolean("isSignIn", false);
         if(isSignIn){
             int userType = sharedPreferences.getInt("userType", 0);
             redirectUser(userType);
+            finish();
         }
 
         sessionService = new SessionService();
@@ -80,7 +84,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnClose = findViewById(R.id.btnClose);
         btnClose.setOnClickListener((View v) -> {
-            Toast.makeText(this, "Test ", Toast.LENGTH_SHORT).show();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Close");
+            builder.setMessage("Do you want to close this app?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    dialog.dismiss();
+                    finishAffinity();
+                }
+            });
+
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+
         });
 
         etEmail = (TextInputLayout) findViewById(R.id.email);
@@ -88,14 +115,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
 
-
         forgotPassword = (TextView)findViewById(R.id.forgotPassword);
         forgotPassword.setOnClickListener(this);
 
         TextView date = findViewById(R.id.Date);
         date.setText(time() + "   "+ date());
-
-
 
     }
 
@@ -190,14 +214,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void redirectUser(int userType){
         switch (userType){
             case 1:
-                Toast.makeText(MainActivity.this, "Super Admin", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Super Admin", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, HomeActivity.class));
                 break;
             case 2:
                 startActivity(new Intent(MainActivity.this, HomeActivity.class));
-
                 break;
             case 3:
                 Toast.makeText(MainActivity.this, "Employee", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, HomeActivity.class));
                 break;
         }
     }

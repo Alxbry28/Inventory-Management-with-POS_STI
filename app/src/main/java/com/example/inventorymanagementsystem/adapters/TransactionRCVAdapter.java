@@ -2,6 +2,7 @@ package com.example.inventorymanagementsystem.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -16,26 +17,30 @@ import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.models.Product;
 import com.example.inventorymanagementsystem.models.Sales;
 import com.example.inventorymanagementsystem.models.Transaction;
+import com.example.inventorymanagementsystem.views.staff.TransactionDetailsActivity;
 
 import java.util.List;
 
 public class TransactionRCVAdapter extends RecyclerView.Adapter<TransactionRCVAdapter.TransactionViewHolder> {
 
-    private List<Transaction> transactionsList;
+    private List<Sales> salesList;
     private Context context;
     private Activity activity;
     public class TransactionViewHolder extends RecyclerView.ViewHolder{
 
         //initialize components
-        TextView tvTransactionName, tvTransactionPrice, tvTransactionQuantity, tvCreatedAt;
+        TextView tvTransReceiptNo, tvTransDate, tvTransQuantity, tvAmountPayable;
         View view;
+        Button btnView;
 
         public TransactionViewHolder(@NonNull View itemView) {
             super(itemView);
             // Component with layout
-            tvTransactionName = itemView.findViewById(R.id.tvTransactionName);
-            tvTransactionPrice = itemView.findViewById(R.id.tvTransactionPrice);
-            tvTransactionQuantity = itemView.findViewById(R.id.tvTransactionQuantity);
+            tvTransReceiptNo = itemView.findViewById(R.id.tvTransReceiptNo);
+            tvTransDate = itemView.findViewById(R.id.tvTransDate);
+            tvTransQuantity = itemView.findViewById(R.id.tvTransQuantity);
+            tvAmountPayable = itemView.findViewById(R.id.tvAmountPayable);
+            btnView = itemView.findViewById(R.id.btnView);
         }
     }
 
@@ -49,23 +54,31 @@ public class TransactionRCVAdapter extends RecyclerView.Adapter<TransactionRCVAd
 
     @Override
     public void onBindViewHolder(@NonNull TransactionRCVAdapter.TransactionViewHolder holder, int position) {
-        Transaction transaction = transactionsList.get(position);
-        holder.tvTransactionName.setText(transaction.getCreatedAt());
-        holder.tvTransactionPrice.setText("P" + String.valueOf(transaction.getTotal_price()));
-        holder.tvTransactionQuantity.setText("Qty: " + String.valueOf(transaction.getQuantity()));
+        Sales transaction = salesList.get(position);
+        holder.tvTransReceiptNo.setText(transaction.getReceiptNo());
+        holder.tvTransDate.setText(transaction.getCreated_at());
+        holder.tvAmountPayable.setText("P" + String.valueOf(transaction.getAmountPayable()));
+        holder.tvTransQuantity.setText("Qty: " + String.valueOf(transaction.getQuantity()));
+        holder.btnView.setOnClickListener((View v) -> {
+                Intent intent = new Intent(context, TransactionDetailsActivity.class);
+                intent.putExtra("transaction.id", transaction.getId());
+                intent.putExtra("transaction.receiptNo", transaction.getReceiptNo());
+                context.startActivity(intent);
+                activity.finish();
+        });
     }
 
     @Override
     public int getItemCount() {
-        return transactionsList.size();
+        return salesList.size();
     }
 
-    public List<Transaction> getTransactionsList() {
-        return transactionsList;
+    public List<Sales> getSalesList() {
+        return salesList;
     }
 
-    public void setTransactionsList(List<Transaction> transactionsList) {
-        this.transactionsList = transactionsList;
+    public void setSalesList(List<Sales> salesList) {
+        this.salesList = salesList;
     }
 
     public Context getContext() {

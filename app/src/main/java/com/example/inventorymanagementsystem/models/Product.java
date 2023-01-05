@@ -1,5 +1,7 @@
 package com.example.inventorymanagementsystem.models;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
 import com.example.inventorymanagementsystem.database.RealtimeFirebaseDB;
@@ -12,7 +14,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class Product {
 
@@ -20,11 +26,14 @@ public class Product {
     private String id, userId, storeId;
     private String name, category;
     private double price, cost;
+//    private double totalPrice;
+    private String created_at, updated_at;
     private boolean isDeleted;
 
     public static final String TABLE = "tblProducts";
     private RealtimeFirebaseDB realtimeFirebaseDB;
     private DatabaseReference dbRef;
+    private String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault()).format(new Date());
 
     public Product(){
         this.realtimeFirebaseDB = new RealtimeFirebaseDB();
@@ -33,6 +42,16 @@ public class Product {
 
     public void Create(final TransactionStatusListener transactionStatus){
         this.setId(dbRef.push().getKey());
+        this.setCreated_at(dateTime);
+        this.setUpdated_at(dateTime);
+        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+            transactionStatus.checkStatus(task.isSuccessful());
+        });
+    }
+
+
+    public void Update(final TransactionStatusListener transactionStatus){
+        this.setUpdated_at(dateTime);
         dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
@@ -42,6 +61,10 @@ public class Product {
         dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
+    }
+
+    public double GetComputedTotalPrice(){
+        return quantity * price;
     }
 
     public void GetById(final ProductModelListener productModelListener){
@@ -81,8 +104,36 @@ public class Product {
         });
     }
 
+    public void Search(String search,final ProductModelListener productModelListener){
+        Query query = dbRef.orderByChild("storeId").startAt(search).endAt(search + "\uf0ff");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Product> productArrayList = new ArrayList<>();
+                for (DataSnapshot productSnapShot : snapshot.getChildren()) {
+                    Product product = productSnapShot.getValue(Product.class);
+                    productArrayList.add(product);
+                }
+                productModelListener.getProductList(productArrayList);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
+
+    public static int findIndexById(ArrayList<Product> productList, String productId){
+        for(int i = 0; i < productList.size(); i++) {
+            if (productList.get(i).getId() == productId) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    //Getters and Settes
     public double getCost() {
         return cost;
     }
@@ -132,6 +183,8 @@ public class Product {
     }
 
     public double getPrice() {
+
+        double roundOffPrice = (double) Math.round(price * 100) / 100;
         return price;
     }
 
@@ -145,5 +198,29 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

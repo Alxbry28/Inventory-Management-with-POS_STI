@@ -4,10 +4,8 @@ import com.example.inventorymanagementsystem.interfaces.TransactionStatusListene
 
 // Business Owner
 public class BusinessOwner extends Staff{
-
     public BusinessOwner() {
         super();
         super.setPosition("Business Owner");
     }
-
 }

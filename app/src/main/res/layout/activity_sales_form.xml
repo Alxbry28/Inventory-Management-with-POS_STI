@@ -5,42 +5,280 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SalesForm">
+    tools:context=".views.staff.SalesForm">
 
-    <TextView
-        android:layout_gravity="center"
-        android:textSize="30sp"
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/purple_200"
-        android:textStyle="bold"
-        android:text="Sales Form" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_centerInParent="true"
-        android:padding="5dp"
-        android:id="@+id/rcSales"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp" />
-
-    <Button
-        android:layout_gravity="center"
-        android:id="@+id/btnback"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"
-        android:layout_alignParentBottom="true"/>
+        android:background="@color/bg_blue700"
+        android:gravity="center"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp">
 
-    <TextView
-        android:layout_gravity="center"
-        android:id="@+id/Date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_centerHorizontal="true"
-        android:text="Date"
-        android:textSize="20dp"
-        android:layout_alignParentBottom="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sales"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/lnrHeader">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--  Start: Header -->
+            <LinearLayout
+                android:id="@+id/lnrHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp">
+
+                    <Button
+                        android:id="@+id/btnStartDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24_white"
+                        android:text="04 Dec 2022"
+                        android:textSize="11sp" />
+
+                    <Button
+                        android:id="@+id/btnEndDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24_white"
+                        android:text="04 Dec 2022"
+                        android:textSize="11sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@id/btnSelectDuration"
+                        android:text="Select Duration: "
+                        android:textSize="20sp" />
+
+                    <Button
+                        android:id="@+id/btnSelectDuration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/btnOrderBy"
+                        android:layout_marginRight="5dp"
+                        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24_white"
+                        android:text="All"
+                        android:textSize="13sp" />
+
+                    <Button
+                        android:id="@+id/btnOrderBy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="5dp"
+                        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24_white"
+                        android:text="ASC"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <!--  End: Header -->
+
+
+            <!--  Start: Content -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="7dp">
+
+                <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="340dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="3dp"
+                    android:background="@color/white"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="2dp">
+
+                        <TextView
+                            android:id="@+id/tvTopSales"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="2dp"
+                            android:text="Sales Chart"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textSize="22dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="2dp"
+                            android:background="@color/gray"
+                            android:padding="5dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:id="@+id/bChartSales"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="340dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@color/white"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="2dp">
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="2dp"
+                            android:text="Top Sold Products"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textSize="22dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="2dp"
+                            android:background="@color/gray"
+                            android:padding="5dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <com.github.mikephil.charting.charts.PieChart
+                                android:id="@+id/pChartProducts"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <!--  End: Content -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="4dp"
+                android:paddingTop="1dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnGenerateReport"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:text="Generate Report"
+                        android:textSize="13sp" />
+
+                    <Button
+                        android:id="@+id/btnSendMail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Send Mail"
+                        android:textSize="13sp" />
+
+
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/btnback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Back" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

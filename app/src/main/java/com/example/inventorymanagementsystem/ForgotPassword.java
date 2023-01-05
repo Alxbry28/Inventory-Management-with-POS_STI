@@ -32,7 +32,7 @@ public class ForgotPassword extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
-
+//        getSupportActionBar().hide();
         email = findViewById(R.id.emailRP);
         resetPW = (Button)findViewById(R.id.btnResetPass);
         btnBack = (Button)findViewById(R.id.btnBack);

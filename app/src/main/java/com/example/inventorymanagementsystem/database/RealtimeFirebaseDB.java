@@ -1,6 +1,9 @@
 package com.example.inventorymanagementsystem.database;
 import com.example.inventorymanagementsystem.models.InventoryItem;
 import com.example.inventorymanagementsystem.models.Product;
+import com.example.inventorymanagementsystem.models.Sales;
+import com.example.inventorymanagementsystem.models.SoldItem;
+import com.example.inventorymanagementsystem.models.SoldItemReport;
 import com.example.inventorymanagementsystem.models.Staff;
 import com.example.inventorymanagementsystem.models.Store;
 import com.example.inventorymanagementsystem.models.User;
@@ -35,6 +38,18 @@ public class RealtimeFirebaseDB {
 
     public DatabaseReference ProductsTable(){
         return firebaseDatabase.getInstance().getReference(Product.TABLE);
+    }
+
+    public DatabaseReference SalesTable(){
+        return firebaseDatabase.getInstance().getReference(Sales.TABLE);
+    }
+
+    public DatabaseReference SoldItemReportTable(){
+        return firebaseDatabase.getInstance().getReference(SoldItemReport.TABLE);
+    }
+
+    public DatabaseReference SoldItemTable(){
+        return firebaseDatabase.getInstance().getReference(SoldItem.TABLE);
     }
 
     public DatabaseReference InventoryTable(){
