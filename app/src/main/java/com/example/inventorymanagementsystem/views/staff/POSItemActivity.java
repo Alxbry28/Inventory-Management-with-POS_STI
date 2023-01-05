@@ -183,6 +183,10 @@ public class POSItemActivity extends AppCompatActivity {
 
     }
 
+    private void initRCVPOSItem(){
+
+    }
+
     private void showTotal(){
         totalPrice = cartProducts.stream().filter(product1 -> product1.GetComputedTotalPrice() > 0).mapToDouble(Product::GetComputedTotalPrice).sum();
 
