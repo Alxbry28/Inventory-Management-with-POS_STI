@@ -232,7 +232,8 @@ public class SalesForm extends AppCompatActivity {
                         intent.putExtra(Intent.ACTION_VIEW, uri);
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         intent.setDataAndType(uri, "application/vnd.ms-excel");
-                        startActivity(intent);
+//                        startActivity(intent);
+                        startActivity(Intent.createChooser(intent, "Open File"));
                     }
                     else{
                         Toast.makeText(this, "Failed to generate", Toast.LENGTH_SHORT).show();
