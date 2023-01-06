@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -185,14 +186,16 @@ public class AddEditStaffActivity extends AppCompatActivity {
                         @Override
                         public void checkStatus(boolean status) {
                             if(status){
+
                                 user.Update(new TransactionStatusListener() {
                                     @Override
                                     public void checkStatus(boolean status) {
-                                        Toast.makeText(AddEditStaffActivity.this, "Edit Success", Toast.LENGTH_SHORT).show();
+                                      Toast.makeText(AddEditStaffActivity.this, "Staff Edit Success", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(AddEditStaffActivity.this, StaffListActivity.class));
                                         finish();
                                     }
                                 });
+
 
                             }
                         }
@@ -203,8 +206,8 @@ public class AddEditStaffActivity extends AppCompatActivity {
                 else{
 
                     if(!Validation.checkPasswordMatch(etPassword.getText().toString(),etConfirmPassword.getText().toString())){
-                        Toast.makeText(AddEditStaffActivity.this, "Password is not match to confirm password", Toast.LENGTH_SHORT).show();
-                        return;
+                        Toast.makeText(AddEditStaffActivity.this, "Password don't match.", Toast.LENGTH_SHORT).show();
+                      return;
                     }
 
                     if(TextUtils.isEmpty(etFirstname.getText().toString()) || TextUtils.isEmpty(etLastname.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString()) || TextUtils.isEmpty((etConfirmPassword.getText().toString()))){
