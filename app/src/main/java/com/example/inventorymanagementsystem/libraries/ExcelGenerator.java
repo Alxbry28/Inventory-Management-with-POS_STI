@@ -32,11 +32,21 @@ public class ExcelGenerator {
     private String dateTimeCreated;
     private String fileNameUnique;
     private File filePath;
+    private File folderDocument;
+    private File folderDocumentBackup;
+
+
+
     public ExcelGenerator(Context context) {
 
         this.context = context;
         hssfWorkbook = new HSSFWorkbook();
+        folderDocumentBackup = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath());
+        folderDocument = context.getFilesDir();
+    }
 
+    public File getFolderDocument() {
+        return folderDocument;
     }
 
     public String getFileNameUnique() {
@@ -59,11 +69,15 @@ public class ExcelGenerator {
         SalesWorkbook();
         SoldProductWorkbook();
 
-   filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), fileNameUnique+"_"+Sales.FILENAME);
-
+        filePath = new File(getFolderDocument(), fileNameUnique+"_"+Sales.FILENAME);
+        File filePathBackup = new File(folderDocumentBackup, fileNameUnique+"_"+Sales.FILENAME);
         try {
 
-            File folderDocument = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath());
+
+            if(!folderDocument.exists()){
+                folderDocument.mkdirs();
+            }
+
             if(!folderDocument.exists()){
                 folderDocument.mkdirs();
             }
@@ -71,6 +85,11 @@ public class ExcelGenerator {
             if (filePath.exists()){
 
                 filePath.delete();
+
+
+                if (!filePathBackup.exists()){
+                    filePathBackup.createNewFile();
+                }
 
                 if (!filePath.exists()){
                     filePath.createNewFile();
@@ -82,7 +101,10 @@ public class ExcelGenerator {
             }
 
             FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+            FileOutputStream fileOutputStream1 = new FileOutputStream(filePathBackup);
+
             hssfWorkbook.write(fileOutputStream);
+            hssfWorkbook.write(fileOutputStream1);
 
             if (fileOutputStream != null){
                 fileOutputStream.flush();
