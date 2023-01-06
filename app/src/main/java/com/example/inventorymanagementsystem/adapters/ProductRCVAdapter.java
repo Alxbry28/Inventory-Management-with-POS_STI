@@ -77,6 +77,7 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
 
             //Toast.makeText(context, "Test Edit Button " + product.getName() , Toast.LENGTH_SHORT).show();
         });
+
         holder.btnDeleteProduct.setOnClickListener(v -> {
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override

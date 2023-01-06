@@ -124,7 +124,7 @@ public class SalesForm extends AppCompatActivity {
 
 //        getSupportActionBar().hide();
 
-//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
 
         tempSalesArrayList = new ArrayList<>();
 
@@ -158,26 +158,6 @@ public class SalesForm extends AppCompatActivity {
         userId = sharedPreferences.getString("userId", null);
         staff.setStoreId(storeId);
         sales.setStoreId(storeId);
-
-        staff.GetBusinessOwner(new StaffModelListener() {
-
-            @Override
-            public void retrieveStaff(Staff staff) {
-                userOwner.setId(staff.getUserId());
-                userOwner.GetById(new UserModelListener() {
-                    @Override
-                    public void retrieveUser(User user) {
-                        receiverEmail = user.getEmail();
-                    }
-                });
-            }
-
-            @Override
-            public void getStaffList(ArrayList<Staff> staffList) {
-
-            }
-
-        });
 
         pChartProducts = findViewById(R.id.pChartProducts);
         btnSelectDuration = findViewById(R.id.btnSelectDuration);
