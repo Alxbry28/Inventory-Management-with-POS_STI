@@ -75,7 +75,7 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
             intent.putExtra("productId", product.getId());
             context.startActivity(intent);
         });
-      
+
         holder.btnDeleteProduct.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage("Are you sure you want to delete product?");
