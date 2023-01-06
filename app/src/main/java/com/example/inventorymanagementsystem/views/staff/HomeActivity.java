@@ -69,7 +69,6 @@ public class HomeActivity extends AppCompatActivity {
 
         File filePath = new File(getFilesDir(), com.example.inventorymanagementsystem.models.Sales.FILENAME);
         String path = this.getFilesDir().getAbsolutePath();
-//        Toast.makeText(this, "path " + path + " " + filePath.toPath().toAbsolutePath().toString(), Toast.LENGTH_SHORT).show();
 
 //        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
 
@@ -166,6 +165,7 @@ public class HomeActivity extends AppCompatActivity {
                             cartLibrary.clear();
                             FirebaseAuth.getInstance().signOut();
                             startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                            finish();
                         }
                 }
         };
