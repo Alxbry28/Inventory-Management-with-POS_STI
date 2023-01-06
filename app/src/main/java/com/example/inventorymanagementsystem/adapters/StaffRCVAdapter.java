@@ -84,7 +84,6 @@ public class StaffRCVAdapter extends RecyclerView.Adapter<StaffRCVAdapter.StaffV
                 }
             });
             alertDeleteDialog.show();
-
         });
 
         holder.btnEditStaff.setOnClickListener(v -> {
@@ -95,6 +94,7 @@ public class StaffRCVAdapter extends RecyclerView.Adapter<StaffRCVAdapter.StaffV
             context.startActivity(intent);
             activity.finish();
         });
+
     }
 
     @Override
@@ -116,6 +116,7 @@ public class StaffRCVAdapter extends RecyclerView.Adapter<StaffRCVAdapter.StaffV
             btnDeleteStaff = itemView.findViewById(R.id.btnDeleteStaff);
 
         }
+
     }
 
     public ArrayList<Staff> getStaffArrayList() {

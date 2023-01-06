@@ -50,7 +50,6 @@ public class CartActivity extends AppCompatActivity {
         btnCheckout = findViewById(R.id.btnCheckout);
         tvTotalItems = findViewById(R.id.tvTotalItems);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
-
         rcCartItems = findViewById(R.id.rcCartItems);
 
         cartLibrary = new CartLibrary();
