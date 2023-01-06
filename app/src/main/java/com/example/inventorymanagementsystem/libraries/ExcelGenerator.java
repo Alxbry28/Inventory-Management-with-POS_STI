@@ -73,7 +73,6 @@ public class ExcelGenerator {
         File filePathBackup = new File(folderDocumentBackup, fileNameUnique+"_"+Sales.FILENAME);
         try {
 
-
             if(!folderDocument.exists()){
                 folderDocument.mkdirs();
             }
@@ -83,9 +82,7 @@ public class ExcelGenerator {
             }
 
             if (filePath.exists()){
-
                 filePath.delete();
-
 
                 if (!filePathBackup.exists()){
                     filePathBackup.createNewFile();
