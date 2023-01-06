@@ -30,6 +30,7 @@ public class StaffRCVAdapter extends RecyclerView.Adapter<StaffRCVAdapter.StaffV
     private Context context;
     private Activity activity;
     private String currentUserId;
+    private String role;
 
     @NonNull
     @Override
@@ -44,9 +45,21 @@ public class StaffRCVAdapter extends RecyclerView.Adapter<StaffRCVAdapter.StaffV
         Staff staff = staffArrayList.get(position);
         holder.tvFullname.setText(staff.getFullname());
         holder.tvPosition.setText(staff.getPosition());
-        if(currentUserId.equals(staff.getUserId())){
+
+        if(staff.getPosition().equals("Business Owner")){
+            holder.btnEditStaff.setVisibility(View.GONE);
             holder.btnDeleteStaff.setVisibility(View.GONE);
         }
+
+        if(currentUserId.equals(staff.getUserId())){
+
+            if(staff.getPosition().equals("Business Owner")){
+                holder.btnEditStaff.setVisibility(View.VISIBLE);
+            }
+
+            holder.btnDeleteStaff.setVisibility(View.GONE);
+        }
+
         holder.btnDeleteStaff.setOnClickListener(v -> {
             AlertDialog.Builder alertDeleteDialog = new AlertDialog.Builder(context);
             alertDeleteDialog.setTitle("Delete Staff");
@@ -80,6 +93,7 @@ public class StaffRCVAdapter extends RecyclerView.Adapter<StaffRCVAdapter.StaffV
             intent.putExtra("staffId", staff.getId());
             intent.putExtra("userId", staff.getUserId());
             context.startActivity(intent);
+            activity.finish();
         });
     }
 

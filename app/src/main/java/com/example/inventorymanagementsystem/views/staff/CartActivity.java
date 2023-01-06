@@ -87,6 +87,10 @@ public class CartActivity extends AppCompatActivity {
     private void showTotalPrice(){
         tvTotalPrice.setText("Total: P" +cartLibrary.totalCartPrice());
         tvTotalItems.setText("Items: " + cartLibrary.totalCartItems());
+        if(cartLibrary.totalCartItems() == 0 || cartLibrary.totalCartPrice() == 0){
+           btnCheckout.setEnabled(false);
+        }
+
     }
 
 }

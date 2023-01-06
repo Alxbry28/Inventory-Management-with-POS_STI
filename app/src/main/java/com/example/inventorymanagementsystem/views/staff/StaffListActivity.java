@@ -62,6 +62,7 @@ public class StaffListActivity extends AppCompatActivity {
                     rcStaffList.setVisibility(View.VISIBLE);
 
                     StaffRCVAdapter staffRCVAdapter = new StaffRCVAdapter();
+                    staffRCVAdapter.setActivity(StaffListActivity.this);
                     staffRCVAdapter.setContext(StaffListActivity.this);
                     staffRCVAdapter.setStaffArrayList(staffList);
                     staffRCVAdapter.setCurrentUserId(userId);
@@ -80,6 +81,7 @@ public class StaffListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(StaffListActivity.this, AddEditStaffActivity.class));
+                finish();
             }
         });
         btnBack.setOnClickListener(new View.OnClickListener() {

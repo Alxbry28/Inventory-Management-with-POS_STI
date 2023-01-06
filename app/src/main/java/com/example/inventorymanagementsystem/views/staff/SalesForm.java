@@ -232,7 +232,7 @@ public class SalesForm extends AppCompatActivity {
                         intent.putExtra(Intent.ACTION_VIEW, uri);
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         intent.setDataAndType(uri, "application/vnd.ms-excel");
-                        startActivity(intent);
+                        startActivity(Intent.createChooser(intent, "Open File"));
                     }
                     else{
                         Toast.makeText(this, "Failed to generate", Toast.LENGTH_SHORT).show();
@@ -244,7 +244,6 @@ public class SalesForm extends AppCompatActivity {
 
 
     private void generateExcelDetails() {
-//        DateTimeFormatter todayDateFormatter = DateTimeFormatter.ofPattern("uuuuMMddHHmmss");
         SimpleDateFormat f = new SimpleDateFormat("yyyyMMddHHmmss");
         SimpleDateFormat time = new SimpleDateFormat("hh:mm a");
         DateTimeFormatter dateGenFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
