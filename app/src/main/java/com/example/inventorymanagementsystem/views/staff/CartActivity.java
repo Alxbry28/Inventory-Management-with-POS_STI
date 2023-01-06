@@ -76,7 +76,7 @@ public class CartActivity extends AppCompatActivity {
         showTotalPrice();
 
         btnCheckout.setOnClickListener(v->{
-            Toast.makeText(this, "Payment", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Payment", Toast.LENGTH_SHORT).show();
             cartLibrary.clear();
             cartLibrary.setCartItemArrayList(cartItemsArrayList);
             cartLibrary.saveCartItems();
