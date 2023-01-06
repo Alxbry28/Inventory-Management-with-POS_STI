@@ -195,8 +195,6 @@ public class AddEditStaffActivity extends AppCompatActivity {
                                         finish();
                                     }
                                 });
-
-
                             }
                         }
                     });

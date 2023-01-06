@@ -1,6 +1,7 @@
 package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -43,6 +44,9 @@ import java.util.Date;
 import java.util.Locale;
 import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.MainActivity;
+import androidx.activity.OnBackPressedCallback;
+import android.content.DialogInterface;
+
 public class HomeActivity extends AppCompatActivity {
 
     private String userId, storeId, staffId, businessName;
@@ -62,6 +66,37 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 //        getSupportActionBar().hide();
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Back is pressed... Finishing the activity
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                builder.setTitle("Logout");
+                builder.setMessage("Do you want to logout?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseAuth.getInstance().signOut();
+                        dialog.dismiss();
+                        startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                        finish();
+
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        dialog.cancel();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         sessionService = new SessionService();
@@ -108,6 +143,36 @@ public class HomeActivity extends AppCompatActivity {
         date.setText(time() + "   "+ date());
 
         cartLibrary.clear();
+    }
+
+    private void logout(){
+        // Back is pressed... Finishing the activity
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setTitle("Logout");
+        builder.setMessage("Do you want to logout?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+                dialog.cancel();
+                cartLibrary.clear();
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                finish();
+
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void initButtons(){
@@ -162,10 +227,8 @@ public class HomeActivity extends AppCompatActivity {
 
                     default:
                         if(sessionService.End()){
-                            cartLibrary.clear();
-                            FirebaseAuth.getInstance().signOut();
-                            startActivity(new Intent(HomeActivity.this, MainActivity.class));
-                            finish();
+                            logout();
+
                         }
                 }
         };

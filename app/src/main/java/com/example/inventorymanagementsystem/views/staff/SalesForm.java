@@ -124,7 +124,7 @@ public class SalesForm extends AppCompatActivity {
 
 //        getSupportActionBar().hide();
 
-//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
 
         tempSalesArrayList = new ArrayList<>();
 
@@ -145,9 +145,7 @@ public class SalesForm extends AppCompatActivity {
 
         btnBack = findViewById(R.id.btnback);
         btnBack.setOnClickListener(v -> {
-            if(Sales.FILE_PATH.exists()){
-                Sales.FILE_PATH.delete();
-            }
+
             startActivity(new Intent(SalesForm.this, HomeActivity.class));
             finish();
         });
@@ -158,26 +156,6 @@ public class SalesForm extends AppCompatActivity {
         userId = sharedPreferences.getString("userId", null);
         staff.setStoreId(storeId);
         sales.setStoreId(storeId);
-
-        staff.GetBusinessOwner(new StaffModelListener() {
-
-            @Override
-            public void retrieveStaff(Staff staff) {
-                userOwner.setId(staff.getUserId());
-                userOwner.GetById(new UserModelListener() {
-                    @Override
-                    public void retrieveUser(User user) {
-                        receiverEmail = user.getEmail();
-                    }
-                });
-            }
-
-            @Override
-            public void getStaffList(ArrayList<Staff> staffList) {
-
-            }
-
-        });
 
         pChartProducts = findViewById(R.id.pChartProducts);
         btnSelectDuration = findViewById(R.id.btnSelectDuration);
@@ -228,11 +206,20 @@ public class SalesForm extends AppCompatActivity {
                     if (isGenerated) {
                         Toast.makeText(this, "Successfully saved", Toast.LENGTH_SHORT).show();
                         Uri uri = Uri.parse(excelGenerator.getFilePath().getAbsolutePath());
+
+                        Uri mydir = Uri.parse(excelGenerator.getFolderDocument().getAbsolutePath());
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.putExtra(Intent.ACTION_VIEW, uri);
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        intent.setDataAndType(uri, "application/vnd.ms-excel");
-                        startActivity(Intent.createChooser(intent, "Open File"));
+
+
+//                        intent.setDataAndType(uri, "application/*");
+
+
+                        intent.setDataAndType(mydir, DocumentsContract.Document.MIME_TYPE_DIR);
+
+//                         startActivity(intent);
+                        startActivity(Intent.createChooser(intent, "Open Folder"));
                     }
                     else{
                         Toast.makeText(this, "Failed to generate", Toast.LENGTH_SHORT).show();
