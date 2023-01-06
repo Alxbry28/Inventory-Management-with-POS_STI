@@ -80,7 +80,7 @@ public class CartItemRCVAdapter extends RecyclerView.Adapter<CartItemRCVAdapter.
             notifyItemRangeChanged(position,1);
             notifyDataSetChanged();
             cartItemsListener.retrieveCartItemList(cartItemList);
-            Toast.makeText(context, "Delete Item", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Item Deleted", Toast.LENGTH_SHORT).show();
         });
         holder.btnMinusQty.setOnClickListener(new View.OnClickListener() {
             @Override

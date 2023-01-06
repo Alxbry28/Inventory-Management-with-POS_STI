@@ -1,7 +1,9 @@
 package com.example.inventorymanagementsystem.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -72,18 +74,38 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
             intent.putExtra("isEditProduct", true);
             intent.putExtra("productId", product.getId());
             context.startActivity(intent);
-
-           // Toast.makeText(context, "Test Edit Button " + product.getName() , Toast.LENGTH_SHORT).show();
         });
+      
         holder.btnDeleteProduct.setOnClickListener(v -> {
-            if(product != null){
-                product.Delete(status -> {
-                    if(status){
-                        notifyDataSetChanged();
-                        Toast.makeText(context, "Product Deleted."  , Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("Are you sure you want to delete product?");
+            builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    dialog.dismiss();
+                    if(product != null){
+                        product.Delete(status -> {
+                            if(status){
+                                notifyDataSetChanged();
+                                Toast.makeText(context, "Deleted Product " + product.getName() , Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
-                });
-            }
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    dialog.dismiss();
+                }
+            });
+
+            builder.setTitle("Delete Product");
+            builder.create().show();
+
         });
     }
 

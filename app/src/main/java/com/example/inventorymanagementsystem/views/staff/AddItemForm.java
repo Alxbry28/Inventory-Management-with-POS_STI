@@ -48,7 +48,7 @@ public class AddItemForm extends AppCompatActivity  {
 
         initComponents();
         isEditProduct = getIntent().hasExtra("isEditProduct");
-        Toast.makeText(AddItemForm.this, "isEditProduct " + isEditProduct, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(AddItemForm.this, "isEditProduct " + isEditProduct, Toast.LENGTH_SHORT).show();
         if(isEditProduct){
             product.setId(getIntent().getStringExtra("productId"));
             product.GetById(new ProductModelListener() {
@@ -92,31 +92,43 @@ public class AddItemForm extends AppCompatActivity  {
     private void initEventButtons(){
         btnAdd.setOnClickListener(v ->{
 
-            if(!Validation.isValueDouble(etPrice.getText().toString())){
-                Toast.makeText(AddItemForm.this, "Price is not valid", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
             if(TextUtils.isEmpty(etStocks.getText().toString()) || TextUtils.isEmpty(etPrice.getText().toString())
                     || TextUtils.isEmpty(etProductName.getText().toString()) || TextUtils.isEmpty((etProductCategory.getText().toString()))){
                 Toast.makeText(this, "Empty fields. Cannot proceed.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            isEditProduct = getIntent().hasExtra("isEditProduct");
 
+
+
+            if(!Validation.isValueDouble(etPrice.getText().toString())){
+                Toast.makeText(AddItemForm.this, "Price is not valid", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+
+            isEditProduct = getIntent().hasExtra("isEditProduct");
             product.setStoreId(storeId);
             product.setUserId(userId);
-
             product.setQuantity(Integer.parseInt(etStocks.getText().toString()));
             product.setPrice(Double.parseDouble(etPrice.getText().toString()));
             product.setName(etProductName.getText().toString());
             product.setCategory(etProductCategory.getText().toString());
 
+            if( product.getQuantity() <= 0){
+                Toast.makeText(this, "Invalid input for quantity", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(product.getPrice() <= 0){
+                Toast.makeText(this, "Invalid input for price", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if(isEditProduct){
                 product.Update(status -> {
                     if (status){
-                        Toast.makeText(AddItemForm.this, "Saved Product successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddItemForm.this, "Edit Product Success", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 });
@@ -124,7 +136,7 @@ public class AddItemForm extends AppCompatActivity  {
             else{
                 product.Create(status -> {
                     if(status){
-                        Toast.makeText(AddItemForm.this, "Successfully add product", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddItemForm.this, "Product Successfully Added", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 });

@@ -50,7 +50,6 @@ public class CartActivity extends AppCompatActivity {
         btnCheckout = findViewById(R.id.btnCheckout);
         tvTotalItems = findViewById(R.id.tvTotalItems);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
-
         rcCartItems = findViewById(R.id.rcCartItems);
 
         cartLibrary = new CartLibrary();
@@ -76,7 +75,7 @@ public class CartActivity extends AppCompatActivity {
         showTotalPrice();
 
         btnCheckout.setOnClickListener(v->{
-            Toast.makeText(this, "Payment", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Payment", Toast.LENGTH_SHORT).show();
             cartLibrary.clear();
             cartLibrary.setCartItemArrayList(cartItemsArrayList);
             cartLibrary.saveCartItems();
