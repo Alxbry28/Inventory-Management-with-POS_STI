@@ -62,7 +62,14 @@ public class ExcelGenerator {
    filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), fileNameUnique+"_"+Sales.FILENAME);
 
         try {
+
+            File folderDocument = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath());
+            if(!folderDocument.exists()){
+                folderDocument.mkdirs();
+            }
+
             if (filePath.exists()){
+
                 filePath.delete();
 
                 if (!filePath.exists()){
