@@ -145,9 +145,11 @@ public class SalesForm extends AppCompatActivity {
 
         btnBack = findViewById(R.id.btnback);
         btnBack.setOnClickListener(v -> {
-            if(Sales.FILE_PATH.exists()){
-                Sales.FILE_PATH.delete();
-            }
+
+//            if(Sales.FILE_PATH.exists()){
+//                Sales.FILE_PATH.delete();
+//            }
+//
             startActivity(new Intent(SalesForm.this, HomeActivity.class));
             finish();
         });
