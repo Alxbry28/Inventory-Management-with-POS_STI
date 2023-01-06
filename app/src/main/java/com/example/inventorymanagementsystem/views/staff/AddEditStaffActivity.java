@@ -2,6 +2,7 @@ package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -54,7 +55,10 @@ public class AddEditStaffActivity extends AppCompatActivity {
         userId = sharedPreferences.getString("userId",null);
 
         user = new User();
+        user.setStoreId(storeId);
+
         staff = new Staff();
+        staff.setStoreId(storeId);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -98,6 +102,7 @@ public class AddEditStaffActivity extends AppCompatActivity {
                 }
             });
 
+            if(etRole.getText().toString().equals("Business Owner")) etRole.setEnabled(false);
             btnAddEditStaff.setText("Save");
             tvStaffTransactionType.setText("Edit Staff");
         }
@@ -133,44 +138,84 @@ public class AddEditStaffActivity extends AppCompatActivity {
         etRole.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                positionChoiceDialog.setChosenPosition(etRole.getText().toString());
-                positionChoiceDialog.show(getSupportFragmentManager(),"dialog_choose_position");
-                positionChoiceDialog.getPositionChoice(new PositionChoiceDialog.PositionChoiceListener() {
-                    @Override
-                    public void setPositionChoice(String choice) {
-                        etRole.setText(choice);
-                    }
-                });
+                if(!etRole.getText().toString().equals("Business Owner")) {
+                    positionChoiceDialog.setChosenPosition(etRole.getText().toString());
+                    positionChoiceDialog.show(getSupportFragmentManager(),"dialog_choose_position");
+                    positionChoiceDialog.getPositionChoice(new PositionChoiceDialog.PositionChoiceListener() {
+                        @Override
+                        public void setPositionChoice(String choice) {
+                            etRole.setText(choice);
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(AddEditStaffActivity.this, "Unable to edit this field, you are the business owner.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
         btnAddEditStaff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(TextUtils.isEmpty(etFirstname.getText().toString()) || TextUtils.isEmpty(etLastname.getText().toString()) || TextUtils.isEmpty(etEmail.getText().toString()) || TextUtils.isEmpty((etRole.getText().toString()))){
+                    Toast.makeText(AddEditStaffActivity.this, "Please fill out all fields.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                user.setStoreId(storeId);
                 staff.setFirstname(etFirstname.getText().toString());
                 staff.setLastname(etLastname.getText().toString());
                 staff.setPosition(etRole.getText().toString());
                 user.setEmail(etEmail.getText().toString());
-                user.setPassword(etPassword.getText().toString());
 
-                
-                if(!etPassword.getText().toString().equals(etConfirmPassword.getText().toString())){
-                    Toast.makeText(AddEditStaffActivity.this, "Password don't match.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 isEdit = getIntent().getBooleanExtra("isEditStaff", false);
+
+                switch(etRole.getText().toString()){
+                    case "Administrator":
+                        user.setUserType(1);
+                        break;
+                    case "Staff":
+                        user.setUserType(3);
+                        break;
+                }
+
                 if(isEdit){
                     staff.Update(new TransactionStatusListener() {
                         @Override
                         public void checkStatus(boolean status) {
                             if(status){
-                                Toast.makeText(AddEditStaffActivity.this, "Staff Edit Success", Toast.LENGTH_SHORT).show();
-                                finish();
+
+                                user.Update(new TransactionStatusListener() {
+                                    @Override
+                                    public void checkStatus(boolean status) {
+                                      Toast.makeText(AddEditStaffActivity.this, "Staff Edit Success", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(AddEditStaffActivity.this, StaffListActivity.class));
+                                        finish();
+                                    }
+                                });
+
+
                             }
                         }
                     });
+
+
                 }
                 else{
+
+                    if(!Validation.checkPasswordMatch(etPassword.getText().toString(),etConfirmPassword.getText().toString())){
+                        Toast.makeText(AddEditStaffActivity.this, "Password don't match.", Toast.LENGTH_SHORT).show();
+                      return;
+                    }
+
+                    if(TextUtils.isEmpty(etFirstname.getText().toString()) || TextUtils.isEmpty(etLastname.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString()) || TextUtils.isEmpty((etConfirmPassword.getText().toString()))){
+                        Toast.makeText(AddEditStaffActivity.this, "Please fill out all fields.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    user.setPassword(etPassword.getText().toString());
                     mAuth.createUserWithEmailAndPassword(user.getEmail(),user.getPassword())
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()){
@@ -178,14 +223,7 @@ public class AddEditStaffActivity extends AppCompatActivity {
                                     String userId = mAuth.getCurrentUser().getUid();
                                     user.setId(userId);
 
-                                    switch(etRole.getText().toString()){
-                                        case "Administrator":
-                                            user.setUserType(1);
-                                            break;
-                                         case "Staff":
-                                             user.setUserType(3);
-                                            break;
-                                    }
+
 
                                     staff.setUserId(userId);
                                     user.setStoreId(storeId);
@@ -199,6 +237,7 @@ public class AddEditStaffActivity extends AppCompatActivity {
                                                     public void checkStatus(boolean status) {
                                                         if(status == true){
                                                             Toast.makeText(AddEditStaffActivity.this,"Your registration is Success. Check your email to verify your account.",Toast.LENGTH_LONG).show();
+                                                            startActivity(new Intent(AddEditStaffActivity.this, StaffListActivity.class));
                                                             finish();
                                                         }
                                                     }
@@ -211,7 +250,6 @@ public class AddEditStaffActivity extends AppCompatActivity {
                                     Toast.makeText(AddEditStaffActivity.this,"Failed to register. Check your connection or try different email.",Toast.LENGTH_LONG).show();
                                 }
                             });
-
                 }
             }
         });
@@ -219,6 +257,7 @@ public class AddEditStaffActivity extends AppCompatActivity {
         btnBackStaffList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(AddEditStaffActivity.this, StaffListActivity.class));
                 finish();
             }
         });
