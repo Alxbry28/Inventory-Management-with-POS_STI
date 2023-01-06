@@ -109,7 +109,7 @@ public class POSItemActivity extends AppCompatActivity {
                 int tempQty = product.getQuantity();
 
                 if(tempQty <= 0){
-                    Toast.makeText(POSItemActivity.this, "The quantity of this is 0", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(POSItemActivity.this, "Out of Stock", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -146,7 +146,7 @@ public class POSItemActivity extends AppCompatActivity {
                     else{
                         Product editProduct =  cartProducts.get(index);
                         if(tempQty == editProduct.getQuantity()){
-                            Toast.makeText(POSItemActivity.this, "The quantity of this is equal to inventory quantity", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(POSItemActivity.this, "Out of stock.", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -162,17 +162,21 @@ public class POSItemActivity extends AppCompatActivity {
             }
         });
 
-
         btnCheckout.setOnClickListener( v->{
-            cartLibrary.clear();
-            cartLibrary.setProductArrayList(cartProducts);
-            ArrayList<CartItem> cartItems = cartLibrary.getConvertedCartItemArray();
-            cartLibrary.setCartItemArrayList(cartItems);
-            cartLibrary.saveCartItems();
-
-            startActivity(new Intent(POSItemActivity.this, CartActivity.class));
-//            finish();
-        });
+            if (totalQty == 0)
+            {
+                Toast.makeText(POSItemActivity.this, "Cart is empty.", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                cartLibrary.clear();
+                cartLibrary.setProductArrayList(cartProducts);
+                ArrayList<CartItem> cartItems = cartLibrary.getConvertedCartItemArray();
+                cartLibrary.setCartItemArrayList(cartItems);
+                cartLibrary.saveCartItems();
+                startActivity(new Intent(POSItemActivity.this, CartActivity.class));
+            }
+            //finish();
+            });
 
         btnCart.setOnClickListener(v->{
             cartLibrary.clear();

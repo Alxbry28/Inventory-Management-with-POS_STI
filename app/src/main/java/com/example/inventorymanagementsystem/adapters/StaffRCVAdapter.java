@@ -52,7 +52,7 @@ public class StaffRCVAdapter extends RecyclerView.Adapter<StaffRCVAdapter.StaffV
             alertDeleteDialog.setTitle("Delete Staff");
             alertDeleteDialog.setMessage("Are you sure do you want to delete this staff?");
             alertDeleteDialog.setNegativeButton("Cancel",null);
-            alertDeleteDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            alertDeleteDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     staff.Delete(new TransactionStatusListener() {

@@ -179,7 +179,7 @@ public class PaymentActivity extends AppCompatActivity {
                         soldItem.Create(new TransactionStatusListener() {
                             @Override
                             public void checkStatus(boolean status) {
-                                Toast.makeText(PaymentActivity.this, "Sold Item Created", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PaymentActivity.this, "Product Sold Successfully", Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -203,7 +203,7 @@ public class PaymentActivity extends AppCompatActivity {
                                 product.Update(new TransactionStatusListener() {
                                     @Override
                                     public void checkStatus(boolean status) {
-                                        Toast.makeText(PaymentActivity.this, "product Updated", Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(PaymentActivity.this, "product Updated", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }

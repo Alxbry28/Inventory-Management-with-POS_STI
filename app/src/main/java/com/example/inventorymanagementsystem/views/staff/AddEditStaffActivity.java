@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -151,18 +153,18 @@ public class AddEditStaffActivity extends AppCompatActivity {
                 user.setEmail(etEmail.getText().toString());
                 user.setPassword(etPassword.getText().toString());
 
-                if(!Validation.checkPasswordMatch(user.getPassword(),etConfirmPassword.getText().toString())){
-                    Toast.makeText(AddEditStaffActivity.this, "Password is not match to confirm password", Toast.LENGTH_SHORT).show();
+                
+                if(!etPassword.getText().toString().equals(etConfirmPassword.getText().toString())){
+                    Toast.makeText(AddEditStaffActivity.this, "Password don't match.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                
                 isEdit = getIntent().getBooleanExtra("isEditStaff", false);
                 if(isEdit){
                     staff.Update(new TransactionStatusListener() {
                         @Override
                         public void checkStatus(boolean status) {
                             if(status){
-                                Toast.makeText(AddEditStaffActivity.this, "Edit Success", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddEditStaffActivity.this, "Staff Edit Success", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         }
