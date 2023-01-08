@@ -163,8 +163,8 @@ public class ItemsForm extends AppCompatActivity {
         productRCVAdapter.setContext(ItemsForm.this);
 //        productRCVAdapter.setProductList(productArrayList);
         List<Product> tempsortedProduct = productArrayList.stream()
-                .sorted((p1,p2)-> p1.getName().compareTo(p2.getName()))
-                        .collect(Collectors.toList());
+                .sorted((p1,p2)-> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()))
+                .collect(Collectors.toList());
         ArrayList<Product> sortedProduct = new ArrayList<>(tempsortedProduct);
         productRCVAdapter.setProductList(sortedProduct);
 

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.Locale;
 import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.MainActivity;
 public class POSItemActivity extends AppCompatActivity {
@@ -87,7 +88,14 @@ public class POSItemActivity extends AppCompatActivity {
                     if(!(productList == null || productList.isEmpty())){
 
                         posRCVAdapter.setContext(POSItemActivity.this);
-                        posRCVAdapter.setProductList(productArrayList);
+
+                        List<Product> tempsortedProduct = productArrayList.stream()
+                        .sorted((p1,p2)-> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()))
+                                .collect(Collectors.toList());
+                        ArrayList<Product> sortedProduct = new ArrayList<>(tempsortedProduct);
+                // productRCVAdapter.setProductList(sortedProduct);
+
+                        posRCVAdapter.setProductList(sortedProduct);
                         rcPOSProductItem.setAdapter(posRCVAdapter);
 
                         RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(POSItemActivity.this);
