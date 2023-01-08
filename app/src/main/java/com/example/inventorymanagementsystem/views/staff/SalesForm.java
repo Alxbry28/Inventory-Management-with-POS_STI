@@ -72,6 +72,7 @@ import com.example.inventorymanagementsystem.services.MailerService;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -286,7 +287,13 @@ public class SalesForm extends AppCompatActivity {
         }
 
         bChartSales.setData(barDataSales);
+        bChartSales.setDrawValueAboveBar(false);
         bChartSales.getDescription().setEnabled(true);
+
+        YAxis rightYAxis = bChartSales.getAxisRight();
+        rightYAxis.setEnabled(false);
+        bChartSales.getXAxis().setEnabled(false);
+
         bChartSales.invalidate();
     }
 
