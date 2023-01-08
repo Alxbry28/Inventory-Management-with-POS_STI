@@ -182,7 +182,7 @@ public class POSItemActivity extends AppCompatActivity {
             cartLibrary.clear();
             cartProducts.clear();
             showTotal();
-            Toast.makeText(this, "Cart clear", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Cart cleared", Toast.LENGTH_SHORT).show();
         });
 
     }

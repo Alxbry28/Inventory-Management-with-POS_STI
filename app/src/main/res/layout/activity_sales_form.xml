@@ -179,8 +179,7 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="340dp"
                     android:layout_marginLeft="3dp"
@@ -223,7 +222,8 @@
                             <com.github.mikephil.charting.charts.PieChart
                                 android:id="@+id/pChartProducts"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:background="#50C6FB" />
 
                         </LinearLayout>
 

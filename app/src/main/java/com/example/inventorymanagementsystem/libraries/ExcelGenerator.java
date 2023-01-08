@@ -173,7 +173,7 @@ public class ExcelGenerator {
 
         HSSFRow hssfRowDataTotal = hssfSheet.createRow(beginRow + 2);
         hssfCellData = hssfRowDataTotal.createCell(0); // "Total"
-        hssfCellData.setCellValue("Total: " + MoneyLibrary.toTwoDecimalPlaces(totalSold));
+        hssfCellData.setCellValue("Total Sales Amount: " + MoneyLibrary.toTwoDecimalPlaces(totalSold));
 
         hssfRowDataTotal = hssfSheet.createRow(beginRow + 3);
         hssfCellData = hssfRowDataTotal.createCell(0); // "Quantity"
