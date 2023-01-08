@@ -25,7 +25,10 @@ import com.example.inventorymanagementsystem.models.Product;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
+
 import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.MainActivity;
 public class ItemsForm extends AppCompatActivity {
@@ -158,7 +161,12 @@ public class ItemsForm extends AppCompatActivity {
     private void initRCVProductsItem(ArrayList<Product> productArrayList){
         ProductRCVAdapter productRCVAdapter = new ProductRCVAdapter();
         productRCVAdapter.setContext(ItemsForm.this);
-        productRCVAdapter.setProductList(productArrayList);
+//        productRCVAdapter.setProductList(productArrayList);
+        List<Product> tempsortedProduct = productArrayList.stream()
+                .sorted((p1,p2)-> p1.getName().compareTo(p2.getName()))
+                        .collect(Collectors.toList());
+        ArrayList<Product> sortedProduct = new ArrayList<>(tempsortedProduct);
+        productRCVAdapter.setProductList(sortedProduct);
 
         rcProducts.setAdapter(productRCVAdapter);
         RecyclerView.LayoutManager rcvLayoutManager = new LinearLayoutManager(ItemsForm.this);
