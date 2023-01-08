@@ -117,16 +117,17 @@
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"/>
 
-        <EditText
-            android:id="@+id/etPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Product Price"
-            android:digits="@string/valid_double"
-            android:background="@drawable/form_background"
-            android:layout_marginTop="5dp"
-            android:padding="5dp"
-            android:textSize="20sp"/>
+            <EditText
+                android:id="@+id/etPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/form_background"
+                android:digits="@string/valid_double"
+                android:hint="Enter Product Price"
+                android:inputType="number"
+                android:padding="5dp"
+                android:textSize="20sp" />
 
         <Button
             android:id="@+id/btnAddItemProduct"

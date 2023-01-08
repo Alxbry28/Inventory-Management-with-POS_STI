@@ -92,9 +92,33 @@ public class AddItemForm extends AppCompatActivity  {
     private void initEventButtons(){
         btnAdd.setOnClickListener(v ->{
 
+            if (etProductName.getText().toString().isEmpty())
+            {
+                etProductName.setError("Product name required!");
+                etProductName.requestFocus();
+                return;
+            }
+            if (etProductCategory.getText().toString().isEmpty())
+            {
+               etProductCategory.setError("Product category required!");
+               etProductCategory.requestFocus();
+                return;
+            }
+            if (etStocks.getText().toString().isEmpty())
+            {
+                etStocks.setError("Stock quantity required!");
+                etStocks.requestFocus();
+                return;
+            }
+            if (etPrice.getText().toString().isEmpty())
+            {
+                etPrice.setError("Price required!");
+                etPrice.requestFocus();
+                return;
+            }
             if(TextUtils.isEmpty(etStocks.getText().toString()) || TextUtils.isEmpty(etPrice.getText().toString())
                     || TextUtils.isEmpty(etProductName.getText().toString()) || TextUtils.isEmpty((etProductCategory.getText().toString()))){
-                Toast.makeText(this, "Empty fields. Cannot proceed.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please fill out all the fields.", Toast.LENGTH_SHORT).show();
                 return;
             }
 

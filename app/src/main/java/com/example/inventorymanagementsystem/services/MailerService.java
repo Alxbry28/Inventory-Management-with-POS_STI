@@ -46,6 +46,8 @@ public class MailerService {
     public MailerService() {
         senderEmail = "posinventorymanagementsystem@gmail.com";
         senderPassword = "ksifovzcmjwzkskq";
+        //thesisitsproject@gmail.com
+        //wmjwgzxbzohekxba
 
         String host = "smtp.gmail.com";
         String port = "465";
