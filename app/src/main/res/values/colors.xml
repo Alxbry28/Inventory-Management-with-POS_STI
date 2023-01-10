@@ -19,6 +19,7 @@
     <color name="bg_blue400">#6a89cc</color>
     <color name="bg_orange">#E47703</color>
     <color name="bg_yellow">#EAAB0C</color>
+    <color name="bg_green">#57B305</color>
     <color name="bg_red">#e74c3c</color>
     <color name="bg_red_dark">#F41E08</color>
 </resources>
