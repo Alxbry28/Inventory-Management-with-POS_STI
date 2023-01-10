@@ -109,7 +109,7 @@ public class CartItemRCVAdapter extends RecyclerView.Adapter<CartItemRCVAdapter.
                         product.setQuantity(product1.getQuantity());
 
                         if(cartItem.getQuantity() ==  product.getQuantity()){
-                            Toast.makeText(context, "Cannot exceed item", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Not enough stock. Cannot exceed item.", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
