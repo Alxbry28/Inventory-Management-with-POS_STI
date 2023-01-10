@@ -25,6 +25,7 @@ public class Product {
     private int quantity;
     private String id, userId, storeId;
     private String name, category;
+    private String imageUrl;
     private double price, cost;
 //    private double totalPrice;
     private String created_at, updated_at;

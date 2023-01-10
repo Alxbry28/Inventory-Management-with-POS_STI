@@ -29,9 +29,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_9
     }
     packagingOptions {
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/LICENSE.md'
-        exclude 'META-INF/NOTICE.md'
+        resources {
+            excludes += ['META-INF/LICENSE.txt', 'META-INF/LICENSE.md', 'META-INF/NOTICE.md']
+        }
     }
     namespace 'com.example.inventorymanagementsystem'
     buildFeatures {
@@ -66,5 +66,7 @@ dependencies {
     implementation 'com.sun.mail:android-activation:1.6.7'
     //End Email
 
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.github.yalantis:ucrop:2.2.6'
     implementation 'org.apache.poi:poi:3.17'
 }
