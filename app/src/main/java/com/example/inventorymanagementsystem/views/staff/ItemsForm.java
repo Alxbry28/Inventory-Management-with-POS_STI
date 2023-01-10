@@ -42,6 +42,7 @@ public class ItemsForm extends AppCompatActivity {
     private ArrayList<Product> productList;
     private Product product;
     private EditText etSearch;
+    private int userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,8 @@ public class ItemsForm extends AppCompatActivity {
         businessName = sharedPreferences.getString("businessName",null);
         storeId = sharedPreferences.getString("storeId",null);
         userId = sharedPreferences.getString("userId",null);
+        userType = sharedPreferences.getInt("userType", 0);
+
         product.setUserId(userId);
         product.setStoreId(storeId);
 
@@ -161,6 +164,7 @@ public class ItemsForm extends AppCompatActivity {
     private void initRCVProductsItem(ArrayList<Product> productArrayList){
         ProductRCVAdapter productRCVAdapter = new ProductRCVAdapter();
         productRCVAdapter.setContext(ItemsForm.this);
+        productRCVAdapter.setStaffRole(userType);
 //        productRCVAdapter.setProductList(productArrayList);
         List<Product> tempsortedProduct = productArrayList.stream()
                 .sorted((p1,p2)-> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()))
