@@ -39,7 +39,6 @@ public class CropperActivity extends AppCompatActivity {
                 .withAspectRatio(0, 0)
                 .withMaxResultSize(2000, 2000)
                 .start(CropperActivity.this);
-
     }
 
     @Override
