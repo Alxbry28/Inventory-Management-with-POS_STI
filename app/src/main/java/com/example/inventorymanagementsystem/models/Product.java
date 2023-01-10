@@ -22,12 +22,11 @@ import java.util.Locale;
 
 public class Product {
 
-    private int quantity;
+    private int quantity, restock;
     private String id, userId, storeId;
     private String name, category;
     private String imageUrl;
     private double price, cost;
-//    private double totalPrice;
     private String created_at, updated_at;
     private boolean isDeleted;
 
@@ -39,6 +38,19 @@ public class Product {
     public Product(){
         this.realtimeFirebaseDB = new RealtimeFirebaseDB();
         this.dbRef = realtimeFirebaseDB.ProductsTable();
+    }
+
+    public int stockStatus(){
+        int tempRestock = getRestock() + 1;
+        int tempQty = getQuantity() - 1;
+        if(getQuantity() <= 0 ||  tempQty <= 2 ){
+            return 0;
+        }
+        else if(tempRestock >= tempQty){
+            return 1;
+        }
+
+        return 2;
     }
 
     public void Create(final TransactionStatusListener transactionStatus){
@@ -141,6 +153,14 @@ public class Product {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public int getRestock() {
+        return restock;
+    }
+
+    public void setRestock(int restock) {
+        this.restock = restock;
     }
 
     public void setImageUrl(String imageUrl) {

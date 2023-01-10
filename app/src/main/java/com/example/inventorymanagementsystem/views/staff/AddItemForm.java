@@ -49,7 +49,7 @@ public class AddItemForm extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private String businessName, storeId, userId, productId;
     private TextView tvBusinessName, tvProductTransactionType;
-    private EditText etItem, etProductName, etProductCategory, etPrice, etStocks;
+    private EditText etItem, etProductName, etProductCategory, etPrice, etStocks,etReStocks;
     private Button btnAdd, btnBack, btnChoosePhoto, btnTakePhoto;
     private Product product;
     private boolean isEditProduct;
@@ -58,6 +58,7 @@ public class AddItemForm extends AppCompatActivity {
     private ImageView ivProductImage;
     private StorageService storageService;
     private String selectedUrl;
+    private int userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,6 @@ public class AddItemForm extends AppCompatActivity {
         setContentView(R.layout.activity_add_item_form);
 
         storageService = new StorageService(AddItemForm.this);
-
 
         mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override
@@ -88,6 +88,7 @@ public class AddItemForm extends AppCompatActivity {
         storeId = sharedPreferences.getString("storeId", null);
         userId = sharedPreferences.getString("userId", null);
 
+
         initComponents();
         isEditProduct = getIntent().hasExtra("isEditProduct");
         //Toast.makeText(AddItemForm.this, "isEditProduct " + isEditProduct, Toast.LENGTH_SHORT).show();
@@ -96,7 +97,11 @@ public class AddItemForm extends AppCompatActivity {
             product.GetById(new ProductModelListener() {
                 @Override
                 public void retrieveProduct(Product product) {
+                    String imageUrl = (product.getImageUrl() == null) ? AppConstant.IMAGE.Value : product.getImageUrl();
+                    Picasso.get().load(imageUrl).into(ivProductImage);
                     etProductName.setText(product.getName());
+
+                    etReStocks.setText(String.valueOf(product.getRestock()));
                     etProductCategory.setText(product.getCategory());
                     etPrice.setText(String.valueOf(product.getPrice()));
                     etStocks.setText(String.valueOf(product.getQuantity()));
@@ -131,10 +136,10 @@ public class AddItemForm extends AppCompatActivity {
         etProductName = findViewById(R.id.etProductName);
         etProductCategory = findViewById(R.id.etProductCategory);
         etStocks = findViewById(R.id.etStocks);
+        etReStocks = findViewById(R.id.etReStocks);
         etPrice = findViewById(R.id.etPrice);
     }
     // Image Selection Activity
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -174,7 +179,7 @@ public class AddItemForm extends AppCompatActivity {
     private void initEventButtons() {
         btnAdd.setOnClickListener(v -> {
 
-            if (TextUtils.isEmpty(etStocks.getText().toString()) || TextUtils.isEmpty(etPrice.getText().toString())
+            if (TextUtils.isEmpty(etStocks.getText().toString()) || TextUtils.isEmpty(etReStocks.getText().toString()) || TextUtils.isEmpty(etPrice.getText().toString())
                     || TextUtils.isEmpty(etProductName.getText().toString()) || TextUtils.isEmpty((etProductCategory.getText().toString()))) {
                 Toast.makeText(this, "Empty fields. Cannot proceed.", Toast.LENGTH_SHORT).show();
                 return;
@@ -189,7 +194,9 @@ public class AddItemForm extends AppCompatActivity {
             product.setStoreId(storeId);
             product.setUserId(userId);
             product.setQuantity(Integer.parseInt(etStocks.getText().toString()));
+            product.setRestock(Integer.parseInt(etReStocks.getText().toString()));
             product.setPrice(Double.parseDouble(etPrice.getText().toString()));
+
             product.setName(etProductName.getText().toString());
             product.setCategory(etProductCategory.getText().toString());
 
@@ -202,7 +209,6 @@ public class AddItemForm extends AppCompatActivity {
                 Toast.makeText(this, "Invalid input for price", Toast.LENGTH_SHORT).show();
                 return;
             }
-
 
             if (selectedUri == null) {
                 product.setImageUrl(AppConstant.IMAGE.Value);

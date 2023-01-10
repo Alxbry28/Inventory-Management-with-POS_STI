@@ -11,16 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.inventorymanagementsystem.enums.AppConstant;
 import com.example.inventorymanagementsystem.views.staff.*;
 import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.libraries.MoneyLibrary;
 import com.example.inventorymanagementsystem.models.Product;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -29,11 +32,13 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
     private ArrayList<Product> productList;
     private Context context;
     private Activity activity;
+    private int staffRole;
 
     public class ProductsViewHolder extends RecyclerView.ViewHolder{
 
         TextView tvProductName, tvCategory, tvPrice, tvQuantity;
         ImageButton btnEditProduct, btnDeleteProduct;
+        ImageView ivProductImage;
         View view;
 
         public ProductsViewHolder(@NonNull View itemView) {
@@ -45,6 +50,8 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
             tvQuantity = itemView.findViewById(R.id.tvQuantity);
             btnDeleteProduct = itemView.findViewById(R.id.btnDeleteProduct);
             btnEditProduct = itemView.findViewById(R.id.btnEditProduct);
+            ivProductImage = itemView.findViewById(R.id.ivProductImage);
+
         }
 
     }
@@ -61,10 +68,24 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
     public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.tvProductName.setText(product.getName());
+
+        if(staffRole == 3){
+            holder.btnEditProduct.setEnabled(false);
+            holder.btnDeleteProduct.setEnabled(false);
+            holder.btnEditProduct.setVisibility(View.GONE);
+            holder.btnDeleteProduct.setVisibility(View.GONE);
+        }
+
         holder.tvCategory.setText("Category: " + product.getCategory());
 
+        String imageUrl = (product.getImageUrl() == null) ? AppConstant.IMAGE.Value : product.getImageUrl();
+
+        Picasso.get().load(imageUrl).into(holder.ivProductImage);
+
         String qtyText = (product.getQuantity() > 0) ? "Qty: " + String.valueOf(product.getQuantity()) : "Out of Stock";
-        int qtyColor = (product.getQuantity() <= 0) ? Color.RED : Color.GRAY;
+
+
+        int qtyColor = (product.stockStatus() == 0) ? Color.RED : ((product.stockStatus() == 1) ? Color.parseColor("#FFCF9603") : Color.parseColor("#FF499306"));
         holder.tvQuantity.setTextColor(qtyColor);
         holder.tvQuantity.setText(qtyText);
 
@@ -138,4 +159,13 @@ public class ProductRCVAdapter extends RecyclerView.Adapter<ProductRCVAdapter.Pr
     public void setActivity(Activity activity) {
         this.activity = activity;
     }
+
+    public int getStaffRole() {
+        return staffRole;
+    }
+
+    public void setStaffRole(int staffRole) {
+        this.staffRole = staffRole;
+    }
+
 }

@@ -170,6 +170,27 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/tvReStocks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/itemname"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="Restock"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etReStocks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/form_background"
+                    android:hint="Enter Quantity"
+                    android:inputType="number"
+                    android:padding="5dp"
+                    android:textSize="20sp" />
+
+                <TextView
                     android:id="@+id/tvprice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -211,6 +232,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/bg_blue700"
+                    android:layout_marginBottom="120px"
                     android:text="Back" />
 
             </LinearLayout>
