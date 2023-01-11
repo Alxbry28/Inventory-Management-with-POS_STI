@@ -34,6 +34,7 @@ public class InventoryForm extends AppCompatActivity {
     private Product product;
     private ArrayList<Product> productList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
