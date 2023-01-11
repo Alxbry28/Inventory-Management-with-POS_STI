@@ -129,19 +129,20 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         etPassword.requestFocus();
         return;
     }
-    if (userRegister.getPassword().length() < 8)
+        if (!PASSWORD_PATTERN.matcher(etPassword.getEditText().getText().toString().trim()).matches())
+        {
+            etPassword.setError("Password must at least 1 upper case, at least 1 lower, at least 1 special charcter");
+            etPassword.requestFocus();
+            return;
+        }
+
+        if (userRegister.getPassword().length() < 8)
     {
         etPassword.setError("Password should be minimum of 8!");
         etPassword.requestFocus();
         return;
     }
 
-    if (PASSWORD_PATTERN.matcher(userRegister.getPassword()).matches())
-    {
-        etPassword.setError("Password must at least 1 upper case, at least 1 lower, at least 1 special charcter");
-        etPassword.requestFocus();
-        return;
-    }
 
     if (!userRegister.getPassword().equals(confirmPass))
     {
