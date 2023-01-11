@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.example.inventorymanagementsystem.adapters.POSRCVAdapter;
 import com.example.inventorymanagementsystem.adapters.ProductRCVAdapter;
+import com.example.inventorymanagementsystem.dialogs.NotifyStockDialog;
+import com.example.inventorymanagementsystem.enums.StockNotification;
 import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
 import com.example.inventorymanagementsystem.models.Product;
 
@@ -43,11 +45,15 @@ public class ItemsForm extends AppCompatActivity {
     private Product product;
     private EditText etSearch;
     private int userType;
+    private NotifyStockDialog notifyStockDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items_form);
+
+
 //        getSupportActionBar().hide();
         product = new Product();
         sharedPreferences = getSharedPreferences(MainActivity.TAG,MODE_PRIVATE);
@@ -165,10 +171,52 @@ public class ItemsForm extends AppCompatActivity {
         ProductRCVAdapter productRCVAdapter = new ProductRCVAdapter();
         productRCVAdapter.setContext(ItemsForm.this);
         productRCVAdapter.setStaffRole(userType);
-//        productRCVAdapter.setProductList(productArrayList);
+
+        notifyStockDialog = new NotifyStockDialog(ItemsForm.this);
+
+
+
+
+
         List<Product> tempsortedProduct = productArrayList.stream()
                 .sorted((p1,p2)-> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()))
                 .collect(Collectors.toList());
+
+        List<Product> tempRestock = tempsortedProduct.stream()
+                .filter(product1 -> product1.getQuantity() <= product1.getRestock())
+                .collect(Collectors.toList());
+
+        List<Product> tempOutOfStock = tempsortedProduct.stream()
+                .filter(product1 -> product1.getQuantity() <= 5)
+                .collect(Collectors.toList());
+
+        List<Product> tempGood = tempsortedProduct.stream()
+                .filter(product1 -> product1.getQuantity() > product1.getRestock())
+                .collect(Collectors.toList());
+
+
+
+        if(tempOutOfStock.size() > 0){
+            notifyStockDialog.setStockNotification(StockNotification.NOSTOCK);
+            notifyStockDialog.setMessage("Warning. Need to reorder items. There are "+tempOutOfStock.size()+" items either out of stock or near to out of stock");
+        }
+        else if(tempRestock.size() > 0){
+            notifyStockDialog.setStockNotification(StockNotification.RESTOCK);
+            notifyStockDialog.setMessage("There are "+tempRestock.size()+" items that are need to re order items");
+        }
+        else if(tempOutOfStock.size() == 0 && tempRestock.size() == 0  && tempGood.size() > 0){
+            notifyStockDialog.setStockNotification(StockNotification.GOOD);
+            notifyStockDialog.setMessage("There are "+tempGood.size()+". All stocks are in good condition");
+        }
+
+
+
+
+
+        notifyStockDialog.show(getSupportFragmentManager(),"SHOW_NOTIF_DIALOG");
+
+        Toast.makeText(this, "Counts: tempGood[ " + tempGood.size() + "], tempRestock[ " + tempRestock.size() + "], tempOutOfStock[" + tempOutOfStock.size() +"]" , Toast.LENGTH_LONG).show();
+
         ArrayList<Product> sortedProduct = new ArrayList<>(tempsortedProduct);
         productRCVAdapter.setProductList(sortedProduct);
 

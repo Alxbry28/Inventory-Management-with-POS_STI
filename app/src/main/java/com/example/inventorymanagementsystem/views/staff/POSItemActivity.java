@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.inventorymanagementsystem.adapters.POSRCVAdapter;
 import com.example.inventorymanagementsystem.database.SQLiteDB;
+import com.example.inventorymanagementsystem.dialogs.NotifyStockDialog;
+import com.example.inventorymanagementsystem.enums.StockNotification;
 import com.example.inventorymanagementsystem.interfaces.POSSelectedItemListener;
 import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
 import com.example.inventorymanagementsystem.libraries.CartLibrary;
@@ -42,6 +44,7 @@ public class POSItemActivity extends AppCompatActivity {
     private double totalPrice = 0;
     private int totalQty = 0;
     private ArrayList<Product> cartProducts;
+    private NotifyStockDialog notifyStockDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +90,44 @@ public class POSItemActivity extends AppCompatActivity {
                     productList = productArrayList;
                     if(!(productList == null || productList.isEmpty())){
 
+
+                        notifyStockDialog = new NotifyStockDialog(POSItemActivity.this);
+
                         posRCVAdapter.setContext(POSItemActivity.this);
 
                         List<Product> tempsortedProduct = productArrayList.stream()
                         .sorted((p1,p2)-> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()))
                                 .collect(Collectors.toList());
                         ArrayList<Product> sortedProduct = new ArrayList<>(tempsortedProduct);
-                // productRCVAdapter.setProductList(sortedProduct);
+
+                        List<Product> tempRestock = tempsortedProduct.stream()
+                                .filter(product1 -> product1.getQuantity() <= product1.getRestock())
+                                .collect(Collectors.toList());
+
+                        List<Product> tempOutOfStock = tempsortedProduct.stream()
+                                .filter(product1 -> product1.getQuantity() <= 5)
+                                .collect(Collectors.toList());
+
+                        List<Product> tempGood = tempsortedProduct.stream()
+                                .filter(product1 -> product1.getQuantity() > product1.getRestock())
+                                .collect(Collectors.toList());
+
+                        if(tempOutOfStock.size() > 0){
+                            notifyStockDialog.setStockNotification(StockNotification.NOSTOCK);
+                            notifyStockDialog.setMessage("Warning. Need to reorder items. There are "+tempOutOfStock.size()+" items either out of stock or near to out of stock");
+                        }
+                        else if(tempRestock.size() > 0){
+                            notifyStockDialog.setStockNotification(StockNotification.RESTOCK);
+                            notifyStockDialog.setMessage("There are "+tempRestock.size()+" items that are need to re order items");
+                        }
+                        else if(tempOutOfStock.size() == 0 && tempRestock.size() == 0  && tempGood.size() > 0){
+                            notifyStockDialog.setStockNotification(StockNotification.GOOD);
+                            notifyStockDialog.setMessage("There are "+tempGood.size()+". All stocks are in good condition");
+                        }
+
+                        notifyStockDialog.show(getSupportFragmentManager(),"SHOW_NOTIF_DIALOG");
+
+
 
                         posRCVAdapter.setProductList(sortedProduct);
                         rcPOSProductItem.setAdapter(posRCVAdapter);
