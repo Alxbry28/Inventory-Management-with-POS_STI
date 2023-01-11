@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
@@ -32,6 +33,10 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     private User userRegister;
     private Store store;
     private BusinessOwner staff;
+    public static final Pattern PASSWORD_PATTERN = Pattern.compile(
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"
+    );
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,17 +123,27 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         etEmail.requestFocus();
         return;
     }
+
     if (userRegister.getPassword().isEmpty()){
         etPassword.setError("Password Required");
         etPassword.requestFocus();
         return;
     }
-    if (userRegister.getPassword().length() < 6)
+        if (!PASSWORD_PATTERN.matcher(etPassword.getEditText().getText().toString().trim()).matches())
+        {
+            etPassword.setError("Password must at least 1 upper case, at least 1 lower, at least 1 special charcter");
+            etPassword.requestFocus();
+            return;
+        }
+
+        if (userRegister.getPassword().length() < 8)
     {
-        etPassword.setError("Password should be minimum of 6!");
+        etPassword.setError("Password should be minimum of 8!");
         etPassword.requestFocus();
         return;
     }
+
+
     if (!userRegister.getPassword().equals(confirmPass))
     {
         etconfirmPass.setError("Password dont match.");

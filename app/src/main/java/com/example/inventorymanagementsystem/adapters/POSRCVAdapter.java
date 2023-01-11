@@ -53,7 +53,7 @@ public class POSRCVAdapter extends RecyclerView.Adapter<POSRCVAdapter.POSViewHol
         holder.tvQuantity.setTextColor(qtyColor);
         holder.tvQuantity.setText(qtyText);
 
-        holder.tvPrice.setText("P" + MoneyLibrary.toTwoDecimalPlaces(product.getPrice()) + "_" + product.stockStatus());
+        holder.tvPrice.setText("P" + MoneyLibrary.toTwoDecimalPlaces(product.getPrice()) );
         holder.cvProductItem.setOnClickListener(v -> {
             posSelectedItemListener.getSelectedItem(product);
         });

@@ -44,6 +44,7 @@ public class CartActivity extends AppCompatActivity {
         btnBack.setOnClickListener((View v) -> {
                 startActivity(new Intent(CartActivity.this, POSItemActivity.class));
                 finish();
+                cartLibrary.clear();
             }
         );
 
