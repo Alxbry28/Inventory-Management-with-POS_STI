@@ -41,12 +41,12 @@ public class Product {
     }
 
     public int stockStatus(){
-        int tempRestock = getRestock() + 1;
-        int tempQty = getQuantity() - 1;
-        if(getQuantity() <= 0 ||  tempQty <= 2 ){
+//        int tempRestock = getRestock() + 1;
+//        int tempQty = getQuantity() - 1;
+        if(getQuantity() <= 5){
             return 0;
         }
-        else if(tempRestock >= tempQty){
+        else if(getRestock() >= getQuantity()){
             return 1;
         }
 

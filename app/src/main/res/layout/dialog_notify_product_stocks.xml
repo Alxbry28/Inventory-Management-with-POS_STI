@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:padding="5dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:orientation="vertical"
@@ -17,7 +18,7 @@
             android:layout_width="175dp"
             android:layout_height="175dp"
             app:cardPreventCornerOverlap="false"
-            app:cardCornerRadius="75dp">
+            app:cardCornerRadius="79dp">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -33,6 +34,7 @@
 
         <TextView android:id="@+id/tvMessage"
             android:layout_marginTop="10dp"
+            android:padding="10dp"
             android:textSize="22dp"
             android:text="All Stocks are in Good Condition"
             android:layout_width="wrap_content"
