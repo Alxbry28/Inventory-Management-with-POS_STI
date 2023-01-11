@@ -187,11 +187,18 @@ public class AddEditStaffActivity extends AppCompatActivity {
                     return;
                 }
 
+                if(!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString()).matches()){
+                    etEmail.setError("Please provide valid email!");
+                    etEmail.requestFocus();
+                    return;
+                }
+
                 user.setStoreId(storeId);
                 staff.setFirstname(etFirstname.getText().toString());
                 staff.setLastname(etLastname.getText().toString());
                 staff.setPosition(etRole.getText().toString());
                 user.setEmail(etEmail.getText().toString());
+
 
                 isEdit = getIntent().getBooleanExtra("isEditStaff", false);
 
