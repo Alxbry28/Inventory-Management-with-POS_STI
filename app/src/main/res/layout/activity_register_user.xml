@@ -52,7 +52,7 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="3dp"
                 android:hint="Business Name"
                 app:boxBackgroundColor="@color/white"
                 app:startIconDrawable="@drawable/ic_baseline_storefront_24">
@@ -61,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="20"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapSentences"
                     android:textSize="15sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -79,8 +79,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="textCapSentences"
                     android:ems="10"
-                    android:inputType="textPersonName"
                     android:textSize="15sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -92,6 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="Last Name"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 app:boxBackgroundColor="@color/white"
                 app:startIconDrawable="@drawable/ic_baseline_person_24">
 
@@ -99,7 +101,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="textPersonName"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="textCapSentences"
                     android:textSize="15sp" />
 
             </com.google.android.material.textfield.TextInputLayout>

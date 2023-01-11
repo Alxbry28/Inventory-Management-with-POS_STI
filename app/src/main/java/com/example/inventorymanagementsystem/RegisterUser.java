@@ -102,32 +102,58 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         etbname.requestFocus();
         return;
     }
+    else
+    {
+        etbname.setError(null);
+        etbname.clearFocus();
+    }
+    if (staff.getFirstname().isEmpty())
+    {
+        etFirstname.setError("First name required!");
+        etFirstname.requestFocus();
+        return;
+    }
+    else
+    {
+        etFirstname.setError(null);
+        etFirstname.clearFocus();
+    }
+    if (staff.getLastname().isEmpty())
+    {
+        etLastname.setError("Last name required");
+        etLastname.requestFocus();
+        return;
+    }
+    else
+    {
+        etLastname.setError(null);
+        etLastname.clearFocus();
+    }
     if (userRegister.getEmail().isEmpty()){
         etEmail.setError("Email required!");
         etEmail.requestFocus();
         return;
+    }
+    if(!Patterns.EMAIL_ADDRESS.matcher(userRegister.getEmail()).matches())
+    {
+        etEmail.setError("Please provide valid email!");
+        etEmail.requestFocus();
+        return;
+    }
+    else
+    {
+        etEmail.setError(null);
+        etEmail.clearFocus();
     }
     if (userRegister.getPassword().isEmpty()){
         etPassword.setError("Password required!");
         etPassword.requestFocus();
         return;
     }
-    if (confirmPass.isEmpty()){
-        etconfirmPass.setError("Please confirm password");
-        etconfirmPass.requestFocus();
-        return;
-    }
-
-    if(!Patterns.EMAIL_ADDRESS.matcher(userRegister.getEmail()).matches()){
-        etEmail.setError("Please provide valid email!");
-        etEmail.requestFocus();
-        return;
-    }
-
-    if (userRegister.getPassword().isEmpty()){
-        etPassword.setError("Password Required");
-        etPassword.requestFocus();
-        return;
+    else
+    {
+        etPassword.setError(null);
+        etPassword.clearFocus();
     }
     if (userRegister.getPassword().length() < 8)
     {
@@ -135,14 +161,55 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         etPassword.requestFocus();
         return;
     }
-
-    if (PASSWORD_PATTERN.matcher(userRegister.getPassword()).matches())
+    else
     {
-        etPassword.setError("Password must at least 1 upper case, at least 1 lower, at least 1 special charcter");
+        etPassword.setError(null);
+        etPassword.clearFocus();
+    }
+    if (!userRegister.getPassword().matches("(.*[A-Z].*)"))
+    {
+        etPassword.setError("Password should have 1 upper case!");
         etPassword.requestFocus();
         return;
     }
-
+    else
+    {
+        etPassword.setError(null);
+        etPassword.clearFocus();
+    }
+    if (!userRegister.getPassword().matches("(.*[a-z].*)"))
+    {
+        etPassword.setError("Password should have 1 lower case!");
+        etPassword.requestFocus();
+        return;
+    }
+    else
+    {
+        etPassword.setError(null);
+        etPassword.clearFocus();
+    }
+    if (!userRegister.getPassword().matches("^(?=.*[_.()$&@]).*$"))
+    {
+        etPassword.setError("Password should have 1 special symbol");
+        etPassword.requestFocus();
+        return;
+    }
+    else
+    {
+        etPassword.setError(null);
+        etPassword.clearFocus();
+    }
+    if (confirmPass.isEmpty())
+    {
+        etconfirmPass.setError("Please confirm password");
+        etconfirmPass.requestFocus();
+        return;
+    }
+    else
+    {
+        etconfirmPass.setError(null);
+        etconfirmPass.clearFocus();
+    }
     if (!userRegister.getPassword().equals(confirmPass))
     {
         etconfirmPass.setError("Password dont match.");
