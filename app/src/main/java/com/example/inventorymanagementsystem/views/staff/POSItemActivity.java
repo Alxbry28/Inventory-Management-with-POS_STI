@@ -89,8 +89,6 @@ public class POSItemActivity extends AppCompatActivity {
                 if(!productArrayList.isEmpty()){
                     productList = productArrayList;
                     if(!(productList == null || productList.isEmpty())){
-
-
                         notifyStockDialog = new NotifyStockDialog(POSItemActivity.this);
 
                         posRCVAdapter.setContext(POSItemActivity.this);
