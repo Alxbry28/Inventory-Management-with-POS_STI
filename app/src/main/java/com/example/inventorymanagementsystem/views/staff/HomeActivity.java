@@ -77,11 +77,7 @@ public class HomeActivity extends AppCompatActivity {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        FirebaseAuth.getInstance().signOut();
-                        dialog.dismiss();
-                        startActivity(new Intent(HomeActivity.this, MainActivity.class));
-                        finish();
-
+                       logout();
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

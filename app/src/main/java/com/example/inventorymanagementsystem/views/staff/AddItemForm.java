@@ -133,7 +133,6 @@ public class AddItemForm extends AppCompatActivity {
         etPrice = findViewById(R.id.etPrice);
     }
     // Image Selection Activity
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -145,6 +144,7 @@ public class AddItemForm extends AppCompatActivity {
                     Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
                 }
         }
+
 
     }
 
@@ -244,7 +244,7 @@ public class AddItemForm extends AppCompatActivity {
 
                     @Override
                     public void getUploadProgress(int progress) {
-                        Toast.makeText(AddItemForm.this, "progress: " + progress + "%", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(AddItemForm.this, "progress: " + progress + "%", Toast.LENGTH_SHORT).show();
                     }
                 });
 

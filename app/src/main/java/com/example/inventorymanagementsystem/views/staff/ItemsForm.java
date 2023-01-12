@@ -214,17 +214,17 @@ public class ItemsForm extends AppCompatActivity {
         if(tempOutOfStock.size() > 0){
             notifCount++;
             notifyStockDialog.setStockNotification(StockNotification.NOSTOCK);
-            notifyStockDialog.setMessage("Warning. Need to reorder items. There are "+tempOutOfStock.size()+" items either out of stock or near to out of stock");
+            notifyStockDialog.setMessage("Warning: There are "+tempOutOfStock.size()+" item(s) either out of stock or near to out of stock.");
         }
          if(tempRestock.size() > 0){
              notifCount++;
             notifyStockDialog.setStockNotification(StockNotification.RESTOCK);
-            notifyStockDialog.setMessage("There are "+tempRestock.size()+" items that are need to re order items");
+            notifyStockDialog.setMessage("There are "+tempRestock.size()+" item(s) that needs to be restocked.");
         }
          if(tempOutOfStock.size() == 0 && tempRestock.size() == 0  && tempGood.size() > 0){
             notifCount++;
             notifyStockDialog.setStockNotification(StockNotification.GOOD);
-            notifyStockDialog.setMessage("There are "+tempGood.size()+" items that are in good condition");
+            notifyStockDialog.setMessage("There are "+tempGood.size()+" stocks are in good condition");
         }
 
         tvNotifNum.setVisibility(((notifCount == 0) ? View.GONE : View.VISIBLE));
