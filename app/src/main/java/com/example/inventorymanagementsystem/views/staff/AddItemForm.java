@@ -67,18 +67,13 @@ public class AddItemForm extends AppCompatActivity {
 
         storageService = new StorageService(AddItemForm.this);
 
-        mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-            @Override
-            public void onActivityResult(Uri result) {
+        mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), (Uri result) -> {
                 if (result != null) {
                     Intent intent = new Intent(AddItemForm.this, CropperActivity.class);
                     intent.putExtra("DATA", result.toString());
                     startActivityForResult(intent, 101);
                 }
-            }
         });
-
-//        Toast.makeText(this, "selectedUri: " + selectedUri.toString(), Toast.LENGTH_SHORT).show();
 
         boolean isEditProduct = getIntent().getBooleanExtra("isEditProduct", false);
 
@@ -88,10 +83,8 @@ public class AddItemForm extends AppCompatActivity {
         storeId = sharedPreferences.getString("storeId", null);
         userId = sharedPreferences.getString("userId", null);
 
-
         initComponents();
         isEditProduct = getIntent().hasExtra("isEditProduct");
-        //Toast.makeText(AddItemForm.this, "isEditProduct " + isEditProduct, Toast.LENGTH_SHORT).show();
         if (isEditProduct) {
             product.setId(getIntent().getStringExtra("productId"));
             product.GetById(new ProductModelListener() {
@@ -255,10 +248,7 @@ public class AddItemForm extends AppCompatActivity {
                     }
                 });
 
-
             }
-
-
 
         });
 

@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +47,9 @@ public class ItemsForm extends AppCompatActivity {
     private EditText etSearch;
     private int userType;
     private NotifyStockDialog notifyStockDialog;
-
+    private TextView tvNotifNum;
+    private ImageView ivBell;
+    private int notifCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +68,11 @@ public class ItemsForm extends AppCompatActivity {
         product.setUserId(userId);
         product.setStoreId(storeId);
 
+        initComponents();
+
         product.GetAll(new ProductModelListener() {
             @Override
             public void retrieveProduct(Product product) {
-
 
             }
 
@@ -87,23 +91,40 @@ public class ItemsForm extends AppCompatActivity {
             }
         });
 
-        tvEmptyProductMsg = findViewById(R.id.tvEmptyProductMsg);
-        rcProducts = findViewById(R.id.rcProducts);
+        initEvents();
+    }
 
+    private void initComponents(){
+        tvNotifNum = findViewById(R.id.tvNotifNum);
+        ivBell = findViewById(R.id.ivBell);
         btnAddProduct = findViewById(R.id.btnAddProduct);
-        btnAddProduct.setOnClickListener(v->{
-            startActivity(new Intent(ItemsForm.this, AddItemForm.class));
+        tvEmptyProductMsg = findViewById(R.id.tvEmptyProductMsg);
+        etSearch = findViewById(R.id.etSearch);
+        rcProducts = findViewById(R.id.rcProducts);
+        back = (Button)findViewById(R.id.btnback);
+    }
+
+    private void initEvents(){
+
+        ivBell.setOnClickListener(v->{
+            tvNotifNum.setVisibility(View.GONE);
+            notifyStockDialog.show(getSupportFragmentManager(),"SHOW_NOTIF_DIALOG");
         });
 
-        back = (Button)findViewById(R.id.btnback);
+        btnAddProduct.setOnClickListener(v->{
+            startActivity(new Intent(ItemsForm.this, AddItemForm.class));
+            finish();
+        });
+
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ItemsForm.this, HomeActivity.class));
+                finish();
             }
         });
 
-        etSearch = findViewById(R.id.etSearch);
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -121,7 +142,7 @@ public class ItemsForm extends AppCompatActivity {
                 search(search);
             }
         });
-    }
+    };
 
     private void search(String search) {
         Product tempProduct = new Product();
@@ -191,19 +212,22 @@ public class ItemsForm extends AppCompatActivity {
                 .collect(Collectors.toList());
 
         if(tempOutOfStock.size() > 0){
+            notifCount++;
             notifyStockDialog.setStockNotification(StockNotification.NOSTOCK);
             notifyStockDialog.setMessage("Warning. Need to reorder items. There are "+tempOutOfStock.size()+" items either out of stock or near to out of stock");
         }
-        else if(tempRestock.size() > 0){
+         if(tempRestock.size() > 0){
+             notifCount++;
             notifyStockDialog.setStockNotification(StockNotification.RESTOCK);
             notifyStockDialog.setMessage("There are "+tempRestock.size()+" items that are need to re order items");
         }
-        else if(tempOutOfStock.size() == 0 && tempRestock.size() == 0  && tempGood.size() > 0){
+         if(tempOutOfStock.size() == 0 && tempRestock.size() == 0  && tempGood.size() > 0){
+            notifCount++;
             notifyStockDialog.setStockNotification(StockNotification.GOOD);
-            notifyStockDialog.setMessage("There are "+tempGood.size()+". All stocks are in good condition");
+            notifyStockDialog.setMessage("There are "+tempGood.size()+" items that are in good condition");
         }
 
-//        notifyStockDialog.show(getSupportFragmentManager(),"SHOW_NOTIF_DIALOG");
+        tvNotifNum.setVisibility(((notifCount == 0) ? View.GONE : View.VISIBLE));
 
         ArrayList<Product> sortedProduct = new ArrayList<>(tempsortedProduct);
         productRCVAdapter.setProductList(sortedProduct);
