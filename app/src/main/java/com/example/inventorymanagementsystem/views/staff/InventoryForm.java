@@ -34,7 +34,6 @@ public class InventoryForm extends AppCompatActivity {
     private Product product;
     private ArrayList<Product> productList;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,35 +45,6 @@ public class InventoryForm extends AppCompatActivity {
         storeId = sharedPreferences.getString("storeId", null);
         userId = sharedPreferences.getString("userId", null);
 
-        product = new Product();
-        product.setStoreId(storeId);
-        product.GetAll(new ProductModelListener() {
-            @Override
-            public void retrieveProduct(Product product) {
-
-            }
-
-            @Override
-            public void getProductList(ArrayList<Product> productArrayList) {
-                productList = productArrayList;
-                Toast.makeText(InventoryForm.this, "productList: " + productList.size(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        tvEmptyInventory = findViewById(R.id.tvEmptyInventory);
-        btnAddProduct = findViewById(R.id.btnAddProduct);
-
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(InventoryForm.this, HomeActivity.class));
-                finish();
-            }
-        });
-
-        rcInventory = findViewById(R.id.rcInventory);
-        rcInventory.setHasFixedSize(true);
 
     }
 
