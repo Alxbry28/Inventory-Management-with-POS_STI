@@ -174,10 +174,6 @@ public class ItemsForm extends AppCompatActivity {
 
         notifyStockDialog = new NotifyStockDialog(ItemsForm.this);
 
-
-
-
-
         List<Product> tempsortedProduct = productArrayList.stream()
                 .sorted((p1,p2)-> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()))
                 .collect(Collectors.toList());
@@ -194,8 +190,6 @@ public class ItemsForm extends AppCompatActivity {
                 .filter(product1 -> product1.getQuantity() > product1.getRestock())
                 .collect(Collectors.toList());
 
-
-
         if(tempOutOfStock.size() > 0){
             notifyStockDialog.setStockNotification(StockNotification.NOSTOCK);
             notifyStockDialog.setMessage("Warning: There are "+tempOutOfStock.size()+" item(s) either out of stock or near to out of stock.");
@@ -211,11 +205,10 @@ public class ItemsForm extends AppCompatActivity {
 
 
 
-
-
         notifyStockDialog.show(getSupportFragmentManager(),"SHOW_NOTIF_DIALOG");
 
-        //Toast.makeText(this, "Counts: tempGood[ " + tempGood.size() + "], tempRestock[ " + tempRestock.size() + "], tempOutOfStock[" + tempOutOfStock.size() +"]" , Toast.LENGTH_LONG).show();
+
+
 
         ArrayList<Product> sortedProduct = new ArrayList<>(tempsortedProduct);
         productRCVAdapter.setProductList(sortedProduct);
