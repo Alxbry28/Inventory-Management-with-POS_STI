@@ -124,6 +124,7 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/form_background"
                     android:hint="Enter Product Name"
+                    android:inputType="textCapSentences"
                     android:padding="5dp"
                     android:textSize="20sp" />
 
@@ -145,6 +146,7 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/form_background"
                     android:hint="Enter Product Category"
+                    android:inputType="textCapSentences"
                     android:padding="5dp"
                     android:textSize="20sp" />
 
@@ -176,7 +178,7 @@
                     android:layout_below="@id/itemname"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
-                    android:text="Restock"
+                    android:text="Quantity Restock Warning:"
                     android:textSize="15sp" />
 
                 <EditText
@@ -207,6 +209,7 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/form_background"
                     android:digits="@string/valid_double"
+                    android:inputType="number"
                     android:hint="Enter Product Price"
                     android:padding="5dp"
                     android:textSize="20sp" />

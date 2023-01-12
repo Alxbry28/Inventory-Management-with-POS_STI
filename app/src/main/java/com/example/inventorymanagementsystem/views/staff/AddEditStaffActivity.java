@@ -183,6 +183,12 @@ public class AddEditStaffActivity extends AppCompatActivity {
                     etEmail.requestFocus();
                     return;
                 }
+                if(!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString()).matches())
+                {
+                    etEmail.setError("Please provide valid email!");
+                    etEmail.requestFocus();
+                    return;
+                }
                 if(TextUtils.isEmpty(etFirstname.getText().toString()) || TextUtils.isEmpty(etLastname.getText().toString()) || TextUtils.isEmpty(etEmail.getText().toString()) || TextUtils.isEmpty((etRole.getText().toString()))){
                     Toast.makeText(AddEditStaffActivity.this, "Please fill out all the fields.", Toast.LENGTH_SHORT).show();
                     return;
