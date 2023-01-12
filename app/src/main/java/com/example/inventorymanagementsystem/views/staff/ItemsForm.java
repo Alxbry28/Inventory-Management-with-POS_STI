@@ -200,7 +200,7 @@ public class ItemsForm extends AppCompatActivity {
         }
         else if(tempOutOfStock.size() == 0 && tempRestock.size() == 0  && tempGood.size() > 0){
             notifyStockDialog.setStockNotification(StockNotification.GOOD);
-            notifyStockDialog.setMessage(tempGood.size()+" stocks are in good condition");
+            notifyStockDialog.setMessage("All "+tempGood.size()+" stocks are in good condition");
         }
 
 
