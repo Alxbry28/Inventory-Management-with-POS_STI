@@ -35,11 +35,12 @@ public class Product {
     public static final String TABLE = "tblProducts";
     private RealtimeFirebaseDB realtimeFirebaseDB;
     private DatabaseReference dbRef;
-    private String dateTime = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+    private String dateTime ;
 
     public Product(){
         this.realtimeFirebaseDB = new RealtimeFirebaseDB();
         this.dbRef = realtimeFirebaseDB.ProductsTable();
+        dateTime = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
 
     public int stockStatus(){
@@ -66,6 +67,7 @@ public class Product {
 
 
     public void Update(final TransactionStatusListener transactionStatus){
+        dateTime = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         this.setUpdated_at(dateTime);
         Map<String, Object> updateValue = new HashMap<>();
         updateValue.put("category", this.getCategory());
