@@ -69,17 +69,17 @@ public class Product {
     public void Update(final TransactionStatusListener transactionStatus){
         dateTime = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         this.setUpdated_at(dateTime);
-        Map<String, Object> updateValue = new HashMap<>();
-        updateValue.put("category", this.getCategory());
-        updateValue.put("imageUrl", this.getImageUrl());
-        updateValue.put("name", this.getName());
-        updateValue.put("price", this.getPrice());
-        updateValue.put("quantity", this.getQuantity());
-        updateValue.put("restock", this.getRestock());
-        updateValue.put("updated_at", this.getUpdated_at());
-        updateValue.put("user_id", this.getUserId());
+//        Map<String, Object> updateValue = new HashMap<>();
+//        updateValue.put("category", this.getCategory());
+//        updateValue.put("imageUrl", this.getImageUrl());
+//        updateValue.put("name", this.getName());
+//        updateValue.put("price", this.getPrice());
+//        updateValue.put("quantity", this.getQuantity());
+//        updateValue.put("restock", this.getRestock());
+//        updateValue.put("updated_at", this.getUpdated_at());
+//        updateValue.put("user_id", this.getUserId());
 
-        dbRef.child(this.getId()).setValue(updateValue).addOnCompleteListener(task -> {
+        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
