@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.inventorymanagementsystem.RegisterUser;
 import com.example.inventorymanagementsystem.dialogs.PositionChoiceDialog;
 import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
 import com.example.inventorymanagementsystem.MainActivity;
@@ -193,11 +194,18 @@ public class AddEditStaffActivity extends AppCompatActivity {
                     return;
                 }
 
+                if(!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString()).matches()){
+                    etEmail.setError("Please provide valid email!");
+                    etEmail.requestFocus();
+                    return;
+                }
+
                 user.setStoreId(storeId);
                 staff.setFirstname(etFirstname.getText().toString());
                 staff.setLastname(etLastname.getText().toString());
                 staff.setPosition(etRole.getText().toString());
                 user.setEmail(etEmail.getText().toString());
+
 
                 isEdit = getIntent().getBooleanExtra("isEditStaff", false);
 
@@ -232,10 +240,18 @@ public class AddEditStaffActivity extends AppCompatActivity {
                 }
                 else{
 
+                    if (!RegisterUser.PASSWORD_PATTERN.matcher(etPassword.getText().toString()).matches())
+                    {   String passwordMesage ="Password must at least 1 upper case, at least 1 lower, at least 1 special charcter" ;
+                        etPassword.setError(passwordMesage);
+                        Toast.makeText(AddEditStaffActivity.this, passwordMesage, Toast.LENGTH_SHORT).show();
+                        etPassword.requestFocus();
+                        return;
+                    }
                     if(!Validation.checkPasswordMatch(etPassword.getText().toString(),etConfirmPassword.getText().toString())){
                         Toast.makeText(AddEditStaffActivity.this, "Password don't match.", Toast.LENGTH_SHORT).show();
                       return;
                     }
+
 
                     if(TextUtils.isEmpty(etFirstname.getText().toString()) || TextUtils.isEmpty(etLastname.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString()) || TextUtils.isEmpty((etConfirmPassword.getText().toString()))){
                         Toast.makeText(AddEditStaffActivity.this, "Please fill out all fields.", Toast.LENGTH_SHORT).show();

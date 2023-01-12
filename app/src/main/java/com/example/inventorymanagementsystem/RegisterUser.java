@@ -150,17 +150,20 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         etPassword.requestFocus();
         return;
     }
+
     else
     {
         etPassword.setError(null);
         etPassword.clearFocus();
     }
     if (userRegister.getPassword().length() < 8)
+
     {
         etPassword.setError("Password should be minimum of 8!");
         etPassword.requestFocus();
         return;
     }
+
     else
     {
         etPassword.setError(null);
