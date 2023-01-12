@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.inventorymanagementsystem.adapters.POSRCVAdapter;
@@ -31,6 +32,8 @@ import java.util.stream.Collectors;
 import java.util.Locale;
 import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.MainActivity;
+import com.google.android.material.snackbar.Snackbar;
+
 public class POSItemActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
@@ -49,14 +52,17 @@ public class POSItemActivity extends AppCompatActivity {
     private TextView tvNotifNum;
     private ImageView ivBell;
     private int notifCount = 0;
+    private RelativeLayout relPosItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_positem);
 //        getSupportActionBar().hide();
-
+//        findViewById(android.R.id.content)
         initComponents();
+        relPosItem = findViewById(R.id.relPosItem);
+
 
         product = new Product();
         cartLibrary = new CartLibrary();
@@ -165,6 +171,7 @@ public class POSItemActivity extends AppCompatActivity {
                     totalQty = cartProducts.stream().filter(product1 -> product1.getQuantity() > 0).mapToInt(Product::getQuantity).sum();
 
                     btnCheckout.setText(totalQty + " Items = P" + roundOffPrice);
+                    Snackbar.make(relPosItem, "Added to Cart", Snackbar.LENGTH_SHORT).show();
                 }
                 else{
                     int index = Product.findIndexById(cartProducts, product.getId());
@@ -177,6 +184,7 @@ public class POSItemActivity extends AppCompatActivity {
                         productToCart.setName(product.getName());
                         productToCart.setQuantity(1);
                         cartProducts.add(productToCart);
+
                     }
                     else{
                         Product editProduct =  cartProducts.get(index);
@@ -190,7 +198,7 @@ public class POSItemActivity extends AppCompatActivity {
                             cartProducts.set(index,editProduct);
                         }
                     }
-
+                    Snackbar.make(relPosItem, "Added to Cart", Snackbar.LENGTH_SHORT).show();
                     showTotal();
                 }
 
