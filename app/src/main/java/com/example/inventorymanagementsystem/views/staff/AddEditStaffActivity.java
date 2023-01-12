@@ -150,7 +150,7 @@ public class AddEditStaffActivity extends AppCompatActivity {
                     });
                 }
                 else{
-                    Toast.makeText(AddEditStaffActivity.this, "Unable to edit this field, you are the business owner.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddEditStaffActivity.this, "Unable to edit Business Owner.", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -159,9 +159,38 @@ public class AddEditStaffActivity extends AppCompatActivity {
         btnAddEditStaff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (etFirstname.getText().toString().isEmpty())
+                {
+                    etFirstname.setError("First Name required.");
+                    etFirstname.requestFocus();
+                    return;
+                }
+                if (etLastname.getText().toString().isEmpty())
+                {
+                    etLastname.setError("Last Name required.");
+                    etLastname.requestFocus();
+                    return;
+                }
+                if (etRole.getText().toString().isEmpty())
+                {
+                    etRole.setError("Role required.");
+                    etRole.requestFocus();
+                    return;
+                }
+                if (etEmail.getText().toString().isEmpty())
+                {
+                    etEmail.setError("Email required.");
+                    etEmail.requestFocus();
+                    return;
+                }
+                if(!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString()).matches())
+                {
+                    etEmail.setError("Please provide valid email!");
+                    etEmail.requestFocus();
+                    return;
+                }
                 if(TextUtils.isEmpty(etFirstname.getText().toString()) || TextUtils.isEmpty(etLastname.getText().toString()) || TextUtils.isEmpty(etEmail.getText().toString()) || TextUtils.isEmpty((etRole.getText().toString()))){
-                    Toast.makeText(AddEditStaffActivity.this, "Please fill out all fields.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddEditStaffActivity.this, "Please fill out all the fields.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
