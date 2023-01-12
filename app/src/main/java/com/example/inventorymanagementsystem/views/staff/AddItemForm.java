@@ -89,15 +89,15 @@ public class AddItemForm extends AppCompatActivity {
             product.setId(getIntent().getStringExtra("productId"));
             product.GetById(new ProductModelListener() {
                 @Override
-                public void retrieveProduct(Product product) {
-                    String imageUrl = (product.getImageUrl() == null) ? AppConstant.IMAGE.Value : product.getImageUrl();
+                public void retrieveProduct(Product p) {
+                    String imageUrl = (product.getImageUrl() == null) ? AppConstant.IMAGE.Value : p.getImageUrl();
                     Picasso.get().load(imageUrl).into(ivProductImage);
-                    etProductName.setText(product.getName());
-
-                    etReStocks.setText(String.valueOf(product.getRestock()));
-                    etProductCategory.setText(product.getCategory());
-                    etPrice.setText(String.valueOf(product.getPrice()));
-                    etStocks.setText(String.valueOf(product.getQuantity()));
+                    etProductName.setText(p.getName());
+                    product.setCreated_at(p.getCreated_at());
+                    etReStocks.setText(String.valueOf(p.getRestock()));
+                    etProductCategory.setText(p.getCategory());
+                    etPrice.setText(String.valueOf(p.getPrice()));
+                    etStocks.setText(String.valueOf(p.getQuantity()));
                 }
 
                 @Override
