@@ -192,18 +192,23 @@ public class ItemsForm extends AppCompatActivity {
 
         if(tempOutOfStock.size() > 0){
             notifyStockDialog.setStockNotification(StockNotification.NOSTOCK);
-            notifyStockDialog.setMessage("Warning. Need to reorder items. There are "+tempOutOfStock.size()+" items either out of stock or near to out of stock");
+            notifyStockDialog.setMessage("Warning: There are "+tempOutOfStock.size()+" item(s) either out of stock or near to out of stock.");
         }
         else if(tempRestock.size() > 0){
             notifyStockDialog.setStockNotification(StockNotification.RESTOCK);
-            notifyStockDialog.setMessage("There are "+tempRestock.size()+" items that are need to re order items");
+            notifyStockDialog.setMessage("There are "+tempRestock.size()+" item(s) that needs to be restocked.");
         }
         else if(tempOutOfStock.size() == 0 && tempRestock.size() == 0  && tempGood.size() > 0){
             notifyStockDialog.setStockNotification(StockNotification.GOOD);
-            notifyStockDialog.setMessage("There are "+tempGood.size()+". All stocks are in good condition");
+            notifyStockDialog.setMessage(tempGood.size()+" stocks are in good condition");
         }
 
-//        notifyStockDialog.show(getSupportFragmentManager(),"SHOW_NOTIF_DIALOG");
+
+
+        notifyStockDialog.show(getSupportFragmentManager(),"SHOW_NOTIF_DIALOG");
+
+
+
 
         ArrayList<Product> sortedProduct = new ArrayList<>(tempsortedProduct);
         productRCVAdapter.setProductList(sortedProduct);
