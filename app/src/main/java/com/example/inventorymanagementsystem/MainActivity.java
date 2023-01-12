@@ -164,6 +164,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             etPassword.requestFocus();
             return;
         }
+
+        if (!RegisterUser.PASSWORD_PATTERN.matcher(password).matches())
+        {
+            etPassword.setError("Password must at least 1 upper case, at least 1 lower, at least 1 special charcter");
+            etPassword.requestFocus();
+            return;
+        }
+
         progressBar.setVisibility(View.VISIBLE);
 
         logUser.setEmail(email);
@@ -214,14 +222,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void redirectUser(int userType){
         switch (userType){
             case 1:
-//                Toast.makeText(MainActivity.this, "Super Admin", Toast.LENGTH_SHORT).show();
+
                 startActivity(new Intent(MainActivity.this, HomeActivity.class));
                 break;
             case 2:
                 startActivity(new Intent(MainActivity.this, HomeActivity.class));
                 break;
             case 3:
-                Toast.makeText(MainActivity.this, "Employee", Toast.LENGTH_SHORT).show();
+
                 startActivity(new Intent(MainActivity.this, HomeActivity.class));
                 break;
         }

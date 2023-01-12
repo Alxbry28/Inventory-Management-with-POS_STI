@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,9 +16,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.inventorymanagementsystem.R;
+import com.example.inventorymanagementsystem.enums.AppConstant;
 import com.example.inventorymanagementsystem.interfaces.POSSelectedItemListener;
 import com.example.inventorymanagementsystem.libraries.MoneyLibrary;
 import com.example.inventorymanagementsystem.models.Product;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -41,13 +44,16 @@ public class POSRCVAdapter extends RecyclerView.Adapter<POSRCVAdapter.POSViewHol
         Product product = productList.get(position);
         holder.tvProductName.setText(product.getName());
         holder.tvCategory.setText(product.getCategory());
+        String imageUrl = (product.getImageUrl() == null) ? AppConstant.IMAGE.Value : product.getImageUrl();
 
-        String qtyText = (product.getQuantity() > 0) ? "Qty: " + String.valueOf(product.getQuantity()) : "Out of Stock";
-        int qtyColor = (product.getQuantity() <= 0) ? Color.RED : Color.GRAY;
+        Picasso.get().load(imageUrl).into(holder.ivProductImage);
+        String qtyText = (product.getQuantity() > 0) ? "Qty: " + String.valueOf(product.getQuantity())
+                : "Out of Stock";
+        int qtyColor = (product.stockStatus() == 0) ? Color.RED : ((product.stockStatus() == 1) ? Color.parseColor("#FFCF9603") : Color.parseColor("#FF499306"));
         holder.tvQuantity.setTextColor(qtyColor);
         holder.tvQuantity.setText(qtyText);
 
-        holder.tvPrice.setText("P" + MoneyLibrary.toTwoDecimalPlaces(product.getPrice()));
+        holder.tvPrice.setText("P" + MoneyLibrary.toTwoDecimalPlaces(product.getPrice()) );
         holder.cvProductItem.setOnClickListener(v -> {
             posSelectedItemListener.getSelectedItem(product);
         });
@@ -58,11 +64,12 @@ public class POSRCVAdapter extends RecyclerView.Adapter<POSRCVAdapter.POSViewHol
         return productList.size();
     }
 
-    public class POSViewHolder extends RecyclerView.ViewHolder{
+    public class POSViewHolder extends RecyclerView.ViewHolder {
 
         CardView cvProductItem;
         TextView tvProductName, tvCategory, tvPrice, tvQuantity;
         View view;
+        ImageView ivProductImage;
 
         public POSViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,6 +80,8 @@ public class POSRCVAdapter extends RecyclerView.Adapter<POSRCVAdapter.POSViewHol
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvQuantity = itemView.findViewById(R.id.tvQuantity);
             view = itemView;
+            ivProductImage = itemView.findViewById(R.id.ivProductImage);
+
         }
     }
 

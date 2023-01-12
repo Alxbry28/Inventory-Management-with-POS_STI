@@ -22,7 +22,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.EventListener;
+import java.util.List;
+
 import com.example.inventorymanagementsystem.R;
 public class InventoryForm extends AppCompatActivity {
 
@@ -33,6 +37,7 @@ public class InventoryForm extends AppCompatActivity {
     private TextView tvEmptyInventory;
     private Product product;
     private ArrayList<Product> productList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

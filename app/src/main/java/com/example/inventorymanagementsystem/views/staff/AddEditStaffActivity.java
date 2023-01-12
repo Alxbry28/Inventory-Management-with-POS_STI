@@ -2,8 +2,11 @@ package com.example.inventorymanagementsystem.views.staff;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.inventorymanagementsystem.RegisterUser;
 import com.example.inventorymanagementsystem.dialogs.PositionChoiceDialog;
 import com.example.inventorymanagementsystem.interfaces.StaffModelListener;
 import com.example.inventorymanagementsystem.MainActivity;
@@ -52,7 +56,10 @@ public class AddEditStaffActivity extends AppCompatActivity {
         userId = sharedPreferences.getString("userId",null);
 
         user = new User();
+        user.setStoreId(storeId);
+
         staff = new Staff();
+        staff.setStoreId(storeId);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -96,6 +103,7 @@ public class AddEditStaffActivity extends AppCompatActivity {
                 }
             });
 
+            if(etRole.getText().toString().equals("Business Owner")) etRole.setEnabled(false);
             btnAddEditStaff.setText("Save");
             tvStaffTransactionType.setText("Edit Staff");
         }
@@ -131,44 +139,126 @@ public class AddEditStaffActivity extends AppCompatActivity {
         etRole.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                positionChoiceDialog.setChosenPosition(etRole.getText().toString());
-                positionChoiceDialog.show(getSupportFragmentManager(),"dialog_choose_position");
-                positionChoiceDialog.getPositionChoice(new PositionChoiceDialog.PositionChoiceListener() {
-                    @Override
-                    public void setPositionChoice(String choice) {
-                        etRole.setText(choice);
-                    }
-                });
+                if(!etRole.getText().toString().equals("Business Owner")) {
+                    positionChoiceDialog.setChosenPosition(etRole.getText().toString());
+                    positionChoiceDialog.show(getSupportFragmentManager(),"dialog_choose_position");
+                    positionChoiceDialog.getPositionChoice(new PositionChoiceDialog.PositionChoiceListener() {
+                        @Override
+                        public void setPositionChoice(String choice) {
+                            etRole.setText(choice);
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(AddEditStaffActivity.this, "Unable to edit Business Owner.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
         btnAddEditStaff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (etFirstname.getText().toString().isEmpty())
+                {
+                    etFirstname.setError("First Name required.");
+                    etFirstname.requestFocus();
+                    return;
+                }
+                if (etLastname.getText().toString().isEmpty())
+                {
+                    etLastname.setError("Last Name required.");
+                    etLastname.requestFocus();
+                    return;
+                }
+                if (etRole.getText().toString().isEmpty())
+                {
+                    etRole.setError("Role required.");
+                    etRole.requestFocus();
+                    return;
+                }
+                if (etEmail.getText().toString().isEmpty())
+                {
+                    etEmail.setError("Email required.");
+                    etEmail.requestFocus();
+                    return;
+                }
+                if(!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString()).matches())
+                {
+                    etEmail.setError("Please provide valid email!");
+                    etEmail.requestFocus();
+                    return;
+                }
+                if(TextUtils.isEmpty(etFirstname.getText().toString()) || TextUtils.isEmpty(etLastname.getText().toString()) || TextUtils.isEmpty(etEmail.getText().toString()) || TextUtils.isEmpty((etRole.getText().toString()))){
+                    Toast.makeText(AddEditStaffActivity.this, "Please fill out all the fields.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString()).matches()){
+                    etEmail.setError("Please provide valid email!");
+                    etEmail.requestFocus();
+                    return;
+                }
+
+                user.setStoreId(storeId);
                 staff.setFirstname(etFirstname.getText().toString());
                 staff.setLastname(etLastname.getText().toString());
                 staff.setPosition(etRole.getText().toString());
                 user.setEmail(etEmail.getText().toString());
-                user.setPassword(etPassword.getText().toString());
 
-                if(!Validation.checkPasswordMatch(user.getPassword(),etConfirmPassword.getText().toString())){
-                    Toast.makeText(AddEditStaffActivity.this, "Password is not match to confirm password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                
+
                 isEdit = getIntent().getBooleanExtra("isEditStaff", false);
+
+                switch(etRole.getText().toString()){
+                    case "Administrator":
+                        user.setUserType(1);
+                        break;
+                    case "Staff":
+                        user.setUserType(3);
+                        break;
+                }
+
                 if(isEdit){
                     staff.Update(new TransactionStatusListener() {
                         @Override
                         public void checkStatus(boolean status) {
                             if(status){
-                                Toast.makeText(AddEditStaffActivity.this, "Edit Success", Toast.LENGTH_SHORT).show();
-                                finish();
+
+                                user.Update(new TransactionStatusListener() {
+                                    @Override
+                                    public void checkStatus(boolean status) {
+                                      Toast.makeText(AddEditStaffActivity.this, "Staff Edit Success", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(AddEditStaffActivity.this, StaffListActivity.class));
+                                        finish();
+                                    }
+                                });
                             }
                         }
                     });
+
+
                 }
                 else{
+
+                    if (!RegisterUser.PASSWORD_PATTERN.matcher(etPassword.getText().toString()).matches())
+                    {   String passwordMesage ="Password must at least 1 upper case, at least 1 lower, at least 1 special charcter" ;
+                        etPassword.setError(passwordMesage);
+                        Toast.makeText(AddEditStaffActivity.this, passwordMesage, Toast.LENGTH_SHORT).show();
+                        etPassword.requestFocus();
+                        return;
+                    }
+                    if(!Validation.checkPasswordMatch(etPassword.getText().toString(),etConfirmPassword.getText().toString())){
+                        Toast.makeText(AddEditStaffActivity.this, "Password don't match.", Toast.LENGTH_SHORT).show();
+                      return;
+                    }
+
+
+                    if(TextUtils.isEmpty(etFirstname.getText().toString()) || TextUtils.isEmpty(etLastname.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString()) || TextUtils.isEmpty((etConfirmPassword.getText().toString()))){
+                        Toast.makeText(AddEditStaffActivity.this, "Please fill out all fields.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    user.setPassword(etPassword.getText().toString());
                     mAuth.createUserWithEmailAndPassword(user.getEmail(),user.getPassword())
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()){
@@ -176,14 +266,7 @@ public class AddEditStaffActivity extends AppCompatActivity {
                                     String userId = mAuth.getCurrentUser().getUid();
                                     user.setId(userId);
 
-                                    switch(etRole.getText().toString()){
-                                        case "Administrator":
-                                            user.setUserType(1);
-                                            break;
-                                         case "Staff":
-                                             user.setUserType(3);
-                                            break;
-                                    }
+
 
                                     staff.setUserId(userId);
                                     user.setStoreId(storeId);
@@ -197,6 +280,7 @@ public class AddEditStaffActivity extends AppCompatActivity {
                                                     public void checkStatus(boolean status) {
                                                         if(status == true){
                                                             Toast.makeText(AddEditStaffActivity.this,"Your registration is Success. Check your email to verify your account.",Toast.LENGTH_LONG).show();
+                                                            startActivity(new Intent(AddEditStaffActivity.this, StaffListActivity.class));
                                                             finish();
                                                         }
                                                     }
@@ -209,7 +293,6 @@ public class AddEditStaffActivity extends AppCompatActivity {
                                     Toast.makeText(AddEditStaffActivity.this,"Failed to register. Check your connection or try different email.",Toast.LENGTH_LONG).show();
                                 }
                             });
-
                 }
             }
         });
@@ -217,6 +300,7 @@ public class AddEditStaffActivity extends AppCompatActivity {
         btnBackStaffList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(AddEditStaffActivity.this, StaffListActivity.class));
                 finish();
             }
         });

@@ -86,6 +86,7 @@
                 android:hint="0.00"
                 android:digits="@string/valid_double"
                 android:textAlignment="center"
+                android:inputType="number"
                 android:background="@drawable/form_background"
                 android:layout_marginTop="5dp"
                 android:padding="5dp"
@@ -103,13 +104,13 @@
             android:layout_gravity="center"
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
-            android:columnCount="4"
+            android:columnCount="3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <Button android:id="@+id/btn5Amount"
                 android:layout_marginRight="4dp"
-                android:layout_marginLeft="4dp"
+                android:layout_marginLeft="33dp"
                 android:text="5"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"/>
@@ -130,7 +131,7 @@
 
              <Button android:id="@+id/btn50Amount"
                  android:layout_marginRight="4dp"
-                 android:layout_marginLeft="4dp"
+                 android:layout_marginLeft="33dp"
                 android:text="50"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"/>
@@ -151,7 +152,7 @@
 
             <Button android:id="@+id/btn500Amount"
                 android:layout_marginRight="4dp"
-                android:layout_marginLeft="4dp"
+                android:layout_marginLeft="33dp"
                 android:text="500"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"/>

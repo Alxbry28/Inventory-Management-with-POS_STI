@@ -72,6 +72,7 @@ import com.example.inventorymanagementsystem.services.MailerService;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -145,9 +146,7 @@ public class SalesForm extends AppCompatActivity {
 
         btnBack = findViewById(R.id.btnback);
         btnBack.setOnClickListener(v -> {
-            if(Sales.FILE_PATH.exists()){
-                Sales.FILE_PATH.delete();
-            }
+
             startActivity(new Intent(SalesForm.this, HomeActivity.class));
             finish();
         });
@@ -158,26 +157,6 @@ public class SalesForm extends AppCompatActivity {
         userId = sharedPreferences.getString("userId", null);
         staff.setStoreId(storeId);
         sales.setStoreId(storeId);
-
-        staff.GetBusinessOwner(new StaffModelListener() {
-
-            @Override
-            public void retrieveStaff(Staff staff) {
-                userOwner.setId(staff.getUserId());
-                userOwner.GetById(new UserModelListener() {
-                    @Override
-                    public void retrieveUser(User user) {
-                        receiverEmail = user.getEmail();
-                    }
-                });
-            }
-
-            @Override
-            public void getStaffList(ArrayList<Staff> staffList) {
-
-            }
-
-        });
 
         pChartProducts = findViewById(R.id.pChartProducts);
         btnSelectDuration = findViewById(R.id.btnSelectDuration);
@@ -225,15 +204,23 @@ public class SalesForm extends AppCompatActivity {
                     excelGenerator = new ExcelGenerator(SalesForm.this);
                     generateExcelDetails();
                     boolean isGenerated = excelGenerator.generateSales();
-
                     if (isGenerated) {
-                        Toast.makeText(this, "Successfully saved", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Sales Successfully Generated.", Toast.LENGTH_SHORT).show();
                         Uri uri = Uri.parse(excelGenerator.getFilePath().getAbsolutePath());
+
+                        Uri mydir = Uri.parse(excelGenerator.getFolderDocument().getAbsolutePath());
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.putExtra(Intent.ACTION_VIEW, uri);
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        intent.setDataAndType(uri, "application/vnd.ms-excel");
-                        startActivity(intent);
+
+
+//                        intent.setDataAndType(uri, "application/*");
+
+
+                        intent.setDataAndType(mydir, DocumentsContract.Document.MIME_TYPE_DIR);
+
+//                         startActivity(intent);
+                        startActivity(Intent.createChooser(intent, "Open Folder"));
                     }
                     else{
                         Toast.makeText(this, "Failed to generate", Toast.LENGTH_SHORT).show();
@@ -245,7 +232,6 @@ public class SalesForm extends AppCompatActivity {
 
 
     private void generateExcelDetails() {
-//        DateTimeFormatter todayDateFormatter = DateTimeFormatter.ofPattern("uuuuMMddHHmmss");
         SimpleDateFormat f = new SimpleDateFormat("yyyyMMddHHmmss");
         SimpleDateFormat time = new SimpleDateFormat("hh:mm a");
         DateTimeFormatter dateGenFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
@@ -301,7 +287,13 @@ public class SalesForm extends AppCompatActivity {
         }
 
         bChartSales.setData(barDataSales);
+        bChartSales.setDrawValueAboveBar(false);
         bChartSales.getDescription().setEnabled(true);
+
+        YAxis rightYAxis = bChartSales.getAxisRight();
+        rightYAxis.setEnabled(false);
+        bChartSales.getXAxis().setEnabled(false);
+
         bChartSales.invalidate();
     }
 
@@ -511,7 +503,7 @@ public class SalesForm extends AppCompatActivity {
                 return;
 
             default:
-                Toast.makeText(this, "Default ko na", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Default", Toast.LENGTH_SHORT).show();
                 break;
         }
 

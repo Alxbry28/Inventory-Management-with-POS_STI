@@ -44,13 +44,13 @@ public class CartActivity extends AppCompatActivity {
         btnBack.setOnClickListener((View v) -> {
                 startActivity(new Intent(CartActivity.this, POSItemActivity.class));
                 finish();
+                cartLibrary.clear();
             }
         );
 
         btnCheckout = findViewById(R.id.btnCheckout);
         tvTotalItems = findViewById(R.id.tvTotalItems);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
-
         rcCartItems = findViewById(R.id.rcCartItems);
 
         cartLibrary = new CartLibrary();
@@ -76,7 +76,7 @@ public class CartActivity extends AppCompatActivity {
         showTotalPrice();
 
         btnCheckout.setOnClickListener(v->{
-            Toast.makeText(this, "Payment", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Payment", Toast.LENGTH_SHORT).show();
             cartLibrary.clear();
             cartLibrary.setCartItemArrayList(cartItemsArrayList);
             cartLibrary.saveCartItems();
@@ -87,6 +87,10 @@ public class CartActivity extends AppCompatActivity {
     private void showTotalPrice(){
         tvTotalPrice.setText("Total: P" +cartLibrary.totalCartPrice());
         tvTotalItems.setText("Items: " + cartLibrary.totalCartItems());
+        if(cartLibrary.totalCartItems() == 0 || cartLibrary.totalCartPrice() == 0){
+           btnCheckout.setEnabled(false);
+        }
+
     }
 
 }

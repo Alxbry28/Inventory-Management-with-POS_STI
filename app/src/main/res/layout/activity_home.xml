@@ -51,16 +51,16 @@
             android:layout_height="100dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/bg_blue400"
+            android:backgroundTint="@color/bg_blue300"
             android:text="Point Of Sale" />
 
         <Button
             android:id="@+id/btnSales"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:backgroundTint="@color/bg_blue350"
-            android:layout_weight="1"
             android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/bg_blue300"
             android:text="Sales" />
 
     </LinearLayout>
@@ -84,9 +84,9 @@
             android:id="@+id/btnTransactions"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/bg_blue250"
             android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/bg_blue300"
             android:text="Transactions" />
 
     </LinearLayout>

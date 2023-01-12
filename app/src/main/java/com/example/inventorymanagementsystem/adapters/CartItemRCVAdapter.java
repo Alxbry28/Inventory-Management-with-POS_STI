@@ -80,7 +80,7 @@ public class CartItemRCVAdapter extends RecyclerView.Adapter<CartItemRCVAdapter.
             notifyItemRangeChanged(position,1);
             notifyDataSetChanged();
             cartItemsListener.retrieveCartItemList(cartItemList);
-            Toast.makeText(context, "Delete Item", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Item Deleted", Toast.LENGTH_SHORT).show();
         });
         holder.btnMinusQty.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +109,7 @@ public class CartItemRCVAdapter extends RecyclerView.Adapter<CartItemRCVAdapter.
                         product.setQuantity(product1.getQuantity());
 
                         if(cartItem.getQuantity() ==  product.getQuantity()){
-                            Toast.makeText(context, "Cannot exceed item", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Not enough stock. Cannot exceed item.", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
