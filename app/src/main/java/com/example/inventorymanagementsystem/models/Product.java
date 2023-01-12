@@ -17,8 +17,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class Product {
 
@@ -33,11 +35,12 @@ public class Product {
     public static final String TABLE = "tblProducts";
     private RealtimeFirebaseDB realtimeFirebaseDB;
     private DatabaseReference dbRef;
-    private String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault()).format(new Date());
+    private String dateTime ;
 
     public Product(){
         this.realtimeFirebaseDB = new RealtimeFirebaseDB();
         this.dbRef = realtimeFirebaseDB.ProductsTable();
+        dateTime = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
 
     public int stockStatus(){
@@ -64,8 +67,19 @@ public class Product {
 
 
     public void Update(final TransactionStatusListener transactionStatus){
+        dateTime = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         this.setUpdated_at(dateTime);
-        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+        Map<String, Object> updateValue = new HashMap<>();
+        updateValue.put("category", this.getCategory());
+        updateValue.put("imageUrl", this.getImageUrl());
+        updateValue.put("name", this.getName());
+        updateValue.put("price", this.getPrice());
+        updateValue.put("quantity", this.getQuantity());
+        updateValue.put("restock", this.getRestock());
+        updateValue.put("updated_at", this.getUpdated_at());
+        updateValue.put("user_id", this.getUserId());
+
+        dbRef.child(this.getId()).setValue(updateValue).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }

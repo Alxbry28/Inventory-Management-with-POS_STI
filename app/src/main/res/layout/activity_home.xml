@@ -99,13 +99,12 @@
         android:orientation="vertical">
 
         <Button
-            android:visibility="gone"
             android:id="@+id/btnInventory"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="Inventory" />
+            android:text="Inventory Reports" />
 
         <Button
             android:id="@+id/btnStaff"

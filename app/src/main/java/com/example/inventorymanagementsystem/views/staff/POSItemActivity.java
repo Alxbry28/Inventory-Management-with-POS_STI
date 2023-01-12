@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.inventorymanagementsystem.adapters.POSRCVAdapter;
@@ -30,6 +32,8 @@ import java.util.stream.Collectors;
 import java.util.Locale;
 import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.MainActivity;
+import com.google.android.material.snackbar.Snackbar;
+
 public class POSItemActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
@@ -45,18 +49,20 @@ public class POSItemActivity extends AppCompatActivity {
     private int totalQty = 0;
     private ArrayList<Product> cartProducts;
     private NotifyStockDialog notifyStockDialog;
+    private TextView tvNotifNum;
+    private ImageView ivBell;
+    private int notifCount = 0;
+    private RelativeLayout relPosItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_positem);
 //        getSupportActionBar().hide();
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener((View v) -> {
-                    startActivity(new Intent(POSItemActivity.this, HomeActivity.class));
-                    finish();
-                }
-        );
+//        findViewById(android.R.id.content)
+        initComponents();
+        relPosItem = findViewById(R.id.relPosItem);
+
 
         product = new Product();
         cartLibrary = new CartLibrary();
@@ -73,17 +79,10 @@ public class POSItemActivity extends AppCompatActivity {
         product.setUserId(userId);
         product.setStoreId(storeId);
 
-        btnCheckout = findViewById(R.id.btnCheckout);
-        btnCart = findViewById(R.id.btnCart);
-        rcPOSProductItem = findViewById(R.id.rcPOSProductItem);
         POSRCVAdapter posRCVAdapter = new POSRCVAdapter();
         product.GetAll(new ProductModelListener() {
             @Override
-            public void retrieveProduct(Product product) {
-
-
-            }
-
+            public void retrieveProduct(Product product) { }
             @Override
             public void getProductList(ArrayList<Product> productArrayList) {
                 if(!productArrayList.isEmpty()){
@@ -94,8 +93,8 @@ public class POSItemActivity extends AppCompatActivity {
                         posRCVAdapter.setContext(POSItemActivity.this);
 
                         List<Product> tempsortedProduct = productArrayList.stream()
-                        .sorted((p1,p2)-> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()))
-                                .collect(Collectors.toList());
+                        .sorted((p1,p2)-> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase())).collect(Collectors.toList());
+
                         ArrayList<Product> sortedProduct = new ArrayList<>(tempsortedProduct);
 
                         List<Product> tempRestock = tempsortedProduct.stream()
@@ -111,20 +110,23 @@ public class POSItemActivity extends AppCompatActivity {
                                 .collect(Collectors.toList());
 
                         if(tempOutOfStock.size() > 0){
+                            notifCount++;
                             notifyStockDialog.setStockNotification(StockNotification.NOSTOCK);
                             notifyStockDialog.setMessage("Warning: There are "+tempOutOfStock.size()+" item(s) either out of stock or near to out of stock.");
                         }
-                        else if(tempRestock.size() > 0){
+                        if(tempRestock.size() > 0){
+                            notifCount++;
                             notifyStockDialog.setStockNotification(StockNotification.RESTOCK);
                             notifyStockDialog.setMessage("There are "+tempRestock.size()+" item(s) that needs to be restocked.");
                         }
-                        else if(tempOutOfStock.size() == 0 && tempRestock.size() == 0  && tempGood.size() > 0){
+                        if(tempOutOfStock.size() == 0 && tempRestock.size() == 0  && tempGood.size() > 0){
+                            notifCount++;
                             notifyStockDialog.setStockNotification(StockNotification.GOOD);
-                            notifyStockDialog.setMessage("All "+tempGood.size()+" stocks are in good condition");
+
+                            notifyStockDialog.setMessage("There are "+tempGood.size()+" items that are in good condition");
                         }
-                        notifyStockDialog.show(getSupportFragmentManager(),"SHOW_NOTIF_DIALOG");
 
-
+                        tvNotifNum.setVisibility(((notifCount == 0) ? View.GONE : View.VISIBLE));
 
                         posRCVAdapter.setProductList(sortedProduct);
                         rcPOSProductItem.setAdapter(posRCVAdapter);
@@ -169,6 +171,7 @@ public class POSItemActivity extends AppCompatActivity {
                     totalQty = cartProducts.stream().filter(product1 -> product1.getQuantity() > 0).mapToInt(Product::getQuantity).sum();
 
                     btnCheckout.setText(totalQty + " Items = P" + roundOffPrice);
+                    Snackbar.make(relPosItem, "Added to Cart", Snackbar.LENGTH_SHORT).show();
                 }
                 else{
                     int index = Product.findIndexById(cartProducts, product.getId());
@@ -181,6 +184,7 @@ public class POSItemActivity extends AppCompatActivity {
                         productToCart.setName(product.getName());
                         productToCart.setQuantity(1);
                         cartProducts.add(productToCart);
+
                     }
                     else{
                         Product editProduct =  cartProducts.get(index);
@@ -194,11 +198,44 @@ public class POSItemActivity extends AppCompatActivity {
                             cartProducts.set(index,editProduct);
                         }
                     }
-
+                    Snackbar.make(relPosItem, "Added to Cart", Snackbar.LENGTH_SHORT).show();
                     showTotal();
                 }
 
             }
+        });
+
+        initEvents();
+
+    }
+
+
+    private void initComponents(){
+        btnBack = findViewById(R.id.btnBack);
+        btnCheckout = findViewById(R.id.btnCheckout);
+        btnCart = findViewById(R.id.btnCart);
+        rcPOSProductItem = findViewById(R.id.rcPOSProductItem);
+        tvNotifNum = findViewById(R.id.tvNotifNum);
+        ivBell = findViewById(R.id.ivBell);
+    }
+
+    private void initEvents(){
+        ivBell.setOnClickListener(v->{
+            tvNotifNum.setVisibility(View.GONE);
+            notifyStockDialog.show(getSupportFragmentManager(),"SHOW_NOTIF_DIALOG");
+        });
+
+        btnBack.setOnClickListener((View v) -> {
+                    startActivity(new Intent(POSItemActivity.this, HomeActivity.class));
+                    finish();
+                }
+        );
+
+        btnCart.setOnClickListener(v->{
+            cartLibrary.clear();
+            cartProducts.clear();
+            showTotal();
+              Toast.makeText(this, "Cart cleared", Toast.LENGTH_SHORT).show();
         });
 
         btnCheckout.setOnClickListener( v->{
@@ -214,16 +251,8 @@ public class POSItemActivity extends AppCompatActivity {
                 cartLibrary.saveCartItems();
                 startActivity(new Intent(POSItemActivity.this, CartActivity.class));
             }
-            //finish();
-            });
-
-        btnCart.setOnClickListener(v->{
-            cartLibrary.clear();
-            cartProducts.clear();
-            showTotal();
-            Toast.makeText(this, "Cart cleared", Toast.LENGTH_SHORT).show();
         });
-
+      
     }
 
     private void initRCVPOSItem(){
