@@ -239,12 +239,24 @@ public class AddEditStaffActivity extends AppCompatActivity {
 
                 }
                 else{
+                    if (etPassword.getText().toString().length() < 8)
+                    {
+                        etPassword.setError("Password should be minimum of 8");
+                        etPassword.requestFocus();
+                        return;
+                    }
 
                     if (!RegisterUser.PASSWORD_PATTERN.matcher(etPassword.getText().toString()).matches())
-                    {   String passwordMesage ="Password must at least 1 upper case, at least 1 lower, at least 1 special charcter" ;
+                    {   String passwordMesage ="Password must have at least 1 upper case, 1 lower, 1 special character" ;
                         etPassword.setError(passwordMesage);
-                        Toast.makeText(AddEditStaffActivity.this, passwordMesage, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(AddEditStaffActivity.this, passwordMesage, Toast.LENGTH_SHORT).show();
                         etPassword.requestFocus();
+                        return;
+                    }
+                    if (etConfirmPassword.getText().toString().isEmpty())
+                    {
+                        etConfirmPassword.setError("Please confirm password");
+                        etConfirmPassword.requestFocus();
                         return;
                     }
                     if(!Validation.checkPasswordMatch(etPassword.getText().toString(),etConfirmPassword.getText().toString())){

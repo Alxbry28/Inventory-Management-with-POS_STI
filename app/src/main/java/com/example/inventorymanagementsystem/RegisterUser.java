@@ -191,7 +191,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         etPassword.setError(null);
         etPassword.clearFocus();
     }
-    if (!userRegister.getPassword().matches("^(?=.*[_.()$&@]).*$"))
+    if (!userRegister.getPassword().matches("^(?=.*[_.()!@#$%^&*-]).*$"))
     {
         etPassword.setError("Password should have 1 special symbol");
         etPassword.requestFocus();
