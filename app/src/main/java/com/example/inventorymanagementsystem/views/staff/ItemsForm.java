@@ -230,8 +230,9 @@ public class ItemsForm extends AppCompatActivity {
          if(tempOutOfStock.size() == 0 && tempRestock.size() == 0  && tempGood.size() > 0){
             notifCount++;
             notifyStockDialog.setStockNotification(StockNotification.GOOD);
-            notifyStockDialog.setMessage("There are "+tempGood.size()+" stocks are in good condition");
-             tvNotifNum.setVisibility(View.VISIBLE);
+            tvNotifNum.setVisibility(View.VISIBLE);
+            notifyStockDialog.setMessage("All "+tempGood.size()+" stocks are in good condition");
+
         }
 
         tvNotifNum.setVisibility(((notifCount == 0) ? View.GONE : View.VISIBLE));

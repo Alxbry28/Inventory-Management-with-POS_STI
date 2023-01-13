@@ -165,12 +165,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        if (!RegisterUser.PASSWORD_PATTERN.matcher(password).matches())
-        {
-            etPassword.setError("Password must at least 1 upper case, at least 1 lower, at least 1 special charcter");
-            etPassword.requestFocus();
-            return;
-        }
 
         progressBar.setVisibility(View.VISIBLE);
 
