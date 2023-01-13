@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.example.inventorymanagementsystem.database.RealtimeFirebaseDB;
+import com.example.inventorymanagementsystem.interfaces.IEntityModelListener;
 import com.example.inventorymanagementsystem.interfaces.ProductModelListener;
 import com.example.inventorymanagementsystem.interfaces.TransactionStatusListener;
 import com.example.inventorymanagementsystem.interfaces.UserModelListener;
@@ -30,12 +31,13 @@ public class Product {
     private String imageUrl;
     private double price, cost;
     private String created_at, updated_at;
+    private String created_time, updated_time;
     private boolean isDeleted;
 
     public static final String TABLE = "tblProducts";
     private RealtimeFirebaseDB realtimeFirebaseDB;
     private DatabaseReference dbRef;
-    private String dateTime ;
+    private String dateTime;
 
     public Product(){
         this.realtimeFirebaseDB = new RealtimeFirebaseDB();
@@ -56,46 +58,42 @@ public class Product {
         return 2;
     }
 
-    public void Create(final TransactionStatusListener transactionStatus){
+    public void Create(TransactionStatusListener transactionStatus) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
         this.setId(dbRef.push().getKey());
-        this.setCreated_at(dateTime);
-        this.setUpdated_at(dateTime);
-        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+        this.setCreated_at(date);
+        this.setUpdated_at(date);
+        this.setCreated_time(time);
+        this.setUpdated_time(time);
+        dbRef.child(this.getStoreId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
-
-    public void Update(final TransactionStatusListener transactionStatus){
-        dateTime = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        this.setUpdated_at(dateTime);
-//        Map<String, Object> updateValue = new HashMap<>();
-//        updateValue.put("category", this.getCategory());
-//        updateValue.put("imageUrl", this.getImageUrl());
-//        updateValue.put("name", this.getName());
-//        updateValue.put("price", this.getPrice());
-//        updateValue.put("quantity", this.getQuantity());
-//        updateValue.put("restock", this.getRestock());
-//        updateValue.put("updated_at", this.getUpdated_at());
-//        updateValue.put("user_id", this.getUserId());
-
-        dbRef.child(this.getId()).setValue(this).addOnCompleteListener(task -> {
+    public void Update(TransactionStatusListener transactionStatus) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
+        this.setUpdated_at(date);
+        this.setUpdated_time(time);
+        dbRef.child(this.getStoreId()).child(this.getId()).setValue(this).addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
 
-    public void Delete(final TransactionStatusListener transactionStatus){
-        dbRef.child(this.getId()).removeValue().addOnCompleteListener(task -> {
+    public void Delete(TransactionStatusListener transactionStatus) {
+        dbRef.child(this.getStoreId()).child(this.getId()).removeValue().addOnCompleteListener(task -> {
             transactionStatus.checkStatus(task.isSuccessful());
         });
     }
+
 
     public double GetComputedTotalPrice(){
         return quantity * price;
     }
 
     public void GetById(final ProductModelListener productModelListener){
-        Query query = dbRef.child(this.getId());
+        Query query = dbRef.child(this.getStoreId()).child(this.getId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -112,7 +110,7 @@ public class Product {
     }
 
     public void GetAll(final ProductModelListener productModelListener){
-        Query query = dbRef.orderByChild("storeId").equalTo(this.getStoreId());
+        Query query = dbRef.child(this.getStoreId());
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -130,6 +128,26 @@ public class Product {
             }
         });
     }
+
+    public void GetAllByDateRange(String startDate, String endDate, final ProductModelListener productModelListener) {
+        Query query = dbRef.child(this.getStoreId()).orderByChild("updated_at").startAt(startDate).endAt(endDate);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Product> productArrayList = new ArrayList<>();
+                for (DataSnapshot productSnapShot : snapshot.getChildren()) {
+                    Product product = productSnapShot.getValue(Product.class);
+                    productArrayList.add(product);
+                }
+                productModelListener.getProductList(productArrayList);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 
     public void Search(String search,final ProductModelListener productModelListener){
         Query query = dbRef.orderByChild("storeId").startAt(search).endAt(search + "\uf0ff");
@@ -195,6 +213,22 @@ public class Product {
 
     public String getId() {
         return id;
+    }
+
+    public String getCreated_time() {
+        return created_time;
+    }
+
+    public void setCreated_time(String created_time) {
+        this.created_time = created_time;
+    }
+
+    public String getUpdated_time() {
+        return updated_time;
+    }
+
+    public void setUpdated_time(String updated_time) {
+        this.updated_time = updated_time;
     }
 
     public void setId(String id) {

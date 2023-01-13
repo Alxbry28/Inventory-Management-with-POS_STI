@@ -2,6 +2,9 @@ package com.example.inventorymanagementsystem.libraries;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
+
+import com.example.inventorymanagementsystem.models.Product;
 import com.example.inventorymanagementsystem.models.Sales;
 import com.example.inventorymanagementsystem.models.SoldItem;
 import com.example.inventorymanagementsystem.models.SoldItemReport;
@@ -28,6 +31,7 @@ public class ExcelGenerator {
     private Context context;
     private ArrayList<Sales> tempSalesList;
     private ArrayList<SoldItemReport> tempSoldItemList;
+    private ArrayList<Product> productList;
     private String businessName, startDate, endDate, dateGenerated;
     private String dateTimeCreated;
     private String fileNameUnique;
@@ -36,9 +40,7 @@ public class ExcelGenerator {
     private File folderDocumentBackup;
 
 
-
     public ExcelGenerator(Context context) {
-
         this.context = context;
         hssfWorkbook = new HSSFWorkbook();
         folderDocumentBackup = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath());
@@ -77,8 +79,8 @@ public class ExcelGenerator {
                 folderDocument.mkdirs();
             }
 
-            if(!folderDocument.exists()){
-                folderDocument.mkdirs();
+            if(!folderDocumentBackup.exists()){
+                folderDocumentBackup.mkdirs();
             }
 
             if (filePath.exists()){
@@ -252,6 +254,132 @@ public class ExcelGenerator {
         hssfCellData = hssfRowGenDate.createCell(0); // "Date Generated"
         hssfCellData.setCellValue("Date Generated: " + dateGenerated);
 
+    }
+
+    public boolean generateInventory() {
+        InventoryWorkbook();
+        SoldProductWorkbook();
+        String filename = fileNameUnique+"_"+"InventoryReport.xls";
+        filePath = new File(getFolderDocument(), filename);
+        File filePathBackup = new File(folderDocumentBackup, filename);
+
+        try {
+            if(!folderDocument.exists()){
+                folderDocument.mkdirs();
+            }
+
+            if(!folderDocumentBackup.exists()){
+                folderDocumentBackup.mkdirs();
+            }
+
+            if(!folderDocument.exists()){
+                folderDocument.mkdirs();
+            }
+
+            if (filePath.exists()){
+                filePath.delete();
+
+                if (!filePathBackup.exists()){
+                    filePathBackup.createNewFile();
+                }
+
+                if (!filePath.exists()){
+                    filePath.createNewFile();
+                }
+
+            }
+            else{
+                filePath.createNewFile();
+            }
+
+            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+            FileOutputStream fileOutputStream1 = new FileOutputStream(filePathBackup);
+
+            hssfWorkbook.write(fileOutputStream);
+            hssfWorkbook.write(fileOutputStream1);
+
+            if (fileOutputStream != null){
+                fileOutputStream.flush();
+                fileOutputStream.close();
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            Log.e("ExcelGenerator", "generateInventory: " + e.getMessage() );
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private void InventoryWorkbook(){
+        HSSFSheet hssfSheet = hssfWorkbook.createSheet();
+        HSSFRow hssfRowHeader = hssfSheet.createRow(0);
+        HSSFCell hssfCellHeader  = hssfRowHeader.createCell(2);
+        hssfCellHeader.setCellValue("Inventory Report");
+
+        HSSFRow hssfRowDateRange = hssfSheet.createRow(1);
+        HSSFCell hssfCellDateFrom  = hssfRowDateRange.createCell(0);
+        hssfCellDateFrom.setCellValue("From: " + startDate);
+
+        HSSFCell hssfCellDateTo  = hssfRowDateRange.createCell(3);
+        hssfCellDateTo.setCellValue("To: " + endDate);
+
+        String[] salesHeader = new String[]{"Receipt No", "Amount Payable", "Item Qty", "Date"};
+        HSSFRow hssfRowDataHeader = hssfSheet.createRow(2);
+        for (int i = 0; i < salesHeader.length; i++) {
+            HSSFCell hssfCellDataHeader  = hssfRowDataHeader.createCell(i);
+            hssfCellDataHeader.setCellValue(salesHeader[i]);
+        }
+
+        int beginRow = 3;
+        int totalQty = 0;
+        double totalSold = 0;
+        HSSFCell hssfCellData;
+        for (Sales salesItem : tempSalesList) {
+            HSSFRow hssfRowData = hssfSheet.createRow(beginRow);
+
+            hssfCellData = hssfRowData.createCell(0); //"Receipt No"
+            hssfCellData.setCellValue(salesItem.getReceiptNo());
+
+            hssfCellData = hssfRowData.createCell(1); //"Amount Payable"
+            hssfCellData.setCellValue(MoneyLibrary.toTwoDecimalPlaces(salesItem.getAmountPayable()));
+
+            hssfCellData = hssfRowData.createCell(2); //"Item Qty"
+            hssfCellData.setCellValue(salesItem.getQuantity());
+
+            hssfCellData = hssfRowData.createCell(3); //"Date"
+            hssfCellData.setCellValue(salesItem.getCreated_at());
+
+            totalQty += salesItem.getQuantity();
+            totalSold += salesItem.getAmountPayable();
+            beginRow++;
+        }
+
+        HSSFRow hssfRowDataBusinessName = hssfSheet.createRow(beginRow + 1);
+        hssfCellData = hssfRowDataBusinessName.createCell(0); // "businessName"
+        hssfCellData.setCellValue("Business Name: " +  businessName);
+
+        HSSFRow hssfRowDataTotal = hssfSheet.createRow(beginRow + 2);
+        hssfCellData = hssfRowDataTotal.createCell(0); // "Total"
+        hssfCellData.setCellValue("Total Sales Amount: " + MoneyLibrary.toTwoDecimalPlaces(totalSold));
+
+        hssfRowDataTotal = hssfSheet.createRow(beginRow + 3);
+        hssfCellData = hssfRowDataTotal.createCell(0); // "Quantity"
+        hssfCellData.setCellValue("Total Qty: " + totalQty);
+
+        HSSFRow hssfRowGenDate = hssfSheet.createRow(beginRow + 4);
+        hssfCellData = hssfRowGenDate.createCell(0); // "Date Generated"
+        hssfCellData.setCellValue("Date Generated: " + dateGenerated);
+
+    }
+
+    public ArrayList<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(ArrayList<Product> productList) {
+        this.productList = productList;
     }
 
     public String getBusinessName() {

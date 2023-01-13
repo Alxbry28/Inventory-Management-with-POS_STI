@@ -87,6 +87,7 @@ public class AddItemForm extends AppCompatActivity {
         isEditProduct = getIntent().hasExtra("isEditProduct");
         if (isEditProduct) {
             product.setId(getIntent().getStringExtra("productId"));
+            product.setStoreId(storeId);
             product.GetById(new ProductModelListener() {
                 @Override
                 public void retrieveProduct(Product p) {
@@ -94,6 +95,8 @@ public class AddItemForm extends AppCompatActivity {
                     Picasso.get().load(imageUrl).into(ivProductImage);
                     etProductName.setText(p.getName());
                     product.setCreated_at(p.getCreated_at());
+                    product.setCreated_time(p.getCreated_time());
+
                     etReStocks.setText(String.valueOf(p.getRestock()));
                     etProductCategory.setText(p.getCategory());
                     etPrice.setText(String.valueOf(p.getPrice()));
@@ -209,6 +212,7 @@ public class AddItemForm extends AppCompatActivity {
                     product.Update(status -> {
                         if (status) {
                             Toast.makeText(AddItemForm.this, "Edit Product Success", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(AddItemForm.this, ItemsForm.class));
                             finish();
                         }
                     });
@@ -216,6 +220,7 @@ public class AddItemForm extends AppCompatActivity {
                     product.Create(status -> {
                         if (status) {
                             Toast.makeText(AddItemForm.this, "Product Successfully Added", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(AddItemForm.this, ItemsForm.class));
                             finish();
                         }
                     });
@@ -229,6 +234,7 @@ public class AddItemForm extends AppCompatActivity {
                             product.Update(status -> {
                                 if (status) {
                                     Toast.makeText(AddItemForm.this, "Edit Product Success", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(AddItemForm.this, ItemsForm.class));
                                     finish();
                                 }
                             });
@@ -236,6 +242,7 @@ public class AddItemForm extends AppCompatActivity {
                             product.Create(status -> {
                                 if (status) {
                                     Toast.makeText(AddItemForm.this, "Product Successfully Added", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(AddItemForm.this, ItemsForm.class));
                                     finish();
                                 }
                             });
