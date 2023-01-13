@@ -194,6 +194,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                         Product productSold = new Product();
                         productSold.setId(soldItem.getProductId());
+                        productSold.setStoreId(sales.getStoreId());
                         productSold.setQuantity(soldItem.getQuantity());
                         productSold.GetById(new ProductModelListener() {
                             @Override
