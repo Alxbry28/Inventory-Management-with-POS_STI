@@ -127,10 +127,9 @@
                 android:paddingRight="4dp"
                 android:paddingBottom="7dp">
 
-                <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="340dp"
+                    android:layout_height="140dp"
                     android:layout_marginLeft="3dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="3dp"
@@ -138,51 +137,49 @@
                     app:cardCornerRadius="8dp"
                     app:cardElevation="5dp">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:padding="2dp">
 
-                        <TextView
-                            android:id="@+id/tvTopSales"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="2dp"
-                            android:text="Sales Chart"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                            android:textSize="22dp" />
-
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="2dp"
-                            android:background="@color/gray"
-                            android:padding="5dp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
                             android:orientation="vertical"
-                            android:padding="10dp">
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
-                            <com.github.mikephil.charting.charts.BarChart
-                                android:id="@+id/bChartSales"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                            <TextView
+                                android:id="@+id/tvCategorySize"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="2dp"
+                                android:text="23"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="29dp" />
 
+                            <TextView
+                                android:id="@+id/tvCategory"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="2dp"
+                                android:text="Product Categories"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="22dp" />
 
                         </LinearLayout>
 
-                    </LinearLayout>
+
+                    </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
-                    android:layout_height="340dp"
+                    android:layout_height="140dp"
                     android:layout_marginLeft="3dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="3dp"
@@ -191,43 +188,42 @@
                     app:cardCornerRadius="8dp"
                     app:cardElevation="10dp">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:padding="2dp">
 
-                        <TextView
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="2dp"
-                            android:text="Top Sold Products"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                            android:textSize="22dp" />
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="2dp"
-                            android:background="@color/gray"
-                            android:padding="5dp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
                             android:orientation="vertical"
-                            android:padding="10dp">
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
-                            <com.github.mikephil.charting.charts.PieChart
-                                android:id="@+id/pChartProducts"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                            <TextView
+                                android:id="@+id/tvProductsSize"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="2dp"
+                                android:text="23"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="29dp" />
+
+                            <TextView
+                                android:id="@+id/tvProducts"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="2dp"
+                                android:text="Products Overall Qty"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="22dp" />
 
                         </LinearLayout>
 
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
 
@@ -266,9 +262,7 @@
                         android:text="Send Mail"
                         android:textSize="13sp" />
 
-
                 </LinearLayout>
-
 
                 <Button
                     android:id="@+id/btnback"

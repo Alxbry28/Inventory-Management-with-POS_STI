@@ -69,7 +69,7 @@ public class ItemsForm extends AppCompatActivity {
         product.setStoreId(storeId);
 
         initComponents();
-
+        tvNotifNum.setVisibility(View.GONE);
         product.GetAll(new ProductModelListener() {
             @Override
             public void retrieveProduct(Product product) {
@@ -87,6 +87,9 @@ public class ItemsForm extends AppCompatActivity {
                         initRCVProductsItem(productArrayList);
 
                     }
+                }
+                else{
+
                 }
             }
         });
@@ -107,8 +110,10 @@ public class ItemsForm extends AppCompatActivity {
     private void initEvents(){
 
         ivBell.setOnClickListener(v->{
-            tvNotifNum.setVisibility(View.GONE);
-            notifyStockDialog.show(getSupportFragmentManager(),"SHOW_NOTIF_DIALOG");
+            if(!(productList == null || productList.isEmpty())){
+                tvNotifNum.setVisibility(View.GONE);
+                notifyStockDialog.show(getSupportFragmentManager(), "SHOW_NOTIF_DIALOG");
+            }
         });
 
         btnAddProduct.setOnClickListener(v->{
@@ -155,7 +160,6 @@ public class ItemsForm extends AppCompatActivity {
                 public void retrieveProduct(Product product) {
 
                 }
-
                 @Override
                 public void getProductList(ArrayList<Product> productArrayList) {
                     if(!productArrayList.isEmpty()){
@@ -215,16 +219,18 @@ public class ItemsForm extends AppCompatActivity {
             notifCount++;
             notifyStockDialog.setStockNotification(StockNotification.NOSTOCK);
             notifyStockDialog.setMessage("Warning: There are "+tempOutOfStock.size()+" item(s) either out of stock or near to out of stock.");
+            tvNotifNum.setVisibility(View.VISIBLE);
         }
          if(tempRestock.size() > 0){
              notifCount++;
             notifyStockDialog.setStockNotification(StockNotification.RESTOCK);
             notifyStockDialog.setMessage("There are "+tempRestock.size()+" item(s) that needs to be restocked.");
-        }
+             tvNotifNum.setVisibility(View.VISIBLE);
+         }
          if(tempOutOfStock.size() == 0 && tempRestock.size() == 0  && tempGood.size() > 0){
             notifCount++;
             notifyStockDialog.setStockNotification(StockNotification.GOOD);
-
+            tvNotifNum.setVisibility(View.VISIBLE);
             notifyStockDialog.setMessage("All "+tempGood.size()+" stocks are in good condition");
 
         }

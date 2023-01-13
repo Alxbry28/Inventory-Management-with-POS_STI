@@ -126,6 +126,61 @@ public class MailerService {
 
     }
 
+  public void sendInventoryReport() {
+        String subject = "Subject: Inventory Report";
+        String message = "Here is the generated inventory report.";
+
+        try {
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(senderEmail, senderPassword);
+                }
+            });
+
+            MimeMessage mimeMessage = new MimeMessage(session);
+            mimeMessage.setFrom(new InternetAddress(senderEmail));
+            mimeMessage.setSender(new InternetAddress(senderEmail));
+            mimeMessage.setReplyTo(new InternetAddress[]{new InternetAddress(senderEmail)});
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(this.getReceiverEmail()));
+            mimeMessage.setSubject(subject);
+            mimeMessage.setText(message);
+
+            String filename = filePath.getAbsolutePath();
+            DataSource source = new FileDataSource(filePath);
+
+            mimeMessage.setSentDate(new Date());
+            // create the second message part
+            MimeBodyPart mbpAttachments = new MimeBodyPart();
+
+            // attach the file to the message
+            mbpAttachments.setDataHandler(new DataHandler(source));
+            mbpAttachments.attachFile(filePath);
+
+            // create the Multipart and add its parts to it
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mbpAttachments);
+
+            mimeMessage.setContent(multipart);
+
+            SendMail sendMail = new SendMail();
+            sendMail.setContext(context);
+            sendMail.execute(mimeMessage);
+
+        } catch (AddressException ae) {
+            Log.e(TAG, "sendInventoryReport: " + ae.getMessage() );
+            ae.printStackTrace();
+        } catch (MessagingException me) {
+            Log.e(TAG, "sendInventoryReport: " + me.getMessage() );
+            me.printStackTrace();
+        } catch (Exception e) {
+            Log.e(TAG, "sendInventoryReport: " + e.getMessage() );
+            e.printStackTrace();
+        }
+
+
+    }
+
     public void sendSalesReport(HashMap<String, String> salesDetails) {
         String subject = "Subject: Sales Report";
         String message = "This is generated ";

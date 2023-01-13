@@ -24,7 +24,8 @@ public class SendMailDialog extends AppCompatDialogFragment {
     private Context context;
     private MailerService mailerService;
     private File filePath;
-
+    private int reportType;
+    private String title;
 
     public SendMailDialog(Context context){
         this.context = context;
@@ -45,7 +46,7 @@ public class SendMailDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_send_email_sales,null);
         EditText etEmail = view.findViewById(R.id.etEmail);
-        builder.setView(view).setTitle("Send Mail Sales Report");
+        builder.setView(view).setTitle("Send Mail Report");
         builder.setNegativeButton("Cancel", (DialogInterface dialog, int which) -> {
                 dialog.dismiss();
         });
@@ -56,7 +57,14 @@ public class SendMailDialog extends AppCompatDialogFragment {
                 mailerService.setFilePath(this.getFilePath());
                 mailerService.setContext(context);
                 mailerService.setReceiverEmail(etEmail.getText().toString());
-                mailerService.sendSalesReport();
+
+                if(this.getReportType() == 1){
+                    mailerService.sendSalesReport();
+                }
+                else if(this.getReportType() == 2){
+                    mailerService.sendInventoryReport();
+                }
+
         });
         return builder.create();
     }
@@ -64,6 +72,14 @@ public class SendMailDialog extends AppCompatDialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+    }
+
+    public int getReportType() {
+        return reportType;
+    }
+
+    public void setReportType(int reportType) {
+        this.reportType = reportType;
     }
 
     @Nullable

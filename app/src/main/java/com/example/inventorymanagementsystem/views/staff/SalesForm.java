@@ -128,7 +128,6 @@ public class SalesForm extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
 
         tempSalesArrayList = new ArrayList<>();
-
         tempSoldItemReportsList = new ArrayList<>();
         tempSoldItemArrayList = new ArrayList<>();
 
@@ -146,7 +145,6 @@ public class SalesForm extends AppCompatActivity {
 
         btnBack = findViewById(R.id.btnback);
         btnBack.setOnClickListener(v -> {
-
             startActivity(new Intent(SalesForm.this, HomeActivity.class));
             finish();
         });
@@ -191,6 +189,7 @@ public class SalesForm extends AppCompatActivity {
             boolean isGenerated = excelGenerator.generateSales();
             if (isGenerated) {
                 SendMailDialog sendMailDialog = new SendMailDialog(SalesForm.this);
+                sendMailDialog.setReportType(1);
                 sendMailDialog.setFilePath(excelGenerator.getFilePath());
                 sendMailDialog.show(getSupportFragmentManager(), "DIALOG_SEND_EMAIL");
             }
@@ -225,8 +224,7 @@ public class SalesForm extends AppCompatActivity {
                     else{
                         Toast.makeText(this, "Failed to generate", Toast.LENGTH_SHORT).show();
                     }
-                }
-        );
+        });
 
     }
 
