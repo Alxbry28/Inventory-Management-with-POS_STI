@@ -160,7 +160,6 @@ public class ItemsForm extends AppCompatActivity {
                 public void retrieveProduct(Product product) {
 
                 }
-
                 @Override
                 public void getProductList(ArrayList<Product> productArrayList) {
                     if(!productArrayList.isEmpty()){

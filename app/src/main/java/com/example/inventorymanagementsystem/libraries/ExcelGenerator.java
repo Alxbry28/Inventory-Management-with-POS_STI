@@ -1,6 +1,7 @@
 package com.example.inventorymanagementsystem.libraries;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Environment;
 import android.util.Log;
 
@@ -258,7 +259,7 @@ public class ExcelGenerator {
 
     public boolean generateInventory() {
         InventoryWorkbook();
-        SoldProductWorkbook();
+        SoldProductInventoryWorkbook();
         String filename = fileNameUnique+"_"+"InventoryReport.xls";
         filePath = new File(getFolderDocument(), filename);
         File filePathBackup = new File(folderDocumentBackup, filename);
@@ -325,7 +326,7 @@ public class ExcelGenerator {
         HSSFCell hssfCellDateTo  = hssfRowDateRange.createCell(3);
         hssfCellDateTo.setCellValue("To: " + endDate);
 
-        String[] salesHeader = new String[]{"Receipt No", "Amount Payable", "Item Qty", "Date"};
+        String[] salesHeader = new String[]{"Id", "Name", "Category", "Price","Quantity","Restock", "Status", "Date" };
         HSSFRow hssfRowDataHeader = hssfSheet.createRow(2);
         for (int i = 0; i < salesHeader.length; i++) {
             HSSFCell hssfCellDataHeader  = hssfRowDataHeader.createCell(i);
@@ -336,23 +337,37 @@ public class ExcelGenerator {
         int totalQty = 0;
         double totalSold = 0;
         HSSFCell hssfCellData;
-        for (Sales salesItem : tempSalesList) {
+        for (Product productItem : productList) {
             HSSFRow hssfRowData = hssfSheet.createRow(beginRow);
 
-            hssfCellData = hssfRowData.createCell(0); //"Receipt No"
-            hssfCellData.setCellValue(salesItem.getReceiptNo());
+            hssfCellData = hssfRowData.createCell(0); //"Id"
+            hssfCellData.setCellValue(productItem.getId());
 
-            hssfCellData = hssfRowData.createCell(1); //"Amount Payable"
-            hssfCellData.setCellValue(MoneyLibrary.toTwoDecimalPlaces(salesItem.getAmountPayable()));
+            hssfCellData = hssfRowData.createCell(1); //"Name"
+            hssfCellData.setCellValue(productItem.getName());
 
-            hssfCellData = hssfRowData.createCell(2); //"Item Qty"
-            hssfCellData.setCellValue(salesItem.getQuantity());
+            hssfCellData = hssfRowData.createCell(2); //"Category"
+            hssfCellData.setCellValue(productItem.getCategory());
 
-            hssfCellData = hssfRowData.createCell(3); //"Date"
-            hssfCellData.setCellValue(salesItem.getCreated_at());
+            hssfCellData = hssfRowData.createCell(3); //"Price"
+            hssfCellData.setCellValue(MoneyLibrary.toTwoDecimalPlaces(productItem.getPrice()));
 
-            totalQty += salesItem.getQuantity();
-            totalSold += salesItem.getAmountPayable();
+            hssfCellData = hssfRowData.createCell(4); //"Quantity"
+            hssfCellData.setCellValue(productItem.getQuantity());
+
+            hssfCellData = hssfRowData.createCell(5); //"Restock"
+            hssfCellData.setCellValue(productItem.getRestock());
+
+            hssfCellData = hssfRowData.createCell(6); //"stockStatus"
+            String stockStatus = (productItem.stockStatus() == 0) ? "Out Of Stock" : ((productItem.stockStatus() == 1) ? "Need to reorder" :  "Good Condition");
+            hssfCellData.setCellValue(stockStatus);
+
+            hssfCellData = hssfRowData.createCell(7); //"Date"
+            hssfCellData.setCellValue(productItem.getUpdated_at());
+
+            double totalPrice = productItem.getPrice() * productItem.getQuantity();
+            totalQty += productItem.getQuantity();
+            totalSold += totalPrice;
             beginRow++;
         }
 
@@ -362,7 +377,7 @@ public class ExcelGenerator {
 
         HSSFRow hssfRowDataTotal = hssfSheet.createRow(beginRow + 2);
         hssfCellData = hssfRowDataTotal.createCell(0); // "Total"
-        hssfCellData.setCellValue("Total Sales Amount: " + MoneyLibrary.toTwoDecimalPlaces(totalSold));
+        hssfCellData.setCellValue("Total: " + MoneyLibrary.toTwoDecimalPlaces(totalSold));
 
         hssfRowDataTotal = hssfSheet.createRow(beginRow + 3);
         hssfCellData = hssfRowDataTotal.createCell(0); // "Quantity"
@@ -374,6 +389,73 @@ public class ExcelGenerator {
 
     }
 
+    private void SoldProductInventoryWorkbook(){
+        HSSFSheet hssfSheet = hssfWorkbook.createSheet();
+        HSSFRow hssfRowHeader = hssfSheet.createRow(0);
+        HSSFCell hssfCellHeader  = hssfRowHeader.createCell(3);
+        hssfCellHeader.setCellValue("Sold Products Report");
+
+        HSSFRow hssfRowDateRange = hssfSheet.createRow(1);
+        HSSFCell hssfCellDateFrom  = hssfRowDateRange.createCell(0);
+        hssfCellDateFrom.setCellValue("From: " + startDate);
+
+        HSSFCell hssfCellDateTo  = hssfRowDateRange.createCell(3);
+        hssfCellDateTo.setCellValue("To: " + endDate);
+
+        String[] header = new String[]{"Product Name", "Category", "SRP", "Quantity", "Total", "Date"};
+        HSSFRow hssfRowDataHeader = hssfSheet.createRow(2);
+        for (int i = 0; i < header.length; i++) {
+            HSSFCell hssfCellDataHeader  = hssfRowDataHeader.createCell(i);
+            hssfCellDataHeader.setCellValue(header[i]);
+        }
+
+        int beginRow = 3;
+        int totalQty = 0;
+        double totalSold = 0;
+        HSSFCell hssfCellData;
+        for (SoldItemReport soldItem : tempSoldItemList) {
+            HSSFRow hssfRowData = hssfSheet.createRow(beginRow);
+
+            hssfCellData = hssfRowData.createCell(0); //"Product Name"
+            hssfCellData.setCellValue(soldItem.getName());
+
+            hssfCellData = hssfRowData.createCell(1);  //"Category"
+            hssfCellData.setCellValue(soldItem.getCategory());
+
+            hssfCellData = hssfRowData.createCell(2); //"SRP"
+            hssfCellData.setCellValue(soldItem.getProductPrice());
+
+            hssfCellData = hssfRowData.createCell(3); // "Quantity"
+            hssfCellData.setCellValue(soldItem.getQuantity());
+
+            hssfCellData = hssfRowData.createCell(4);  // "Total"
+            hssfCellData.setCellValue(MoneyLibrary.toTwoDecimalPlaces(soldItem.GetComputedSubtotal()));
+
+            hssfCellData = hssfRowData.createCell(5); // Date
+            hssfCellData.setCellValue(soldItem.getCreated_at());
+
+            totalQty += soldItem.getQuantity();
+            totalSold += soldItem.GetComputedSubtotal();
+            beginRow++;
+        }
+
+        HSSFRow hssfRowDataBusinessName = hssfSheet.createRow(beginRow + 1);
+        hssfCellData = hssfRowDataBusinessName.createCell(0); // "businessName"
+        hssfCellData.setCellValue("Business Name: " +  businessName);
+
+        HSSFRow hssfRowDataTotal = hssfSheet.createRow(beginRow + 2);
+        hssfCellData = hssfRowDataTotal.createCell(0); // "Total"
+        hssfCellData.setCellValue("Total Sold: " + MoneyLibrary.toTwoDecimalPlaces(totalSold));
+
+        hssfRowDataTotal = hssfSheet.createRow(beginRow + 3);
+        hssfCellData = hssfRowDataTotal.createCell(0); // "Quantity"
+        hssfCellData.setCellValue("Total Qty: " +totalQty);
+
+        HSSFRow hssfRowGenDate = hssfSheet.createRow(beginRow + 4);
+        hssfCellData = hssfRowGenDate.createCell(0); // "Date Generated"
+        hssfCellData.setCellValue("Date Generated: " + dateGenerated);
+
+    }
     public ArrayList<Product> getProductList() {
         return productList;
     }

@@ -117,7 +117,6 @@ public class AddItemForm extends AppCompatActivity {
 
         initEventButtons();
         tvBusinessName.setText(businessName);
-
     }
 
     private void initComponents() {

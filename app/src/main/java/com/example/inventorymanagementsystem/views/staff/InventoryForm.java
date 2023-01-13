@@ -55,7 +55,9 @@ import java.util.Date;
 import java.util.EventListener;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.example.inventorymanagementsystem.R;
@@ -66,8 +68,6 @@ public class InventoryForm extends AppCompatActivity {
     private RecyclerView rcInventory;
     private Button btnBack, btnSelectDuration, btnStartDate, btnEndDate;
     private Button btnSendMail, btnGenerateReport;
-
-
     private DurationChoiceDialog durationChoiceDialog;
     private String startDate, endDate, startDateShort, endDateShort;
     private String dateToday, dateTodayShorted;
@@ -133,6 +133,9 @@ public class InventoryForm extends AppCompatActivity {
         sales.setStoreId(storeId);
         product.setStoreId(storeId);
 
+        tvProductsNum = findViewById(R.id.tvProductsSize);
+        tvCategoryNum = findViewById(R.id.tvCategorySize);
+
         initDialog();
 
         initComponents();
@@ -153,8 +156,7 @@ public class InventoryForm extends AppCompatActivity {
         btnBack = findViewById(R.id.btnback);
         btnSendMail = findViewById(R.id.btnSendMail);
         btnGenerateReport = findViewById(R.id.btnGenerateReport);
-        tvProductsNum = findViewById(R.id.tvProductsNumber);
-        tvCategoryNum = findViewById(R.id.tvCategoryNum);
+
     }
 
     private void initEvents(){
@@ -180,7 +182,6 @@ public class InventoryForm extends AppCompatActivity {
             boolean isGenerated = excelGenerator.generateInventory();
             if (isGenerated) {
                 SendMailDialog sendMailDialog = new SendMailDialog(InventoryForm.this);
-                sendMailDialog.setReportType(2);
                 sendMailDialog.setReportType(2);
                 sendMailDialog.setFilePath(excelGenerator.getFilePath());
                 sendMailDialog.show(getSupportFragmentManager(), "DIALOG_SEND_EMAIL");
@@ -360,6 +361,17 @@ public class InventoryForm extends AppCompatActivity {
                                 btnEndDate.setText(endDateShort);
 
                                 productList = productArrayList;
+                                tempProductArrayList = productArrayList;
+
+                                Map<String, List<Product>> groupByProduct = productArrayList.stream()
+                                        .collect(Collectors.groupingBy(Product::getCategory));
+
+                                int productsNumber = productArrayList.stream().mapToInt(Product::getQuantity).sum();
+
+                                tvProductsNum.setText(String.valueOf(productsNumber));
+                                tvCategoryNum.setText(String.valueOf(groupByProduct.size()));
+
+//                                tvProductsNum.setText(productArrayList.size());
 
                             }
 
@@ -442,6 +454,13 @@ public class InventoryForm extends AppCompatActivity {
             public void getProductList(ArrayList<Product> productArrayList) {
                 tempProductArrayList = productArrayList;
 
+                Map<String, List<Product>> groupByProduct = productArrayList.stream()
+                        .collect(Collectors.groupingBy(Product::getCategory));
+
+                int productsNumber = productArrayList.stream().mapToInt(Product::getQuantity).sum();
+
+                tvProductsNum.setText(String.valueOf(productsNumber));
+                tvCategoryNum.setText(String.valueOf(groupByProduct.size()));
             }
         });
 
