@@ -127,8 +127,7 @@
                 android:paddingRight="4dp"
                 android:paddingBottom="7dp">
 
-                <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="340dp"
                     android:layout_marginLeft="3dp"
@@ -142,7 +141,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="2dp">
+                        android:padding="2dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/tvTopSales"
@@ -150,7 +150,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="2dp"
-                            android:text="Sales Chart"
+                            android:text="Item quantity"
                             android:textAppearance="@style/TextAppearance.AppCompat.Title"
                             android:textSize="22dp" />
 
@@ -165,7 +165,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
-                            android:padding="10dp">
+                            android:padding="10dp"
+                            android:visibility="gone">
 
                             <com.github.mikephil.charting.charts.BarChart
                                 android:id="@+id/bChartSales"
@@ -192,6 +193,7 @@
                     app:cardElevation="10dp">
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
@@ -215,6 +217,7 @@
                             android:padding="5dp" />
 
                         <LinearLayout
+                           android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
