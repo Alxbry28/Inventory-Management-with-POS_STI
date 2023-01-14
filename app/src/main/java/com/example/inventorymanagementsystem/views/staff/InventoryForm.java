@@ -94,7 +94,7 @@ public class InventoryForm extends AppCompatActivity {
     private ArrayList<SoldItem> tempSoldItemArrayList;
     private ArrayList<Product> tempProductArrayList;
     private File filePath;
-    private TextView tvEmptyInventory, tvProductsNum, tvCategoryNum;
+    private TextView tvEmptyInventory, tvProductsNum, tvCategoryNum,tvSoldQty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +135,7 @@ public class InventoryForm extends AppCompatActivity {
 
         tvProductsNum = findViewById(R.id.tvProductsSize);
         tvCategoryNum = findViewById(R.id.tvCategorySize);
+        tvSoldQty = findViewById(R.id.tvSoldQty);
 
         initDialog();
 
@@ -214,6 +215,7 @@ public class InventoryForm extends AppCompatActivity {
         setFirstEventDateRange();
         setSecondEventDateRange();
         firstEventListener();
+
     }
 
     private void generateExcelDetails() {
@@ -370,16 +372,13 @@ public class InventoryForm extends AppCompatActivity {
 
                                 tvProductsNum.setText(String.valueOf(productsNumber));
                                 tvCategoryNum.setText(String.valueOf(groupByProduct.size()));
-
-//                                tvProductsNum.setText(productArrayList.size());
-
                             }
 
                         }
                     }
                 });
 
-                soldItem.GetAll(new IEntityModelListener<SoldItemReport>() {
+                soldItem.GetAllByDateRange(startDate, endDate, new IEntityModelListener<SoldItemReport>() {
                     @Override
                     public void retrieve(SoldItemReport m) {
 
@@ -388,8 +387,21 @@ public class InventoryForm extends AppCompatActivity {
                     @Override
                     public void getList(ArrayList<SoldItemReport> soldItemReports) {
                         tempSoldItemReportsList = soldItemReports;
+                        int soldProductsNumber = soldItemReports.stream().mapToInt(SoldItemReport::getQuantity).sum();
+                        tvSoldQty.setText(String.valueOf(soldProductsNumber));
                     }
                 });
+//                soldItem.GetAll(new IEntityModelListener<SoldItemReport>() {
+//                    @Override
+//                    public void retrieve(SoldItemReport m) {
+//
+//                    }
+//
+//                    @Override
+//                    public void getList(ArrayList<SoldItemReport> soldItemReports) {
+//                        tempSoldItemReportsList = soldItemReports;
+//                    }
+//                });
 
                 return;
 
@@ -441,6 +453,8 @@ public class InventoryForm extends AppCompatActivity {
             @Override
             public void getList(ArrayList<SoldItemReport> soldItemReports) {
                 tempSoldItemReportsList = soldItemReports;
+                int soldProductsNumber = soldItemReports.stream().mapToInt(SoldItemReport::getQuantity).sum();
+                tvSoldQty.setText(String.valueOf(soldProductsNumber));
             }
         });
 
