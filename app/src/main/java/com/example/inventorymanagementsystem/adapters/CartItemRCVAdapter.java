@@ -31,6 +31,7 @@ public class CartItemRCVAdapter extends RecyclerView.Adapter<CartItemRCVAdapter.
     private Context context;
     private Activity activity;
     private CartItemsListener cartItemsListener;
+    private String storeId;
 //    private Product tempProduct;
     public class CartItemViewHolder extends RecyclerView.ViewHolder{
 
@@ -102,6 +103,7 @@ public class CartItemRCVAdapter extends RecyclerView.Adapter<CartItemRCVAdapter.
             @Override
             public void onClick(View v) {
                 Product product = new Product();
+                product.setStoreId(getStoreId());
                 product.setId(cartItem.getProductId());
                 product.GetById(new ProductModelListener() {
                     @Override
@@ -137,6 +139,14 @@ public class CartItemRCVAdapter extends RecyclerView.Adapter<CartItemRCVAdapter.
 
         this.cartItemsListener = cartItemsListener;
 
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
     @Override

@@ -176,8 +176,7 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
                     android:layout_marginLeft="3dp"
@@ -196,10 +195,10 @@
 
 
                         <LinearLayout
-                            android:layout_centerInParent="true"
-                            android:orientation="vertical"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/tvProductsSize"
@@ -218,6 +217,55 @@
                                 android:layout_gravity="center"
                                 android:layout_marginTop="2dp"
                                 android:text="Products Overall Qty"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="22dp" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@color/white"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="2dp">
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvSoldQty"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="2dp"
+                                android:text="23"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="29dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="2dp"
+                                android:text="Sold Product Overall Qty"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                                 android:textSize="22dp" />
 
