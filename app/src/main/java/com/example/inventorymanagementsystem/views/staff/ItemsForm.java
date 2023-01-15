@@ -208,12 +208,24 @@ public class ItemsForm extends AppCompatActivity {
                 .collect(Collectors.toList());
 
         List<Product> tempOutOfStock = tempsortedProduct.stream()
-                .filter(product1 -> product1.getQuantity() <= 5)
+                .filter(product1 -> product1.getQuantity() <= 0)
+                .collect(Collectors.toList());
+
+        List<Product> tempNearOutOfStock = tempsortedProduct.stream()
+                .filter(product1 -> product1.getQuantity() <= 5 &&  1 <= product1.getQuantity() )
                 .collect(Collectors.toList());
 
         List<Product> tempGood = tempsortedProduct.stream()
                 .filter(product1 -> product1.getQuantity() > product1.getRestock())
                 .collect(Collectors.toList());
+
+
+        if(tempRestock.size() > 0){
+            notifCount++;
+            notifyStockDialog.setStockNotification(StockNotification.RESTOCK);
+            notifyStockDialog.setMessage("There are "+tempRestock.size()+" item(s) that needs to be restocked.");
+            tvNotifNum.setVisibility(View.VISIBLE);
+        }
 
         if(tempOutOfStock.size() > 0){
             notifCount++;
@@ -221,12 +233,14 @@ public class ItemsForm extends AppCompatActivity {
             notifyStockDialog.setMessage("Warning: There are "+tempOutOfStock.size()+" item(s) either out of stock or near to out of stock.");
             tvNotifNum.setVisibility(View.VISIBLE);
         }
-         if(tempRestock.size() > 0){
-             notifCount++;
-            notifyStockDialog.setStockNotification(StockNotification.RESTOCK);
-            notifyStockDialog.setMessage("There are "+tempRestock.size()+" item(s) that needs to be restocked.");
-             tvNotifNum.setVisibility(View.VISIBLE);
-         }
+
+        if(tempNearOutOfStock.size() > 0){
+            notifCount++;
+            notifyStockDialog.setStockNotification(StockNotification.NOSTOCK);
+            notifyStockDialog.setMessage("Warning: There are "+tempNearOutOfStock.size()+" item(s) near to out of stock.");
+            tvNotifNum.setVisibility(View.VISIBLE);
+        }
+
          if(tempOutOfStock.size() == 0 && tempRestock.size() == 0  && tempGood.size() > 0){
             notifCount++;
             notifyStockDialog.setStockNotification(StockNotification.GOOD);
