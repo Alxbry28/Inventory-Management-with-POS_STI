@@ -326,7 +326,12 @@ public class ExcelGenerator {
         HSSFCell hssfCellDateTo  = hssfRowDateRange.createCell(3);
         hssfCellDateTo.setCellValue("To: " + endDate);
 
-        String[] salesHeader = new String[]{"Id", "Name", "Category", "Price","Quantity","Restock", "Status", "Date" };
+        String[] salesHeader = new String[]{
+                "Name", "Category", "Price",
+                "Quantity", "Value", "Restock",
+                "Status"
+        };
+
         HSSFRow hssfRowDataHeader = hssfSheet.createRow(2);
         for (int i = 0; i < salesHeader.length; i++) {
             HSSFCell hssfCellDataHeader  = hssfRowDataHeader.createCell(i);
@@ -340,32 +345,29 @@ public class ExcelGenerator {
         for (Product productItem : productList) {
             HSSFRow hssfRowData = hssfSheet.createRow(beginRow);
 
-            hssfCellData = hssfRowData.createCell(0); //"Id"
-            hssfCellData.setCellValue(productItem.getId());
-
-            hssfCellData = hssfRowData.createCell(1); //"Name"
+            hssfCellData = hssfRowData.createCell(0); //"Name"
             hssfCellData.setCellValue(productItem.getName());
 
-            hssfCellData = hssfRowData.createCell(2); //"Category"
+            hssfCellData = hssfRowData.createCell(1); //"Category"
             hssfCellData.setCellValue(productItem.getCategory());
 
-            hssfCellData = hssfRowData.createCell(3); //"Price"
+            hssfCellData = hssfRowData.createCell(2); //"Price"
             hssfCellData.setCellValue(MoneyLibrary.toTwoDecimalPlaces(productItem.getPrice()));
 
-            hssfCellData = hssfRowData.createCell(4); //"Quantity"
+            hssfCellData = hssfRowData.createCell(3); //"Quantity"
             hssfCellData.setCellValue(productItem.getQuantity());
 
-            hssfCellData = hssfRowData.createCell(5); //"Restock"
+            double totalPrice = productItem.getPrice() * productItem.getQuantity();
+            hssfCellData = hssfRowData.createCell(4); //"Inventory value"
+            hssfCellData.setCellValue("P"+MoneyLibrary.toTwoDecimalPlaces(totalPrice));
+
+            hssfCellData = hssfRowData.createCell(5);//"Restock"
             hssfCellData.setCellValue(productItem.getRestock());
 
-            hssfCellData = hssfRowData.createCell(6); //"stockStatus"
+            hssfCellData = hssfRowData.createCell(6); //"Status"
             String stockStatus = (productItem.stockStatus() == 0) ? "Out Of Stock" : ((productItem.stockStatus() == 1) ? "Need to reorder" :  "Good Condition");
             hssfCellData.setCellValue(stockStatus);
 
-            hssfCellData = hssfRowData.createCell(7); //"Date"
-            hssfCellData.setCellValue(productItem.getUpdated_at());
-
-            double totalPrice = productItem.getPrice() * productItem.getQuantity();
             totalQty += productItem.getQuantity();
             totalSold += totalPrice;
             beginRow++;
@@ -456,6 +458,7 @@ public class ExcelGenerator {
         hssfCellData.setCellValue("Date Generated: " + dateGenerated);
 
     }
+
     public ArrayList<Product> getProductList() {
         return productList;
     }

@@ -357,8 +357,27 @@ public class InventoryForm extends AppCompatActivity {
 
                                 LocalDate start = LocalDate.parse(sortedProduct.get(0).getUpdated_at());
                                 LocalDate end = LocalDate.parse(sortedProduct.get(productArrayList.size() - 1).getUpdated_at());
+
+                                startDate = dateTimeFormatter.format(start);
+                                endDate = dateTimeFormatter.format(end);
+
+                                soldItem.GetAllByDateRange(startDate, endDate, new IEntityModelListener<SoldItemReport>() {
+                                    @Override
+                                    public void retrieve(SoldItemReport m) {
+
+                                    }
+
+                                    @Override
+                                    public void getList(ArrayList<SoldItemReport> soldItemReports) {
+                                        tempSoldItemReportsList = soldItemReports;
+                                        int soldProductsNumber = soldItemReports.stream().mapToInt(SoldItemReport::getQuantity).sum();
+                                        tvSoldQty.setText(String.valueOf(soldProductsNumber));
+                                    }
+                                });
+
                                 startDateShort = dateTimeDateShort.format(start);
                                 endDateShort = dateTimeDateShort.format(end);
+
                                 btnStartDate.setText(startDateShort);
                                 btnEndDate.setText(endDateShort);
 
@@ -372,36 +391,12 @@ public class InventoryForm extends AppCompatActivity {
 
                                 tvProductsNum.setText(String.valueOf(productsNumber));
                                 tvCategoryNum.setText(String.valueOf(groupByProduct.size()));
+
                             }
 
                         }
                     }
                 });
-
-                soldItem.GetAllByDateRange(startDate, endDate, new IEntityModelListener<SoldItemReport>() {
-                    @Override
-                    public void retrieve(SoldItemReport m) {
-
-                    }
-
-                    @Override
-                    public void getList(ArrayList<SoldItemReport> soldItemReports) {
-                        tempSoldItemReportsList = soldItemReports;
-                        int soldProductsNumber = soldItemReports.stream().mapToInt(SoldItemReport::getQuantity).sum();
-                        tvSoldQty.setText(String.valueOf(soldProductsNumber));
-                    }
-                });
-//                soldItem.GetAll(new IEntityModelListener<SoldItemReport>() {
-//                    @Override
-//                    public void retrieve(SoldItemReport m) {
-//
-//                    }
-//
-//                    @Override
-//                    public void getList(ArrayList<SoldItemReport> soldItemReports) {
-//                        tempSoldItemReportsList = soldItemReports;
-//                    }
-//                });
 
                 return;
 

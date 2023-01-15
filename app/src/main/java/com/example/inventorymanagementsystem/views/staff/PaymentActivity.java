@@ -20,6 +20,7 @@ import com.example.inventorymanagementsystem.interfaces.TransactionStatusListene
 import com.example.inventorymanagementsystem.libraries.CartLibrary;
 import com.example.inventorymanagementsystem.libraries.MoneyLibrary;
 import com.example.inventorymanagementsystem.models.CartItem;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -40,8 +41,8 @@ public class PaymentActivity extends AppCompatActivity {
     private int totalQty = 0;
     private TextView tvTotalPrice, tvTotalChange, tvTotalItems;
     private EditText etAmountReceived;
-    private Button btnExactAmount, btn5Amount, btn10Amount,btn20Amount,
-            btn50Amount,btn100Amount,btn200Amount, btn500Amount, btn1000Amount;
+    private Button btnExactAmount, btn5Amount, btn10Amount, btn20Amount,
+            btn50Amount, btn100Amount, btn200Amount, btn500Amount, btn1000Amount;
     private Button btnPayment, btnBack;
     private Sales sales, lastSale;
 
@@ -52,10 +53,10 @@ public class PaymentActivity extends AppCompatActivity {
 //        getSupportActionBar().hide();
         initComponents();
 
-        sharedPreferences = getSharedPreferences(MainActivity.TAG,MODE_PRIVATE);
-        businessName = sharedPreferences.getString("businessName",null);
-        storeId = sharedPreferences.getString("storeId",null);
-        userId = sharedPreferences.getString("userId",null);
+        sharedPreferences = getSharedPreferences(MainActivity.TAG, MODE_PRIVATE);
+        businessName = sharedPreferences.getString("businessName", null);
+        storeId = sharedPreferences.getString("storeId", null);
+        userId = sharedPreferences.getString("userId", null);
 
         sales = new Sales();
         lastSale = new Sales();
@@ -76,14 +77,14 @@ public class PaymentActivity extends AppCompatActivity {
         initEvents();
     }
 
-    private void showTotalText(){
+    private void showTotalText() {
         totalQty = cartLibrary.totalCartItems();
         tvTotalItems.setText("Items: " + cartLibrary.totalCartItems());
-        totalChange= totalAmount - totalPrice;
-        tvTotalChange.setText("Change: P"+ MoneyLibrary.toTwoDecimalPlaces(totalChange));
+        totalChange = totalAmount - totalPrice;
+        tvTotalChange.setText("Change: P" + MoneyLibrary.toTwoDecimalPlaces(totalChange));
     }
 
-    private void initComponents(){
+    private void initComponents() {
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         tvTotalChange = findViewById(R.id.tvTotalChange);
         tvTotalItems = findViewById(R.id.tvTotalItems);
@@ -96,68 +97,68 @@ public class PaymentActivity extends AppCompatActivity {
         btn100Amount = findViewById(R.id.btn100Amount);
         btn200Amount = findViewById(R.id.btn200Amount);
         btn500Amount = findViewById(R.id.btn500Amount);
-        btn1000Amount  = findViewById(R.id.btn1000Amount);
-        btnPayment  = findViewById(R.id.btnPayment);
-        btnBack  = findViewById(R.id.btnBack);
+        btn1000Amount = findViewById(R.id.btn1000Amount);
+        btnPayment = findViewById(R.id.btnPayment);
+        btnBack = findViewById(R.id.btnBack);
     }
 
-    private void initEvents(){
+    private void initEvents() {
         btnExactAmount.setOnClickListener(v -> {
             totalAmount = cartLibrary.totalCartPrice();
             etAmountReceived.setText(MoneyLibrary.toTwoDecimalPlaces(totalAmount));
             showTotalText();
         });
 
-        btn5Amount.setOnClickListener(v->{
+        btn5Amount.setOnClickListener(v -> {
             totalAmount = 5;
             etAmountReceived.setText(MoneyLibrary.toTwoDecimalPlaces(totalAmount));
             showTotalText();
         });
 
-        btn10Amount.setOnClickListener(v->{
+        btn10Amount.setOnClickListener(v -> {
             totalAmount = 10;
             etAmountReceived.setText(MoneyLibrary.toTwoDecimalPlaces(totalAmount));
             showTotalText();
         });
 
-        btn20Amount.setOnClickListener(v->{
+        btn20Amount.setOnClickListener(v -> {
             totalAmount = 20;
             etAmountReceived.setText(MoneyLibrary.toTwoDecimalPlaces(totalAmount));
             showTotalText();
         });
 
-        btn50Amount.setOnClickListener(v->{
+        btn50Amount.setOnClickListener(v -> {
             totalAmount = 50;
             etAmountReceived.setText(MoneyLibrary.toTwoDecimalPlaces(totalAmount));
             showTotalText();
         });
 
-        btn100Amount.setOnClickListener(v->{
+        btn100Amount.setOnClickListener(v -> {
             totalAmount = 100;
             etAmountReceived.setText(MoneyLibrary.toTwoDecimalPlaces(totalAmount));
             showTotalText();
         });
 
-        btn200Amount.setOnClickListener(v->{
+        btn200Amount.setOnClickListener(v -> {
             totalAmount = 200;
             etAmountReceived.setText(MoneyLibrary.toTwoDecimalPlaces(totalAmount));
             showTotalText();
         });
 
-        btn500Amount.setOnClickListener(v->{
+        btn500Amount.setOnClickListener(v -> {
             totalAmount = 500;
             etAmountReceived.setText(MoneyLibrary.toTwoDecimalPlaces(totalAmount));
             showTotalText();
         });
 
-        btn1000Amount.setOnClickListener(v->{
+        btn1000Amount.setOnClickListener(v -> {
             totalAmount = 1000;
             etAmountReceived.setText(MoneyLibrary.toTwoDecimalPlaces(totalAmount));
             showTotalText();
         });
 
-        btnPayment.setOnClickListener(v->{
-            if(totalChange < 0){
+        btnPayment.setOnClickListener(v -> {
+            if (totalChange < 0) {
                 Toast.makeText(this, "Unable to proceed to payment", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -213,23 +214,23 @@ public class PaymentActivity extends AppCompatActivity {
                             public void getProductList(ArrayList<Product> productArrayList) {
 
                             }
-                            
+
                         });
 
                     }
                 }
             });
 
-           if(cartLibrary.clear()){
+            if (cartLibrary.clear()) {
                 startActivity(new Intent(PaymentActivity.this, POSItemActivity.class));
                 finish();
-           }
+            }
 
         });
 
-        btnBack.setOnClickListener(v->{
+        btnBack.setOnClickListener(v -> {
             startActivity(new Intent(PaymentActivity.this, CartActivity.class));
-             finish();
+            finish();
         });
 
         etAmountReceived.addTextChangedListener(new TextWatcher() {
@@ -245,7 +246,7 @@ public class PaymentActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length() != 0){
+                if (s.length() != 0) {
                     totalAmount = Double.parseDouble(etAmountReceived.getText().toString());
                     showTotalText();
                 }

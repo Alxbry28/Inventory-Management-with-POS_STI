@@ -155,7 +155,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="2dp"
-                                android:text="23"
+                                android:text="0"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                                 android:textSize="29dp" />
 
@@ -206,7 +206,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="2dp"
-                                android:text="23"
+                                android:text="0"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                                 android:textSize="29dp" />
 
@@ -256,7 +256,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="2dp"
-                                android:text="23"
+                                android:text="0"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                                 android:textSize="29dp" />
 
