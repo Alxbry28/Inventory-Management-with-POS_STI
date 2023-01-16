@@ -93,7 +93,10 @@ public class AddItemForm extends AppCompatActivity {
                 public void retrieveProduct(Product p) {
                     String imageUrl = (product.getImageUrl() == null) ? AppConstant.IMAGE.Value : p.getImageUrl();
                     Picasso.get().load(imageUrl).into(ivProductImage);
+
+
                     etProductName.setText(p.getName());
+                    product.setImageUrl(p.getImageUrl());
                     product.setCreated_at(p.getCreated_at());
                     product.setCreated_time(p.getCreated_time());
 
