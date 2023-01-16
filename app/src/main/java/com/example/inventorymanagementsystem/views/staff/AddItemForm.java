@@ -95,6 +95,7 @@ public class AddItemForm extends AppCompatActivity {
                     String imageUrl = (p.getImageUrl() == null) ? AppConstant.IMAGE.Value : p.getImageUrl();
                     Picasso.get().load(imageUrl).into(ivProductImage);
 
+//                    selectedUri = Uri.parse(imageUrl);
 
                     etProductName.setText(p.getName());
                     product.setImageUrl(imageUrl);
@@ -210,7 +211,6 @@ public class AddItemForm extends AppCompatActivity {
             }
 
             if (selectedUri == null) {
-                product.setImageUrl(AppConstant.IMAGE.Value);
                 if (isEditProduct) {
                     product.Update(status -> {
                         if (status) {
@@ -220,6 +220,7 @@ public class AddItemForm extends AppCompatActivity {
                         }
                     });
                 } else {
+                    product.setImageUrl(AppConstant.IMAGE.Value);
                     product.Create(status -> {
                         if (status) {
                             Toast.makeText(AddItemForm.this, "Product Successfully Added", Toast.LENGTH_SHORT).show();
