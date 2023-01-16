@@ -96,7 +96,7 @@ public class AddItemForm extends AppCompatActivity {
 
 
                     etProductName.setText(p.getName());
-                    product.setImageUrl(p.getImageUrl());
+                    product.setImageUrl(imageUrl);
                     product.setCreated_at(p.getCreated_at());
                     product.setCreated_time(p.getCreated_time());
 
