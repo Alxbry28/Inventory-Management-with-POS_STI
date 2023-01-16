@@ -91,7 +91,8 @@ public class AddItemForm extends AppCompatActivity {
             product.GetById(new ProductModelListener() {
                 @Override
                 public void retrieveProduct(Product p) {
-                    String imageUrl = (product.getImageUrl() == null) ? AppConstant.IMAGE.Value : p.getImageUrl();
+
+                    String imageUrl = (p.getImageUrl() == null) ? AppConstant.IMAGE.Value : p.getImageUrl();
                     Picasso.get().load(imageUrl).into(ivProductImage);
 
 
