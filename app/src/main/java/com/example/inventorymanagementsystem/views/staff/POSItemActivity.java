@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.inventorymanagementsystem.adapters.POSRCVAdapter;
@@ -31,6 +32,8 @@ import java.util.stream.Collectors;
 import java.util.Locale;
 import com.example.inventorymanagementsystem.R;
 import com.example.inventorymanagementsystem.MainActivity;
+import com.google.android.material.snackbar.Snackbar;
+
 public class POSItemActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
@@ -49,14 +52,17 @@ public class POSItemActivity extends AppCompatActivity {
     private TextView tvNotifNum;
     private ImageView ivBell;
     private int notifCount = 0;
+    private RelativeLayout relPosItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_positem);
 //        getSupportActionBar().hide();
-
+//        findViewById(android.R.id.content)
         initComponents();
+        relPosItem = findViewById(R.id.relPosItem);
+
 
         product = new Product();
         cartLibrary = new CartLibrary();
@@ -96,27 +102,40 @@ public class POSItemActivity extends AppCompatActivity {
                                 .collect(Collectors.toList());
 
                         List<Product> tempOutOfStock = tempsortedProduct.stream()
-                                .filter(product1 -> product1.getQuantity() <= 5)
+                                .filter(product1 -> product1.getQuantity() == 0)
+                                .collect(Collectors.toList());
+
+                        List<Product> tempNearOutOfStock = tempsortedProduct.stream()
+                                .filter(product1 -> product1.getQuantity() <= 5 &&  1 <= product1.getQuantity() )
                                 .collect(Collectors.toList());
 
                         List<Product> tempGood = tempsortedProduct.stream()
                                 .filter(product1 -> product1.getQuantity() > product1.getRestock())
                                 .collect(Collectors.toList());
 
-                        if(tempOutOfStock.size() > 0){
-                            notifCount++;
-                            notifyStockDialog.setStockNotification(StockNotification.NOSTOCK);
-                            notifyStockDialog.setMessage("Warning: There are "+tempOutOfStock.size()+" item(s) either out of stock or near to out of stock.");
-                        }
                         if(tempRestock.size() > 0){
                             notifCount++;
                             notifyStockDialog.setStockNotification(StockNotification.RESTOCK);
                             notifyStockDialog.setMessage("There are "+tempRestock.size()+" item(s) that needs to be restocked.");
                         }
+
+                        if(tempOutOfStock.size() > 0){
+                            notifCount++;
+                            notifyStockDialog.setStockNotification(StockNotification.NOSTOCK);
+                            notifyStockDialog.setMessage("Warning: There are "+tempOutOfStock.size()+" item(s)  near to out of stock.");
+                        }
+
+                        if(tempNearOutOfStock.size() > 0){
+                            notifCount++;
+                            notifyStockDialog.setStockNotification(StockNotification.NOSTOCK);
+                            notifyStockDialog.setMessage("Warning: There are "+tempNearOutOfStock.size()+" item(s) either out of stock or near to out of stock.");
+                        }
+
+
+
                         if(tempOutOfStock.size() == 0 && tempRestock.size() == 0  && tempGood.size() > 0){
                             notifCount++;
                             notifyStockDialog.setStockNotification(StockNotification.GOOD);
-
                             notifyStockDialog.setMessage("There are "+tempGood.size()+" items that are in good condition");
                         }
 
@@ -165,6 +184,7 @@ public class POSItemActivity extends AppCompatActivity {
                     totalQty = cartProducts.stream().filter(product1 -> product1.getQuantity() > 0).mapToInt(Product::getQuantity).sum();
 
                     btnCheckout.setText(totalQty + " Items = P" + roundOffPrice);
+                    Snackbar.make(relPosItem, "Added to Cart", Snackbar.LENGTH_SHORT).show();
                 }
                 else{
                     int index = Product.findIndexById(cartProducts, product.getId());
@@ -177,6 +197,7 @@ public class POSItemActivity extends AppCompatActivity {
                         productToCart.setName(product.getName());
                         productToCart.setQuantity(1);
                         cartProducts.add(productToCart);
+
                     }
                     else{
                         Product editProduct =  cartProducts.get(index);
@@ -190,7 +211,7 @@ public class POSItemActivity extends AppCompatActivity {
                             cartProducts.set(index,editProduct);
                         }
                     }
-
+                    Snackbar.make(relPosItem, "Added to Cart", Snackbar.LENGTH_SHORT).show();
                     showTotal();
                 }
 

@@ -6,12 +6,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.inventorymanagementsystem.MainActivity;
 import com.example.inventorymanagementsystem.adapters.CartItemRCVAdapter;
 import com.example.inventorymanagementsystem.database.SQLiteDB;
 import com.example.inventorymanagementsystem.interfaces.CartItemsListener;
@@ -27,6 +29,8 @@ import com.example.inventorymanagementsystem.R;
 
 public class CartActivity extends AppCompatActivity {
 
+    private SharedPreferences sharedPreferences;
+    private String businessName, storeId, userId, productId;
     private TextView tvTotalPrice, tvTotalItems;
     private Button btnCheckout,btnBack;
     private ArrayList<CartItem> cartItemsArrayList;
@@ -39,7 +43,12 @@ public class CartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-//        getSupportActionBar().hide();
+
+        sharedPreferences = getSharedPreferences(MainActivity.TAG,MODE_PRIVATE);
+        businessName = sharedPreferences.getString("businessName",null);
+        storeId = sharedPreferences.getString("storeId",null);
+        userId = sharedPreferences.getString("userId",null);
+
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener((View v) -> {
                 startActivity(new Intent(CartActivity.this, POSItemActivity.class));
@@ -58,6 +67,7 @@ public class CartActivity extends AppCompatActivity {
         cartItemsArrayList = cartLibrary.retrieveCartItems();
 
         CartItemRCVAdapter cartItemRCVAdapter = new CartItemRCVAdapter();
+        cartItemRCVAdapter.setStoreId(storeId);
         cartItemRCVAdapter.setContext(CartActivity.this);
         cartItemRCVAdapter.setCartItemList(cartItemsArrayList);
 

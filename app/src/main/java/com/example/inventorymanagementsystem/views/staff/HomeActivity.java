@@ -149,7 +149,7 @@ public class HomeActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                sessionService.End();
                 dialog.dismiss();
                 dialog.cancel();
                 cartLibrary.clear();
@@ -222,10 +222,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
 
                     default:
-                        if(sessionService.End()){
                             logout();
-
-                        }
                 }
         };
     }

@@ -87,17 +87,25 @@ public class AddItemForm extends AppCompatActivity {
         isEditProduct = getIntent().hasExtra("isEditProduct");
         if (isEditProduct) {
             product.setId(getIntent().getStringExtra("productId"));
+            product.setStoreId(storeId);
             product.GetById(new ProductModelListener() {
                 @Override
-                public void retrieveProduct(Product product) {
-                    String imageUrl = (product.getImageUrl() == null) ? AppConstant.IMAGE.Value : product.getImageUrl();
-                    Picasso.get().load(imageUrl).into(ivProductImage);
-                    etProductName.setText(product.getName());
+                public void retrieveProduct(Product p) {
 
-                    etReStocks.setText(String.valueOf(product.getRestock()));
-                    etProductCategory.setText(product.getCategory());
-                    etPrice.setText(String.valueOf(product.getPrice()));
-                    etStocks.setText(String.valueOf(product.getQuantity()));
+                    String imageUrl = (p.getImageUrl() == null) ? AppConstant.IMAGE.Value : p.getImageUrl();
+                    Picasso.get().load(imageUrl).into(ivProductImage);
+
+//                    selectedUri = Uri.parse(imageUrl);
+
+                    etProductName.setText(p.getName());
+                    product.setImageUrl(imageUrl);
+                    product.setCreated_at(p.getCreated_at());
+                    product.setCreated_time(p.getCreated_time());
+
+                    etReStocks.setText(String.valueOf(p.getRestock()));
+                    etProductCategory.setText(p.getCategory());
+                    etPrice.setText(String.valueOf(p.getPrice()));
+                    etStocks.setText(String.valueOf(p.getQuantity()));
                 }
 
                 @Override
@@ -114,7 +122,6 @@ public class AddItemForm extends AppCompatActivity {
 
         initEventButtons();
         tvBusinessName.setText(businessName);
-
     }
 
     private void initComponents() {
@@ -204,18 +211,20 @@ public class AddItemForm extends AppCompatActivity {
             }
 
             if (selectedUri == null) {
-                product.setImageUrl(AppConstant.IMAGE.Value);
                 if (isEditProduct) {
                     product.Update(status -> {
                         if (status) {
                             Toast.makeText(AddItemForm.this, "Edit Product Success", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(AddItemForm.this, ItemsForm.class));
                             finish();
                         }
                     });
                 } else {
+                    product.setImageUrl(AppConstant.IMAGE.Value);
                     product.Create(status -> {
                         if (status) {
                             Toast.makeText(AddItemForm.this, "Product Successfully Added", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(AddItemForm.this, ItemsForm.class));
                             finish();
                         }
                     });
@@ -229,6 +238,7 @@ public class AddItemForm extends AppCompatActivity {
                             product.Update(status -> {
                                 if (status) {
                                     Toast.makeText(AddItemForm.this, "Edit Product Success", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(AddItemForm.this, ItemsForm.class));
                                     finish();
                                 }
                             });
@@ -236,6 +246,7 @@ public class AddItemForm extends AppCompatActivity {
                             product.Create(status -> {
                                 if (status) {
                                     Toast.makeText(AddItemForm.this, "Product Successfully Added", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(AddItemForm.this, ItemsForm.class));
                                     finish();
                                 }
                             });
